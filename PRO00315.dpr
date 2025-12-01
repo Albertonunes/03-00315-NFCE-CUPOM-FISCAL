@@ -17,7 +17,9 @@ uses
   UConsultasProc in '..\Comum\LIBS\Consultas\UConsultasProc.pas',
   UFrmConsultaProc in '..\Comum\LIBS\Consultas\UFrmConsultaProc.pas' {FrmConsultaProc},
   UFrmConsultaProcFornecedor in '..\Comum\LIBS\Consultas\UFrmConsultaProcFornecedor.pas' {FrmConsultaProcFornecedor},
-  UFRM_BUSCAPED in 'UFRM_BUSCAPED.pas' {FRM_BUSCAPED};
+  UFRM_BUSCAPED in 'UFRM_BUSCAPED.pas' {FRM_BUSCAPED},
+  FRM_CONFIGURASERIAL in 'FRM_CONFIGURASERIAL.pas' {FRMCONFIGURASERIAL},
+  UFRM_FPGTOPEDCLI in 'UFRM_FPGTOPEDCLI.pas' {FRM_PGTOPEDCLI};
 
 {$R *.res}
 
@@ -36,5 +38,7 @@ begin
   Application.CreateForm(TFrmConsultaProc, FrmConsultaProc);
   Application.CreateForm(TFrmConsultaProcFornecedor, FrmConsultaProcFornecedor);
   Application.CreateForm(TFRM_BUSCAPED, FRM_BUSCAPED);
+  Application.CreateForm(TFRMCONFIGURASERIAL, FRMCONFIGURASERIAL);
+  Application.CreateForm(TFRM_PGTOPEDCLI, FRM_PGTOPEDCLI);
   Application.Run;
 end.

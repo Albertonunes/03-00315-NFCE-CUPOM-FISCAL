@@ -123,6 +123,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure ConfiguracaoExecute(Sender: TObject);
     procedure ActTipoPagtoExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     procedure AbrirNota(nIDNF:integer);
@@ -233,7 +234,14 @@ begin
     NUMNF := QryNumNFNF_NUMERO.Value + 1 ;
     QryCliNF.close ;
     QryCliNF.ParamByName('CLIENTE').AsInteger   := CLIENTE;
-    QryCliNF.open  ;
+    QryCliNF.open;
+    QryCliNF.First;
+    if QryCliNFFJ.Value = 'J' then
+    begin
+      MsgErro('Não é possível salvar cliente pessoa jurídica para NFCe, troque o cliente');
+      abort;
+    end;
+
     QryNFID.Close;
     QryNFID.ParamByName('FILIAL').AsInteger := PRO_FILIAL;
     QryNFID.ParamByName('NUMNF').AsInteger  := NUMNF;
@@ -257,18 +265,18 @@ begin
     end;
 
     QryInserirNF.Close;
-    QryInserirNF.ParamByName('IDNF').AsInteger            := NFID;
-    QryInserirNF.ParamByName('NF_NUMERO').AsInteger       := NUMNF;
-    QryInserirNF.ParamByName('SERIE_ID').AsInteger        := SERIE;
-    QryInserirNF.ParamByName('CFOP_ID').AsInteger         := CFOPID;
-    QryInserirNF.ParamByName('DIAG_EMPRESA').AsInteger    := PRO_FILIAL;
-    QryInserirNF.ParamByName('GESTOR_CLIENTE').AsInteger  := CLIENTE;
-    QryInserirNF.ParamByName('NOME').AsString             := QryCliNFNOME.Value;
-    QryInserirNF.ParamByName('NF_DT_EMISSAO').AsDateTime  := Now;
-    QryInserirNF.ParamByName('NF_VLR_TOTAL').AsFloat      := cx_total.Value;
-    QryInserirNF.ParamByName('NF_VLR_TOTMERC').AsFloat    := cx_subtotal.Value;
-    QryInserirNF.ParamByName('NF_VLR_BASE_ICMS').AsFloat  := VLR_BASE_ICMS;
-    QryInserirNF.ParamByName('NF_VLR_BASE_IPI').AsFloat   := VLR_BASE_IPI;
+    QryInserirNF.ParamByName('IDNF').AsInteger             := NFID;
+    QryInserirNF.ParamByName('NF_NUMERO').AsInteger        := NUMNF;
+    QryInserirNF.ParamByName('SERIE_ID').AsInteger         := SERIE;
+    QryInserirNF.ParamByName('CFOP_ID').AsInteger          := CFOPID;
+    QryInserirNF.ParamByName('DIAG_EMPRESA').AsInteger     := PRO_FILIAL;
+    QryInserirNF.ParamByName('GESTOR_CLIENTE').AsInteger   := CLIENTE;
+    QryInserirNF.ParamByName('NOME').AsString              := QryCliNFNOME.Value;
+    QryInserirNF.ParamByName('NF_DT_EMISSAO').AsDateTime   := Now;
+    QryInserirNF.ParamByName('NF_VLR_TOTAL').AsFloat       := cx_total.Value;
+    QryInserirNF.ParamByName('NF_VLR_TOTMERC').AsFloat     := cx_subtotal.Value;
+    QryInserirNF.ParamByName('NF_VLR_BASE_ICMS').AsFloat   := VLR_BASE_ICMS;
+    QryInserirNF.ParamByName('NF_VLR_BASE_IPI').AsFloat    := VLR_BASE_IPI;
     QryInserirNF.ParamByName('NF_VLR_BASE_ICMSUB').AsFloat := VLR_BASE_ICMSUB;
     QryInserirNF.ParamByName('NF_VLR_ICMS').AsFloat        := VLR_ICMS;
     QryInserirNF.ParamByName('NF_VLR_IPI').AsFloat         := VLR_IPI;
@@ -415,6 +423,23 @@ begin
   AbrirNota(NFID);
 end;
 
+procedure TFRM_FECHAVENDA.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if deubom then
+  begin
+    DMD_PRO00315.MemProdutos.Close;
+    DMD_PRO00315.MemItens.Close;
+    DMD_PRO00315.MemProdutos.Open;
+    DMD_PRO00315.MemItens.Open;
+    FRM_PRINCIPAL.cx_codbarras.Clear;
+    FRM_PRINCIPAL.cx_subtotal.Clear;
+    FRM_PRINCIPAL.cx_qtdeitens.Clear;
+    FRM_PRINCIPAL.cx_nomecliente.Clear;
+    FRM_PRINCIPAL.cx_cpf.Clear;
+  end;
+
+end;
+
 procedure TFRM_FECHAVENDA.FormShow(Sender: TObject);
 begin
   cx_total.Value := cx_subtotal.Value - cx_desconto.Value + cx_acrescimo.Value;
@@ -450,6 +475,7 @@ begin
     FormatDateTime('yyyymm',QryFiltroNFNF_DT_EMISSAO.AsDateTime));
   end;
   FRM_CONFIGURA.ActLerConfIni.Execute;
+  FRM_CONFIGURA.PrepararImpressao;
   FRM_CONFIGURA.ActGerarNFe.Execute;
   try
     FRM_CONFIGURA.ACBrNFe1.NotasFiscais.Assinar;
@@ -457,7 +483,7 @@ begin
 
   end;
   //FRM_CONFIGURA.ACBrNFe1.NotasFiscais.Items[0].GravarXML;
-  MsgInformacao('Arquivo gerado em: ' + FRM_CONFIGURA.ACBrNFe1.NotasFiscais.Items[0].NomeArq);
+  //MsgInformacao('Arquivo gerado em: ' + FRM_CONFIGURA.ACBrNFe1.NotasFiscais.Items[0].NomeArq);
   EnviarNota(nIDNF);
   //FRM_CONFIGURA.ACBrNFe1.Consultar;
   //FRM_CONFIGURA.ACBrNFe1.Configuracoes.Arquivos.PathSalvar := QryEmpresasNFE_LOG.Value +
@@ -469,7 +495,10 @@ end;
 
 procedure TFRM_FECHAVENDA.EnviarNota(nIDNF:integer);
 begin
+  deubom := false;
   FRM_CONFIGURA.Enviar;
+  if deubom then
+    close;
 end;
 
 end.

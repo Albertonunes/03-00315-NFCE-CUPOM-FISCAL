@@ -20,7 +20,7 @@ uses
   dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
   dxSkinSpringtime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
   dxSkinTheBezier, dxSkinsDefaultPainters, dxSkinValentine,
-  dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark, DbGrids,
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
   dxSkinXmas2008Blue, Vcl.ComCtrls, dxCore, cxDateUtils, cxMaskEdit,
   cxDropDownEdit, cxCalendar, Vcl.StdCtrls, cxTextEdit, cxCurrencyEdit,
@@ -83,11 +83,22 @@ type
     cxGrid1DBTableView1VLR_ICMS: TcxGridDBColumn;
     cxGrid1DBTableView1VLR_ICMSSUB: TcxGridDBColumn;
     cxGrid1DBTableView1VLR_MERCADORIA: TcxGridDBColumn;
+    PopupMenu1: TPopupMenu;
+    CarregarVenda1: TMenuItem;
+    cxGrid1DBTableView1CPF_CNPJ: TcxGridDBColumn;
+    cxGrid1DBTableView1FJ: TcxGridDBColumn;
+    btnLimpar: TcxButton;
+    Panel3: TPanel;
+    Label4: TLabel;
     procedure FormShow(Sender: TObject);
     procedure btn_pesquisarClick(Sender: TObject);
     procedure cxGrid1DBTableView1CellDblClick(Sender: TcxCustomGridTableView;
       ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
       AShift: TShiftState; var AHandled: Boolean);
+    procedure CarregarVenda1Click(Sender: TObject);
+    procedure btnLimparClick(Sender: TObject);
+    procedure cx_pedidoExit(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -104,6 +115,14 @@ implementation
 uses UDMD_PRO00315, UDmdPrincipal, UFRM_PRINCIPAL, ULibrary,
   untFuncoes_Advensys, UntPrincipal;
 
+procedure TFRM_BUSCAPED.btnLimparClick(Sender: TObject);
+begin
+  cx_pedido.Clear;
+  cx_dtinin.Clear;
+  cx_dtfim.Clear;
+  cx_cliente.Clear;
+end;
+
 procedure TFRM_BUSCAPED.btn_pesquisarClick(Sender: TObject);
 begin
   with DMD_PRO00315 do
@@ -118,7 +137,7 @@ begin
       SQL.Add('        A.TRANSPORTADORA,A.FRETE_CONTA,A.ORIGEM,A.ASS1,A.ASS2,A.ASS3,A.ASS4,A.COD_TABELA,A.SEUPEDIDO,       ');
       SQL.Add('        A.TIPO,A.QUANT_ITENS,A.VLRFRETE,A.COMPRADOR,A.PERC_DESC, A.VLR_DESC, A.PEDIDOCLI, A.FOBCIF,         ');
       SQL.Add('        A.DT_FECHAMENTO, A.DATA_FATURAMENTO, A.FILIAL, A.PA, A.FILIAL_PEDIDO,                               ');
-      SQL.Add('        A.VLR_IPI, A.VLR_ICMS, A.VLR_ICMSSUB, A.VLR_MERCADORIA                                              ');
+      SQL.Add('        A.VLR_IPI, A.VLR_ICMS, A.VLR_ICMSSUB, A.VLR_MERCADORIA, CPF_CNPJ, FJ                                ');
       SQL.Add('FROM    PEDIDO_MATERIAIS_CLIENTE A LEFT OUTER JOIN                                                          ');
       SQL.Add('        GESTOR_CLIENTE B ON A.COD_CLIENTE = B.COD_CLIENTE                                                   ');
       SQL.Add('WHERE   (A.POSICAO <> ''X'')                                                                                ');
@@ -172,10 +191,83 @@ begin
       *)
       SQL.Add('ORDER BY A.PEDIDO DESC');
       Open;
-
+      cxgrid1.SetFocus;
     end;
   end;
 
+end;
+
+procedure TFRM_BUSCAPED.CarregarVenda1Click(Sender: TObject);
+var
+  i:integer;
+begin
+  with DMD_PRO00315 do
+  begin
+    // verificar se o cliente é cpf
+    if cxGrid1DBTableView1FJ.EditValue = 'J' then
+    begin
+      MsgAtencao('Essa opção só é permitida para pessoa Física(consumidor), ficará sem identificação');
+      FRM_PRINCIPAL.cx_cpf.Text         := '';
+      FRM_PRINCIPAL.cx_nomecliente.Text := 'CONSUMIDOR';
+      // verificar o codigo do cliente CONSUMIDOR na tabela de clientes
+    end
+    else
+    begin
+      FRM_PRINCIPAL.cx_cpf.Text         := cxGrid1DBTableView1CPF_CNPJ.EditValue;
+      FRM_PRINCIPAL.cx_nomecliente.Text := cxGrid1DBTableView1NOME.EditValue;
+      CLIENTE                           := cxGrid1DBTableView1COD_CLIENTE.EditValue;
+    end;
+    // buscar os itens do pedido
+    PEDID := cxGrid1DBTableView1PEDID.EditValue;
+    QryItensPed.Close;
+    QryItensPed.ParamByName('PEDID').AsInteger := PEDID;
+    QryItensPed.Open;
+    QryItensPed.First;
+    i:=0;
+    while not QryItensPed.Eof do
+    begin
+      i:=i+1;
+      MemItens.Insert;
+      MemItensCODID.Value          := QryItensPedCODID.Value;
+      QryLookMateriais.Close;
+      QryLookMateriais.ParamByName('CODID').AsInteger  := QryItensPedCODID.Value;
+      if DmdPrincipal.QryParamsPRODUTO_INDIVIDUAL.Value = 'S' then
+      begin
+        QryLookMateriais.ParamByName('FILIAL').AsInteger  := PRO_FILIAL;
+      end
+      else
+      begin
+        QryLookMateriais.ParamByName('FILIAL').AsInteger  := 1;
+      end;
+      QryLookMateriais.ParamByName('CODID').AsInteger  := QryItensPedCODID.Value;
+      QryLookMateriais.Open;
+      MemItensITEM.Value           := i;
+      MemItensCOD_INTERNO.Value    := QryItensPedCOD_INTERNO.Value;
+      MemItensDESCRICAO.Value      := QryItensPedDESCRICAOPROD.Value;
+      MemItensQTDE.Value           := QryItensPedQUANT.Value;
+      MemItensVLR_UNIT.Value       := QryItensPedVLR_UNIT.Value;
+      MemItensVLR_MERCADORIA.Value := QryItensPedVLR_MERCADORIA.Value;
+      MemItensVLR_TOTAL.Value      := QryItensPedVLR_TOTAL.Value;
+      MemItensUNI_CODIGO.Value     := QryItensPedUNIDADE.Value;
+      MemItensNCM.Value            := RemoveChar(QryLookMateriaisNCM.Value);
+      MemItensGTIN.Value           := QryItensPedCODBARRAS.Value;
+      MemItensCEST.Value           := QryLookMateriaisCEST.Value;
+      MemItensESTOQUE_ID.Value     := QryItensPedESTOQUE_ID.Value;
+      MemItensST.Value             := QryItensPedST.Value;
+      MemItensPESO.Value           := QryItensPedPESO.Value;
+      MemItensAUTOID.Value         := QryItensPedAUTOID.Value;
+      MemItensESTOQUE_ID.Value     := QryItensPedESTOQUE_ID.Value;
+      MemItensPEDIDO.Value         := QryItensPedPEDIDO.Value;
+      MemItensPEDID.Value          := QryItensPedPEDID.Value;
+      MemItensCFOP.Value           := '5102';
+      MemItensMOVIMENTOU_ESTOQUE.Value := QryItensPedMOVIMENTOU_ESTOQUE.Value;
+      MemItensMOVIMENTA_ESTOQUE.Value  := DmdPrincipal.QryParamsMOV_ESTOQUE_PEDIDO.Value;
+      MemItens.Post;
+
+      QryItensPed.Next;
+    end;
+  end;
+  close;
 end;
 
 procedure TFRM_BUSCAPED.cxGrid1DBTableView1CellDblClick(
@@ -224,6 +316,30 @@ begin
     end;
 
   end;
+
+end;
+
+procedure TFRM_BUSCAPED.cx_pedidoExit(Sender: TObject);
+begin
+  if cx_pedido.Value > 0 then
+    btn_pesquisar.Click;
+end;
+
+procedure TFRM_BUSCAPED.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+   if not (ActiveControl is TDBGrid) then
+      begin
+      Key := #0;
+      Perform(WM_NEXTDLGCTL, 0, 0);
+      end
+      else
+      if (ActiveControl is TDBGrid) then
+         with TDBGrid(ActiveControl) do
+         if selectedindex < (fieldcount -1) then
+            selectedindex := selectedindex +1
+            else
+            selectedindex := 0;
 
 end;
 

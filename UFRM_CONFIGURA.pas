@@ -152,6 +152,13 @@ type
     btnAtualizar: TcxButton;
     cxTabSheet1: TcxTabSheet;
     WBResposta: TWebBrowser;
+    btnValidarXML: TButton;
+    btnValidarAssinatura: TButton;
+    btn_gerarxml: TcxButton;
+    btn_enviar: TcxButton;
+    cbVersaoQRCode: TComboBox;
+    Label53: TLabel;
+    rgReformaTributaria: TRadioGroup;
     procedure btc_alteracaminhoClick(Sender: TObject);
     procedure btc_atualizaCertClick(Sender: TObject);
     procedure btc_salvarClick(Sender: TObject);
@@ -178,15 +185,24 @@ type
     procedure btnAtualizarClick(Sender: TObject);
     procedure LoadXML(RetWS: String; MyWebBrowser: TWebBrowser);
     procedure FormShow(Sender: TObject);
+    procedure btnValidarXMLClick(Sender: TObject);
+    procedure btnValidarAssinaturaClick(Sender: TObject);
+    procedure btn_gerarxmlClick(Sender: TObject);
+    procedure btn_enviarClick(Sender: TObject);
+    procedure btSerialClick(Sender: TObject);
+    procedure sbtnLogoMarcaClick(Sender: TObject);
   private
     { Private declarations }
+    procedure AbrirNota(nIDNF:integer);
   public
     { Public declarations }
+    procedure CancelarNota(aChaveNf,aProtocolo:String);
+    procedure ImprimirNota(nIDNF:integer);
   end;
 
 var
   FRM_CONFIGURA: TFRM_CONFIGURA;
-  vcstatus : Integer;
+  vcstatus, NFID, nNSU, NUMNF: Integer;
   nrorecibo, nProt, codmotivo, chavenfe, Motivo: string;
 
 implementation
@@ -194,16 +210,72 @@ implementation
 {$R *.dfm}
 
 uses ULibrary, untFuncoes_Advensys, UntPrincipal, UDMD_PRO00315, UDmdPrincipal,
-     synacode, blcksock, pcnNFe, ACBrDFeOpenSSL, pcnAuxiliar, ACBrDFeSSL,
+     synacode, blcksock, ACBrDFeOpenSSL, pcnAuxiliar, ACBrDFeSSL,
      ACBrUtil.Base, ACBrUtil.FilesIO, ACBrUtil.DateTime, ACBrUtil.Strings,
-     ACBrUtil.XMLHTML, strutils, math, DateUtils, FileCtrl,
-     Printers, ACBrNFeNotasFiscais, ACBrNFeConfiguracoes,
-     pcnConversaoNFe, UFRM_PRINCIPAL, UFRM_FECHAVENDA;
+     ACBrUtil.XMLHTML, strutils, math, DateUtils, FileCtrl, ACBrDfeUtil,
+     Printers, ACBrNFeNotasFiscais, ACBrNFeConfiguracoes, ACBrDFe.Conversao,
+     pcnConversaoNFe, UFRM_PRINCIPAL, UFRM_FECHAVENDA, FRM_CONFIGURASERIAL;
 const
   SELDIRHELP = 1000;
+ (*
+   strutils, math, TypInfo, DateUtils, synacode, blcksock, FileCtrl, Grids,
+  IniFiles, Printers,
+  ACBrUtil.Base, ACBrUtil.FilesIO, ACBrUtil.DateTime, ACBrUtil.Strings,
+  ACBrUtil.XMLHTML,
+  ACBrNFe.Classes,
+  ACBrDFe.Conversao,
+  pcnConversao, pcnConversaoNFe,
+  pcnNFeRTXT,
+  ACBrDFeConfiguracoes, ACBrDFeSSL, ACBrDFeOpenSSL, ACBrDFeUtil,
+  ACBrNFeNotasFiscais, ACBrNFeConfiguracoes,
+  Frm_Status, Frm_SelecionarCertificado, Frm_ConfiguraSerial;
+
+ *)
+procedure TFRM_CONFIGURA.AbrirNota(nIDNF:integer);
+begin
+  with DMD_PRO00315 do
+  begin
+    QryFiltroNF.Close;
+    QryFiltroNF.ParamByName('NF_ID').AsInteger := nIDNF;
+    QryFiltroNF.Open;
+    QryFiltroItens.Close;
+    QryFiltroItens.ParamByName('NF_ID').AsInteger := nIDNF;
+    QryFiltroItens.Open;
+    QryFiltroDuplicata.Close;
+    QryFiltroDuplicata.ParamByName('NF_ID').AsInteger := nIDNF;
+    QryFiltroDuplicata.Open;
+    QryFiltroObs.Close;
+    QryFiltroObs.ParamByName('NF_ID').AsInteger := nIDNF;
+    QryFiltroObs.Open;
+    QryTranspNF.Close;
+    QryTranspNF.Open;
+    ForceDirectories(QryEmpresasNFE_LOG.Value + '\LOGs\' +
+    FormatDateTime('yyyymm',QryFiltroNFNF_DT_EMISSAO.AsDateTime));
+  end;
+  ActLerConfIni.Execute;
+  ActGerarNFe.Execute;
+  try
+    ACBrNFe1.NotasFiscais.Assinar;
+  except
+
+  end;
+  //FRM_CONFIGURA.ACBrNFe1.NotasFiscais.Items[0].GravarXML;
+  //MsgInformacao('Arquivo gerado em: ' + ACBrNFe1.NotasFiscais.Items[0].NomeArq);
+  Enviar;
+  ACBrNFe1.NotasFiscais.Imprimir;
+  //FRM_CONFIGURA.ACBrNFe1.Consultar;
+  //FRM_CONFIGURA.ACBrNFe1.Configuracoes.Arquivos.PathSalvar := QryEmpresasNFE_LOG.Value +
+  //  '\LOGs\'; // + FormatDateTime('mmyy',now) ;
+  //FRM_CONFIGURA.ACBrNFe1.Configuracoes.Arquivos.PathNFe := QryEmpresasNFE_LOG.Value +
+  //  '\LOGs\'; // + FormatDateTime('mmyy',now) ;//+ FormatDateTime('mmyy',date);
+
+end;
 
 procedure TFRM_CONFIGURA.ActGerarNFeExecute(Sender: TObject);
 var
+  Ok: Boolean;
+  BaseCalculo,
+  ValorICMS: Double;
   NumCTe, notas, vobserv, exportacao: string;
   I, tamnf, qtdevirg : Integer;
   vlpis, vlcofins, vlrpc, vlrdupl: real;
@@ -259,18 +331,19 @@ begin
     with ACBrNFe1.NotasFiscais.Add.NFe do
     begin
 
-      Ide.cNF    := StrToInt(IntToStr(QryFiltroNFNF_NUMERO.Value) + '1');
-      // Caso não seja preenchido será gerado um número aleatório pelo componente
+      Ide.nNF    := QryFiltroNFNF_NUMERO.Value;
+      Ide.cNF    := StrToInt(IntToStr(QryFiltroNFNF_ID.Value));
+      //Ide.cNF    := GerarCodigoDFe(Ide.nNF);
       Ide.natOp  := iif( QryFiltroNFCFOP_NATOP.IsNull, 'VENDA' ,QryFiltroNFCFOP_NATOP.Value);
-      Ide.indPag := IIf(QryFiltroNFFPGTO_VPO.Value = '1', ipVista,
-                    IIf(QryFiltroNFFPGTO_VPO.Value = '2', ipPrazo,
-                    IIf(QryFiltroNFFPGTO_VPO.Value = '3', ipOutras, ipNenhum)));
+      Ide.indPag := ipVista;
+      //Ide.indPag := IIf(QryFiltroNFFPGTO_VPO.Value = '1', ipVista,
+      //              IIf(QryFiltroNFFPGTO_VPO.Value = '2', ipPrazo,
+      //              IIf(QryFiltroNFFPGTO_VPO.Value = '3', ipOutras, ipNenhum)));
       Ide.modelo := 65;//StrToInt(QryFiltroNFNFE_MODELO.Value);
       Ide.serie  := serie;
       Ide.indPres:= pcPresencial; //pcNao,pcPresencial,pcInternet,
                                   //pcTeleatendimento,pcEntregaDomicilio
                                   //pcPresencialForaEstabelecimento, pcOutros
-      Ide.nNF    := QryFiltroNFNF_NUMERO.Value;
       Ide.dEmi   := QryFiltroNFNF_DT_EMISSAO.AsDateTime;
       if ck_datasaida.Checked = true then
       begin
@@ -289,23 +362,16 @@ begin
       Ide.cUF     := QryEmpresaUF_IBGE.AsInteger;
       // NotaUtil.UFtoCUF(edtEmitUF.Text);
       Ide.cMunFG := QryEmpresaCODCID_IBGE.Value;
-      Ide.idDest := IIf(QryEmpresaUF.Value <> UFCLI,
-        IIf(QryFiltroNFUF.Value = 'EX', doExterior, doInterestadual),
-        doInterna);
-
+      Ide.idDest := IIf(QryEmpresaUF.Value <> UFCLI,IIf(QryFiltroNFUF.Value = 'EX', doExterior, doInterestadual),doInterna);
       Ide.indFinal := cfConsumidorFinal; // nao consumidor -  cfConsumidorFinal
       // Ide.finNFe    := iif(DMNFe.QryFiltroNFNFE_FINALIDADE.Value = '1' , fnNormal, fnComplementar ) ; // fnAjuste; fnDevolucao
-      if QryFiltroNFNFE_FINALIDADE.Value = '1' then
-        Ide.finNFe := fnNormal;
-      if QryFiltroNFNFE_FINALIDADE.Value = '2' then
-        Ide.finNFe := fnComplementar;
-      if QryFiltroNFNFE_FINALIDADE.Value = '3' then
-        Ide.finNFe := fnAjuste;
-      if QryFiltroNFNFE_FINALIDADE.Value = '4' then
-        Ide.finNFe := fnDevolucao;
-      Ide.tpImp := tiNFCe;
+      Ide.finNFe := fnNormal;
+      Ide.tpImp  := tiNFCe;
       // Indicador de intermediador/marketplace
       Ide.indIntermed := iiSemOperacao; //iiSemOperacao, iiOperacaoSemIntermediador, iiOperacaoComIntermediador
+      Ide.indPres     := pcPresencial; // pcNao, pcPresencial, pcInternet, pcTeleatendimento, pcEntregaDomicilio,
+                                       // pcPresencialForaEstabelecimento, pcOutros
+      Ide.indIntermed := iiSemOperacao;// iiSemOperacao, iiOperacaoSemIntermediador, iiOperacaoComIntermediador
       // Ide.dhCont := date;
       // Ide.xJust  := 'Justificativa Contingencia';
       // nfe complementar
@@ -316,6 +382,23 @@ begin
            else
              Ide.tpEmis := teSVCAN;
       end;
+      // Reforma Tributária
+      if rgReformaTributaria.ItemIndex = 0 then
+      begin
+        if QryFiltroNFCODCID_IBGE.IsNull then
+          Ide.cMunFGIBS := QryEmpresaCODCID_IBGE.Value
+        else
+          Ide.cMunFGIBS := QryFiltroNFCODCID_IBGE.Value;
+
+        Ide.tpNFDebito  := tdNenhum;
+        Ide.tpNFCredito := tcNenhum;
+
+        Ide.gCompraGov.tpEnteGov := tcgNenhum;//tcgOutro ,tcgMunicipios ,tcgDistritoFederal ,tcgEstados ,tcgUniao ,tcgNenhum
+        Ide.gCompraGov.pRedutor  := 5;
+        Ide.gCompraGov.tpOperGov := togNenhum;//togRecebimentoPag,togFornecimento,togNenhum
+      end;
+
+
       if Ide.tpEmis = teSVCAN then
         MsgAtencao('enviando em contingência');
 
@@ -350,125 +433,50 @@ begin
       Emit.CRT := IIf(QryEmpresaCRT.Value = '3', crtRegimeNormal,crtSimplesNacional);
       // (1-crtSimplesNacional, 2-crtSimplesExcessoReceita, 3-crtRegimeNormal)
 
-      // Para NFe Avulsa preencha os campos abaixo
-      { Avulsa.CNPJ    := '';
-        Avulsa.xOrgao  := '';
-        Avulsa.matr    := '';
-        Avulsa.xAgente := '';
-        Avulsa.fone    := '';
-        Avulsa.UF      := '';
-        Avulsa.nDAR    := '';
-        Avulsa.dEmi    := now;
-        Avulsa.vDAR    := 0;
-        Avulsa.repEmi  := '';
-        Avulsa.dPag    := now; }
-
-      If (QryFiltroNFUF.Value = 'EX') then
-      begin
-        if (Copy(RemoveChar(QryFiltroItensCFOP.Value), 1, 1) <> '3') then
+      Dest.CNPJCPF := RemoveChar(QryFiltroNFCNPJ.Value);
+      If length(RemoveChar(QryFiltroNFCNPJ.Value)) > 11 Then
+      Begin
+        If (RemoveChar(QryFiltroNFIE.Value) = '') then
         begin
-          exportacao          := inputbox('Exportação', 'Digite UF de Embarque', 'SP');
-          Exporta.UFembarq    := exportacao; // 'SP';
-          exportacao          := inputbox('Exportação', 'Digite CIDADE de Embarque','GUARULHOS');
-          Exporta.xLocEmbarq  := exportacao; // 'CAMPINAS';
-          exportacao          := inputbox('Exportação','Digite UF da Saída (aeroporto...)', 'SP');
-          Exporta.UFSaidaPais := exportacao; // 'SP';
-          exportacao          := inputbox('Exportação','Digite Local da Saída (aeroporto...)', 'GUARULHOS');
-          Exporta.xLocExporta := exportacao; // 'VIRACOPOS';
-        end;
-        Dest.indIEDest := inNaoContribuinte;
-        Dest.CNPJCPF   := ''; // '{@BRANCO}';
-        // Dest.IE                := 'ISENTO';
-        Dest.EnderDest.cMun := 9999999;
-        QryCidade.Open;
-        If QryCidade.Locate('CIDADE_NOME', QryFiltroNFCIDADE.Value, [])
-        then
-        begin
-          Dest.EnderDest.cPais := StrToInt(QryCidadeCODIGO_PAIS.Value);
-          Dest.EnderDest.xPais := QryCidadePAIS.Value;
+          Dest.indIEDest := inIsento;
+          Dest.IE        := 'ISENTO';
         end
         else
         begin
-          Dest.EnderDest.cPais := 1058;
-          Dest.EnderDest.xPais := 'BRASIL';
+          Dest.IE        := RemoveChar(QryFiltroNFIE.Value);
+          Dest.indIEDest := inContribuinte;
+          Ide.indFinal   := cfConsumidorFinal;
         end;
-      end
-      else
-      begin
-        Dest.CNPJCPF := RemoveChar(QryFiltroNFCNPJ.Value);
-        If length(RemoveChar(QryFiltroNFCNPJ.Value)) > 11 Then
-        Begin
-          If (RemoveChar(QryFiltroNFIE.Value) = '') then
-          begin
-            Dest.indIEDest := inIsento;
-            Dest.IE        := 'ISENTO';
-          end
-          else
-          begin
-            Dest.IE        := RemoveChar(QryFiltroNFIE.Value);
-            Dest.indIEDest := inContribuinte;
-            Ide.indFinal   := cfConsumidorFinal;
-          end;
-          If (QryFiltroNFIE.Value = 'NC') then // não contribuinte
-          begin
-            Dest.indIEDest := inNaoContribuinte;
-            Dest.IE        := '';
-            Ide.indFinal   := cfConsumidorFinal;
-          end
-        end
-        else // se for CPF     verificar se é produtor rural com inscrição estadual
+        If (QryFiltroNFIE.Value = 'NC') then // não contribuinte
         begin
           Dest.indIEDest := inNaoContribuinte;
-          Dest.IE := '';
-          Ide.indFinal := cfConsumidorFinal;
-          if QryCliNFTIPOCLI.AsString = 'PRODUTOR RURAL' then
-            Dest.IE := RemoveChar(QryFiltroNFIE.Value);
+          Dest.IE        := '';
+          Ide.indFinal   := cfConsumidorFinal;
+        end
+      end
+      else // se for CPF     verificar se é produtor rural com inscrição estadual
+      begin
+        If length(RemoveChar(QryFiltroNFCNPJ.Value)) < 9 Then
+          Dest.CNPJCPF := '';
+        Dest.indIEDest := inNaoContribuinte;
+        Dest.IE := '';
+        Ide.indFinal := cfConsumidorFinal;
+        if QryCliNFTIPOCLI.AsString = 'PRODUTOR RURAL' then
+          Dest.IE := RemoveChar(QryFiltroNFIE.Value);
 
-        end;
-        if QryFiltroNFCODCID_IBGE.IsNull then
-          Dest.EnderDest.cMun  := QryEmpresaCODCID_IBGE.Value
-        else
-          Dest.EnderDest.cMun  := QryFiltroNFCODCID_IBGE.Value;
-        Dest.EnderDest.cPais := 1058;
-        Dest.EnderDest.xPais := 'BRASIL';
       end;
+      if QryFiltroNFCODCID_IBGE.IsNull then
+        Dest.EnderDest.cMun  := QryEmpresaCODCID_IBGE.Value
+      else
+        Dest.EnderDest.cMun  := QryFiltroNFCODCID_IBGE.Value;
+      Dest.EnderDest.cPais := 1058;
+      Dest.EnderDest.xPais := 'BRASIL';
       // Dest.IE                := RemoveChar(DMNFe.QryFiltroNFIE.Value);
       Dest.ISUF := QryCliNFSUFRAMA.Value; // Suframa
       if QryFiltroNFNOME.IsNull then
         Dest.xNome := 'CONSUMIDOR'
       else
         Dest.xNome := QryFiltroNFNOME.Value;
-
-      (*
-      Dest.EnderDest.fone    := QryFiltroNFFONE.Value;
-      Dest.EnderDest.CEP     := StrToInt(RemoveChar(QryFiltroNFCEP.Value));
-      Dest.EnderDest.xLgr    := QryFiltroNFENDERECO.Value;
-      Dest.EnderDest.nro     := QryFiltroNFENDERECO_NUM.AsString;
-      Dest.EnderDest.xCpl    := QryFiltroNFENDERECO_COMPL.Value;
-      Dest.EnderDest.xBairro := QryFiltroNFBAIRRO.Value;
-      Dest.EnderDest.cMun    := QryFiltroNFCODCID_IBGE.Value;
-      Dest.EnderDest.xMun    := QryFiltroNFCIDADE.Value;
-      Dest.EnderDest.UF      := QryFiltroNFUF.Value;;
-      *)
-      // Use os campos abaixo para informar o endereço de retirada quando for diferente do Remetente/Destinatário
-      { Retirada.CNPJCPF := '';
-        Retirada.xLgr    := '';
-        Retirada.nro     := '';
-        Retirada.xCpl    := '';
-        Retirada.xBairro := '';
-        Retirada.cMun    := 0;
-        Retirada.xMun    := '';
-        Retirada.UF      := ''; }
-
-      // Use os campos abaixo para informar o endereço de entrega quando for diferente do Remetente/Destinatário
-      { Entrega.CNPJCPF := '';
-        Entrega.xLgr    := '';
-        Entrega.nro     := '';
-        Entrega.xCpl    := '';
-        Entrega.xBairro := '';
-        Entrega.cMun    := 0;
-        Entrega.xMun    := '';
-        Entrega.UF      := ''; }
 
       // Adicionando Produtos
       QryFiltroItens.First;
@@ -506,32 +514,9 @@ begin
           // por exemplo: código de barras de catálogo, partnumber, etc
           //Prod.cBarraTrib := 'ABC123456';
           // se for exportação
-          If QryFiltroNFUF.Value = 'EX' then
-          begin
-            if not(QryFiltroItensUNI_TRIBUTADA.IsNull) then
-              Prod.uTrib := QryFiltroItensUNI_TRIBUTADA.Value
-            else
-              Prod.uTrib := QryFiltroItensUNI_CODIGO.Value;
-            if QryFiltroItensQTDE_TRIBUTADA.Value > 0 then
-            begin
-              Prod.qTrib   := QryFiltroItensQTDE_TRIBUTADA.Value;
-              Prod.vUnTrib := QryFiltroItensNF_ITEM_VLR_TOTAL.Value /
-                QryFiltroItensQTDE_TRIBUTADA.Value;
-            end
-            else
-            begin
-              Prod.qTrib   := QryFiltroItensNF_ITEM_QTDE.Value;
-              Prod.vUnTrib := QryFiltroItensNF_ITEM_VLR_UNITARIO.Value;
-            end;
-            QryFiltroItensNF_ITEM_VLR_TOTAL.Value
-            // Prod.vUnTrib   := QryFiltroItensNF_ITEM_VLR_UNITARIO.Value;
-          end
-          else
-          begin
-            Prod.uTrib   := QryFiltroItensUNI_CODIGO.Value;
-            Prod.qTrib   := QryFiltroItensNF_ITEM_QTDE.Value;
-            Prod.vUnTrib := QryFiltroItensNF_ITEM_VLR_UNITARIO.Value;
-          end;
+          Prod.uTrib   := QryFiltroItensUNI_CODIGO.Value;
+          Prod.qTrib   := QryFiltroItensNF_ITEM_QTDE.Value;
+          Prod.vUnTrib := QryFiltroItensNF_ITEM_VLR_UNITARIO.Value;
           Prod.vOutro := QryFiltroItensNF_ITEM_VLR_OUTRO.Value;
           // Prod.nItemPed  := QryFiltroNFNF_ITEM_PEDIT.Value;// 1;
 
@@ -552,72 +537,25 @@ begin
           Prod.nItemPed := IntToStr(QryFiltroItensNF_ITEM_PEDIT.Value);
           infAdProd     := QryFiltroItensNF_ITEM_INFADPROD.Value;
           // Informação Adicional do Produto';
+          // Reforma Tributária
+          if rgReformaTributaria.ItemIndex = 0 then
+          begin
+            // Indicador de fornecimento de bem móvel usado
+            Prod.indBemMovelUsado := tieNenhum;
+
+            // Valor total do Item, correspondente à sua participação no total da nota.
+            // A soma dos itens deverá corresponder ao total da nota.
+            vItem := QryFiltroItensNF_ITEM_VLR_TOTAL.Value;
+            // Referenciamento de item de outro Documento Fiscal Eletrônico - DF-e
+            DFeReferenciado.chaveAcesso := '';
+            DFeReferenciado.nItem       := 1;
+          end;
 
           // Declaração de Importação. Pode ser adicionada várias através do comando Prod.DI.Add
           // Importação
           QryTipo.Close;
           QryTipo.ParamByName('CODIGO').AsInteger := QryFiltroItensCODID.Value;
           QryTipo.Open;
-          if QryTipoTIPO_MATERIAL.Value = 'VEICULO' then
-          begin
-            Vchassi    := inputbox('Chassi', 'Número do Chassi', '');
-            VcCor      := inputbox('Cor', 'Cor', '');
-            VxCor      := inputbox('Descrição da Cor', 'Descrição da Cor', '');
-            Vpot       := inputbox('Potência', 'Potência do Motor', '');
-            VCilin     := inputbox('Cilindrada', 'Cilindrada', '');
-            VpesoL     := inputbox('Peso', 'Peso Liquido', '');
-            VpesoB     := inputbox('Peso', 'Peso Bruto', '');
-            VnSerie    := inputbox('Série', 'Número de série', '');
-            VtpComb    := inputbox('Combustível', 'Tipo de Combustível', ''); //01-Alcool 02-gasolina-03-diesel...
-            VnMotor    := inputbox('Motor', 'Número do motor', '');
-            VCMT       := inputbox('CMT', 'Capacidade Máxima de Tração', '');
-            Vdist      := inputbox('Distância', 'Distância entre eixos', '');
-            VtpPint    := inputbox('Pintura', 'Tipo de Pintura', '1');
-            VVIN       := inputbox('VIN', 'Condição do VIN', 'N'); // Remarcado ou Normal
-            VcMod      := inputbox('Modelo', 'Código da Marca e Modelo', '');
-            VanoMod    := inputbox('Ano', 'Ano do Modelo', '2023');
-            VanoFab    := inputbox('Ano', 'Ano de Fabricação', '2023');
-            VtpVeic    := inputbox('Tipo', 'Tipo do Veículo', '11');
-                          //02 = Ciclomoto;03 = Motoneta;04 = Motociclo;05 = Triciclo;06 = Automóvel;07 = Micro ônibus;
-                          //08 = Ônibus;10 = Reboque;11 = Semireboque;13 = Camioneta;14 = Caminhão;17 = C. Trator;
-                          //22 = Esp / Ônibus;23 = Misto / Cam;24 = Carga / Cam.
-            VespVeic   := inputbox('Espécie', 'Espécie do Veículo', '6');//1 = Passageiro;2 = Carga;3 = Misto;4 = Corrida;5 = Tração;6 = Especial
-            VcorDENATRAN:= inputbox('Cor', 'Código da Cor DENATRAN', '11');
-                          //01 = Amarelo;02 = Azul;03 = Bege;04 = Branca;05 = Cinza;06 = Dourada;07 = Grená;08 = Laranja;
-                          //09 = Marrom;10 = Prata;11 = Preta;12 = Rosa;13 = Roxa;14 = Verde;15 = Vermelha;16 = Fantasia.
-                          //0 = Não há;1 = Alienação Fiduciária;2 = Arrendamento Mercantil;3 = Reserva de Domínio;4 = Penhor de Veículo;9 = Outras.
-            Vlota      := inputbox('Capacidade', 'Capacidade Máxima de Lotação', '0');
-            VtpRest    := inputbox('Restrição', 'Código de Restrição', '0');//0 = Não há;1 = Alienação Fiduciária;2 = Arrendamento Mercantil;3 = Reserva de Domínio;4 = Penhor de Veículo;9 = Outras.
-            // Campos para venda de veículos novos
-            with Prod.veicProd do
-            begin
-              tpOP     := toVendaDireta; //toOutros,toVendaDireta,toFaturamentoDireto,toVendaConcessionaria;
-              condVeic := cvAcabado;// cvSemiAcabado cvInacabado cvAcabado;
-              chassi   := Vchassi;
-              cCor     := VcCor;
-              xCor     := VxCor;
-              pot      := Vpot;
-              Cilin    := VCilin;
-              pesoL    := VpesoL;
-              pesoB    := VpesoB;
-              nSerie   := VnSerie;
-              tpComb   := VtpComb;
-              nMotor   := VnMotor;
-              CMT      := VCMT;
-              dist     := Vdist;
-              anoMod   := StrToInt(VanoMod);
-              anoFab   := StrToInt(VanoFab);
-              tpPint   := VtpPint;
-              tpVeic   := StrToInt(VtpVeic);
-              espVeic  := StrToInt(VespVeic);
-              VIN      := VVIN;
-              cMod     := VcMod;
-              cCorDENATRAN := VcorDENATRAN;
-              lota     := StrToInt(Vlota);
-              tpRest   := StrToInt(VtpRest);
-
-            end;
-          end;
 
           // Campos específicos para venda de medicamentos
           if QryTipoTIPO_MATERIAL.Value = 'MEDICAMENTOS' then
@@ -919,6 +857,7 @@ begin
                 ICMS.pRedBC   := 0;
                 ICMS.vCredICMSSN := 0;
                 ICMS.pCredSN := 0;
+
                 IF (QryFiltroItensNF_ITEM_CSOSN.Value = '101') Then
                 // SN com Permissao de Credito
                 Begin
@@ -1324,8 +1263,114 @@ begin
               vAliqProd := 0;
               vCOFINS   := 0;
             end;
+            // Reforma Tributária
+          (*  if rgReformaTributaria.ItemIndex = 0 then
+            begin
+              //  Informações do tributo: Imposto Seletivo
+              ISel.CSTIS := cstis000;
+              ISel.cClassTribIS := '000001';
+
+              ISel.vBCIS := 100;
+              ISel.pIS := 5;
+              ISel.pISEspec := 5;
+              ISel.uTrib := 'UNIDAD';
+              ISel.qTrib := 10;
+              ISel.vIS := 100;
+
+              //  Informações do tributo: IBS / CBS
+              IBSCBS.CST := cst000;
+              IBSCBS.cClassTrib := '000001';
+
+              IBSCBS.gIBSCBS.vBC := 100;
+
+              IBSCBS.gIBSCBS.gIBSUF.pIBSUF := 5;
+              IBSCBS.gIBSCBS.gIBSUF.vIBSUF := 100;
+
+              IBSCBS.gIBSCBS.gIBSUF.gDif.pDif := 5;
+              IBSCBS.gIBSCBS.gIBSUF.gDif.vDif := 100;
+
+              IBSCBS.gIBSCBS.gIBSUF.gDevTrib.vDevTrib := 100;
+
+              IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq := 5;
+              IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := 5;
+
+              IBSCBS.gIBSCBS.gIBSMun.pIBSMun := 5;
+              IBSCBS.gIBSCBS.gIBSMun.vIBSMun := 100;
+
+              IBSCBS.gIBSCBS.gIBSMun.gDif.pDif := 5;
+              IBSCBS.gIBSCBS.gIBSMun.gDif.vDif := 100;
+
+              IBSCBS.gIBSCBS.gIBSMun.gDevTrib.vDevTrib := 100;
+
+              IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq := 5;
+              IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 5;
+
+              IBSCBS.gIBSCBS.gCBS.pCBS := 5;
+              IBSCBS.gIBSCBS.gCBS.vCBS := 100;
+
+              IBSCBS.gIBSCBS.gCBS.gDif.pDif := 5;
+              IBSCBS.gIBSCBS.gCBS.gDif.vDif := 100;
+
+              IBSCBS.gIBSCBS.gCBS.gDevTrib.vDevTrib := 100;
+
+              IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := 5;
+              IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := 5;
+
+              IBSCBS.gIBSCBS.gTribRegular.CSTReg := cst000;
+              IBSCBS.gIBSCBS.gTribRegular.cClassTribReg := '000001';
+              IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSUF := 5;
+              IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSUF := 50;
+              IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSMun := 5;
+              IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSMun := 50;
+              IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegCBS := 5;
+              IBSCBS.gIBSCBS.gTribRegular.vTribRegCBS := 50;
+
+              IBSCBS.gIBSCBS.gIBSCredPres.cCredPres := cp01;
+              IBSCBS.gIBSCBS.gIBSCredPres.pCredPres := 5;
+              IBSCBS.gIBSCBS.gIBSCredPres.vCredPres := 100;
+              IBSCBS.gIBSCBS.gIBSCredPres.vCredPresCondSus := 100;
+
+              IBSCBS.gIBSCBS.gCBSCredPres.cCredPres := cp01;
+              IBSCBS.gIBSCBS.gCBSCredPres.pCredPres := 5;
+              IBSCBS.gIBSCBS.gCBSCredPres.vCredPres := 100;
+              IBSCBS.gIBSCBS.gCBSCredPres.vCredPresCondSus := 100;
+
+              // Tipo Tributação Compra Governamental
+              IBSCBS.gIBSCBS.gTribCompraGov.pAliqIBSUF := 5;
+              IBSCBS.gIBSCBS.gTribCompraGov.vTribIBSUF := 50;
+              IBSCBS.gIBSCBS.gTribCompraGov.pAliqIBSMun := 5;
+              IBSCBS.gIBSCBS.gTribCompraGov.vTribIBSMun := 50;
+              IBSCBS.gIBSCBS.gTribCompraGov.pAliqCBS := 5;
+              IBSCBS.gIBSCBS.gTribCompraGov.vTribCBS := 50;
+
+              //  Informações do tributo: IBS / CBS em operações com imposto monofásico
+              IBSCBS.gIBSCBSMono.qBCMono := 1;
+              IBSCBS.gIBSCBSMono.adRemIBS := 5;
+              IBSCBS.gIBSCBSMono.adRemCBS := 5;
+              IBSCBS.gIBSCBSMono.vIBSMono := 100;
+              IBSCBS.gIBSCBSMono.vCBSMono := 100;
+
+              IBSCBS.gIBSCBSMono.qBCMonoReten := 1;
+              IBSCBS.gIBSCBSMono.adRemIBSReten := 5;
+              IBSCBS.gIBSCBSMono.vIBSMonoReten := 100;
+              IBSCBS.gIBSCBSMono.vCBSMonoReten := 100;
+
+              IBSCBS.gIBSCBSMono.qBCMonoRet := 1;
+              IBSCBS.gIBSCBSMono.adRemIBSRet := 5;
+              IBSCBS.gIBSCBSMono.vIBSMonoRet := 100;
+              IBSCBS.gIBSCBSMono.vCBSMonoRet := 100;
+
+              IBSCBS.gIBSCBSMono.pDifIBS := 5;
+              IBSCBS.gIBSCBSMono.vIBSMonoDif := 100;
+              IBSCBS.gIBSCBSMono.pDifCBS := 5;
+              IBSCBS.gIBSCBSMono.vCBSMonoDif := 100;
+
+              IBSCBS.gIBSCBSMono.vTotIBSMonoItem := 100;
+              IBSCBS.gIBSCBSMono.vTotCBSMonoItem := 100;
+            end;
+            *)
           end;
-          // end;
+
           // Grupo para serviços
           { with ISSQN do
             begin
@@ -1415,6 +1460,43 @@ begin
         Total.retTrib.vIRRF      := 0;
         Total.retTrib.vBCRetPrev := 0;
         Total.retTrib.vRetPrev   := 0; }
+      (*
+      // Reforma Tributária
+      if rgReformaTributaria.ItemIndex = 0 then
+      begin
+        Total.ISTot.vIS := 100;
+
+        Total.IBSCBSTot.vBCIBSCBS := 100;
+
+        Total.IBSCBSTot.gIBS.vIBS := 100;
+        Total.IBSCBSTot.gIBS.vCredPres := 100;
+        Total.IBSCBSTot.gIBS.vCredPresCondSus := 100;
+
+        Total.IBSCBSTot.gIBS.gIBSUFTot.vDif := 100;
+        Total.IBSCBSTot.gIBS.gIBSUFTot.vDevTrib := 100;
+        Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := 100;
+
+        Total.IBSCBSTot.gIBS.gIBSMunTot.vDif := 100;
+        Total.IBSCBSTot.gIBS.gIBSMunTot.vDevTrib := 100;
+        Total.IBSCBSTot.gIBS.gIBSMunTot.vIBSMun := 100;
+
+        Total.IBSCBSTot.gCBS.vDif := 100;
+        Total.IBSCBSTot.gCBS.vDevTrib := 100;
+        Total.IBSCBSTot.gCBS.vCBS := 100;
+        Total.IBSCBSTot.gCBS.vCredPres := 100;
+        Total.IBSCBSTot.gCBS.vCredPresCondSus := 100;
+
+        Total.IBSCBSTot.gMono.vIBSMono := 100;
+        Total.IBSCBSTot.gMono.vCBSMono := 100;
+        Total.IBSCBSTot.gMono.vIBSMonoReten := 100;
+        Total.IBSCBSTot.gMono.vCBSMonoReten := 100;
+        Total.IBSCBSTot.gMono.vIBSMonoRet := 100;
+        Total.IBSCBSTot.gMono.vCBSMonoRet := 100;
+
+        // Valor total da NF-e com IBS / CBS / IS
+        Total.vNFTot := 100;
+      end;  *)
+
       // if Ide.idDest <> doInterestadual then
       // begin
       Transp.modFrete := mfSemFrete; //mfContaTerceiros, mfProprioRemetente, mfProprioDestinatario, mfSemFrete
@@ -1434,32 +1516,42 @@ begin
 
       // 1 Fatura  - 3 Duplicatas //
       I := 0;
-      vlrdupl := 0;
-      QryFiltroDuplicata.Last;
-      QryFiltroDuplicata.First;
-      While Not(QryFiltroDuplicata.Eof) Do
+      vlrdupl := QryFiltroNFNF_VLR_TOTAL.Value;
+      if not (ide.indPag = ipVista) then
       begin
-        vlrdupl := vlrdupl + QryFiltroDuplicataNF_VALOR.Value;
-        QryFiltroDuplicata.Next;
+        QryFiltroDuplicata.Last;
+        QryFiltroDuplicata.First;
+        While Not(QryFiltroDuplicata.Eof) Do
+        begin
+          vlrdupl := vlrdupl + QryFiltroDuplicataNF_VALOR.Value;
+          QryFiltroDuplicata.Next;
+        end;
       end;
-
-      vobserv := '';
-      QryFiltroObs.First;
-      While Not(QryFiltroObs.Eof) Do
-      Begin
-        vobserv := vobserv + QryFiltroObsOBS.Value + ' ';
-        QryFiltroObs.Next;
-      end;
-
       if vlrdupl > 0 then
       begin
-        with pag.Add do // PAGAMENTOS apenas para NFC-e
+        QryFiltroDuplicata.First;
+        While Not(QryFiltroDuplicata.Eof) Do
         begin
-          tPag := fpDinheiro;
-          // fpDinheiro;fpCheque;fpCartaoCredito;fpCartaoDebito;fpCreditoLoja;fpValeAlimentacao;
-          vPag := vlrdupl;
-          // fpValeRefeicao;fpValePresente;fpValeCombustivel;fpDuplicataMercantil;fpSemPagamento;
+          with pag.Add do // PAGAMENTOS apenas para NFC-e
+          begin
+            tPag := fpDinheiro;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '01' then tPag := fpDinheiro;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '02' then tPag := fpCheque;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '03' then tPag := fpCartaoCredito;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '04' then tPag := fpCartaoDebito;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '05' then tPag := fpCreditoLoja;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '10' then tPag := fpValeAlimentacao;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '11' then tPag := fpValeRefeicao;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '12' then tPag := fpValePresente;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '13' then tPag := fpValeCombustivel;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '99' then tPag := fpOutro;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '99' then tPag := fpOutro;
+
+            vPag := QryFiltroDuplicataNF_VALOR.Value;
+          end;
+          QryFiltroDuplicata.Next;
         end;
+
       end
       else
       begin
@@ -1471,6 +1563,15 @@ begin
           // fpValeRefeicao;fpValePresente;fpValeCombustivel;fpDuplicataMercantil;fpSemPagamento;
         end;
       end;
+
+      vobserv := '';
+      QryFiltroObs.First;
+      While Not(QryFiltroObs.Eof) Do
+      Begin
+        vobserv := vobserv + QryFiltroObsOBS.Value + ' ';
+        QryFiltroObs.Next;
+      end;
+
 
       InfAdic.infCpl := vobserv;
       InfAdic.infAdFisco := '';
@@ -1690,10 +1791,10 @@ begin
       cxc_caminho.Text := Ini.ReadString('Certificado', 'Caminho', '');
       cxc_senha.Text   := Ini.ReadString('Certificado', 'Senha', '');
       ACBrNFe1.Configuracoes.Certificados.ArquivoPFX := cxc_caminho.Text;
-      ACBrNFe1.Configuracoes.Certificados.Senha := cxc_senha.Text;
-      cxc_numserie.Visible := false;
+      ACBrNFe1.Configuracoes.Certificados.Senha      := cxc_senha.Text;
+      //cxc_numserie.Visible := false;
       //cxLabel2.Visible := false;
-      btc_atualizaCert.Visible := false;
+      //btc_atualizaCert.Visible := false;
 (*  {$ELSE} *)
       cxc_numserie.Text := Ini.ReadString('Certificado', 'NumSerie', '');
       ACBrNFe1.Configuracoes.Certificados.NumeroSerie := cxc_numserie.Text;
@@ -1720,6 +1821,7 @@ begin
       ck_datasaida.Checked      := IIf(Ini.ReadString('Geral', 'DataSaida', '') = 'S',      true, false);
       Rgc_FormaImpressao.ItemIndex := Ini.ReadInteger('Geral','FormaImpressao', 0);
       rgc_tipoimpressao.ItemIndex  := Ini.ReadInteger('Geral', 'TipoImpressao', 0);
+      cbVersaoQRCode.ItemIndex     := Ini.ReadInteger('Geral', 'VersaoQRCode',   2);
       Rgc_Ambiente.ItemIndex       := Ini.ReadInteger('WebService', 'Ambiente', 0) - 1;
       Rgc_TipoEmissao.ItemIndex    := Ini.ReadInteger('Certificado', 'TipoEmissao', 0);
 
@@ -1734,8 +1836,9 @@ begin
         // FormaEmissao     := TpcnTipoEmissao(cbFormaEmissao.ItemIndex);
         // ModeloDF         := TpcnModeloDF(cbModeloDF.ItemIndex);
         // VersaoDF         := TpcnVersaoDF(cbVersaoDF.ItemIndex);
-         IdCSC            := '000001';//edtIdToken.Text;
-         CSC              := 'db2b189c-f4fb-4e1c-ada9-2488e8b24e1c';//edtToken.Text;
+        IdCSC            := QryEmpresaIDCSC.Value;//'000001'edtIdToken.Text;
+        CSC              := QryEmpresaCSC.Value; //'db2b189c-f4fb-4e1c-ada9-2488e8b24e1c';//edtToken.Text;
+        VersaoQRCode     := TpcnVersaoQrCode(cbVersaoQRCode.ItemIndex);
         // Salvar           := ckSalvar.Checked;
       end;
       ACBrNFe1.SSL.SSLType := TSSLType(cbSSLType.ItemIndex);
@@ -1793,17 +1896,12 @@ begin
         ACBrNFeDANFEFR1.FastFileEvento := ExtractFileDir(cx_Arquivoprint.Text) +
           '\EVENTOS.fr3';
       end; *)
-      case rgDANFCE.ItemIndex of
-        0: ACBrNFe1.DANFE := ACBrNFeDANFCEFR1;
-        1: ACBrNFe1.DANFE := ACBrNFeDANFeESCPOS1;
-        2: ACBrNFe1.DANFE := ACBrNFeDANFCeFortesA41;
-      end;
 
       If QryEmpresaNFE_LOG.Value <> '' then
       begin
         // ACBrNFe1.Configuracoes.Geral.Salvar         := True;
         ACBrNFe1.Configuracoes.Arquivos.PathSalvar := QryEmpresaNFE_LOG.Value + '\LOGs\' + FormatDateTime('yyyymm', now);
-        ACBrNFe1.Configuracoes.Arquivos.PathNFe := QryEmpresaNFE_LOG.Value + '\LOGs\' + FormatDateTime('yyyymm', now);
+        ACBrNFe1.Configuracoes.Arquivos.PathNFe    := QryEmpresaNFE_LOG.Value + '\LOGs\' + FormatDateTime('yyyymm', now);
         // + FormatDateTime('mmyy',date);
         // ACBrNFe1.Configuracoes.Arquivos.Salvar      := true;
         ACBrNFeDANFEFR1.PathPDF := QryEmpresaNFE_LOG.Value + '\LOGs\PDFs';
@@ -1825,6 +1923,11 @@ begin
       cbCortarPapel.Checked         := Ini.ReadBool(   'PosPrinter', 'CortarPapel',       True);
 
       ACBrPosPrinter1.Device.ParamsString := INI.ReadString('PosPrinter', 'ParamsString', '');
+      case rgDANFCE.ItemIndex of
+        0: ACBrNFe1.DANFE := ACBrNFeDANFCEFR1;
+        1: ACBrNFe1.DANFE := ACBrNFeDANFeESCPOS1;
+        2: ACBrNFe1.DANFE := ACBrNFeDANFCeFortesA41;
+      end;
 
       if QryEmpresaLOGO.Value <> '' then
       begin
@@ -2025,12 +2128,83 @@ procedure TFRM_CONFIGURA.btnconsultaieClick(Sender: TObject);
 var
  IE, teste : string;
 begin
-  ACBrNFe1.WebServices.ConsultaCadastro.UF := 'SP';
-  ACBrNFe1.WebServices.ConsultaCadastro.CNPJ := '65892614000170';// 65.892.614/0001-70
+  ACBrNFe1.WebServices.ConsultaCadastro.UF   := DMD_PRO00315.QryEmpresaUF.Value;
+  ACBrNFe1.WebServices.ConsultaCadastro.CNPJ := RemoveChar(DMD_PRO00315.QryEmpresaEMPRESA_CNPJ.Value);// 65.892.614/0001-70
   ACBrNFe1.WebServices.ConsultaCadastro.Executar;
   IE := ACBrNFe1.WebServices.ConsultaCadastro.IE;
   teste := ACBrNFe1.WebServices.ConsultaCadastro.xMotivo;
   msgAtencao(IE+' - '+teste);
+end;
+
+procedure TFRM_CONFIGURA.btnValidarAssinaturaClick(Sender: TObject);
+var
+  Msg: String;
+begin
+  OpenDialog1.Title := 'Selecione a NFe';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFe (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    //pgRespostas.ActivePageIndex := 0;
+    MemoResp.Lines.Add('');
+    MemoResp.Lines.Add('');
+
+    if not ACBrNFe1.NotasFiscais.VerificarAssinatura(Msg) then
+      MemoResp.Lines.Add('Erro: '+Msg)
+    else
+    begin
+      MemoResp.Lines.Add('OK: Assinatura Válida');
+      ACBrNFe1.SSL.CarregarCertificadoPublico( ACBrNFe1.NotasFiscais[0].NFe.signature.X509Certificate );
+      MemoResp.Lines.Add('Assinado por: '+ ACBrNFe1.SSL.CertRazaoSocial);
+      MemoResp.Lines.Add('CNPJ: '+ ACBrNFe1.SSL.CertCNPJ);
+      MemoResp.Lines.Add('Num.Série: '+ ACBrNFe1.SSL.CertNumeroSerie);
+
+      ShowMessage('ASSINATURA VÁLIDA');
+    end;
+  end;
+end;
+
+procedure TFRM_CONFIGURA.btnValidarXMLClick(Sender: TObject);
+begin
+  OpenDialog1.Title := 'Selecione a NFe';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFe (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+
+  // Sugestão de configuração para apresentação de mensagem mais amigável ao usuário final
+  ACBrNFe1.Configuracoes.Geral.ExibirErroSchema := False;
+  ACBrNFe1.Configuracoes.Geral.FormatoAlerta := 'Campo:%DESCRICAO% - %MSG%';
+
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+
+    try
+      ACBrNFe1.NotasFiscais.Assinar;
+      ACBrNFe1.NotasFiscais.Validar;
+
+      if ACBrNFe1.NotasFiscais.Items[0].Alertas <> '' then
+        MemoDados.Lines.Add('Alertas: '+ACBrNFe1.NotasFiscais.Items[0].Alertas);
+
+      ShowMessage('Nota Fiscal Eletrônica Valida');
+    except
+      on E: Exception do
+      begin
+        //pgRespostas.ActivePage := Dados;
+        MemoDados.Lines.Add('Exception: ' + E.Message);
+        MemoDados.Lines.Add('Erro: ' + ACBrNFe1.NotasFiscais.Items[0].ErroValidacao);
+        MemoDados.Lines.Add('Erro Completo: ' + ACBrNFe1.NotasFiscais.Items[0].ErroValidacaoCompleto);
+      end;
+    end;
+  end;
+
 end;
 
 procedure TFRM_CONFIGURA.btn_AdmCSCClick(Sender: TObject);
@@ -2126,6 +2300,23 @@ begin
 
 end;
 
+procedure TFRM_CONFIGURA.btn_enviarClick(Sender: TObject);
+begin
+  Enviar;
+end;
+
+procedure TFRM_CONFIGURA.btn_gerarxmlClick(Sender: TObject);
+var
+  NFID : string;
+begin
+  if not(InputQuery('Nota Fiscal', 'Numero da Nota', NFID)) then
+    exit;
+
+  AbrirNota(StrToInt(NFID));
+  //ActGerarNFe.Execute;
+  ACBrNFe1.NotasFiscais.Items[0].GravarXML();
+end;
+
 procedure TFRM_CONFIGURA.btn_imprimirClick(Sender: TObject);
 begin
   OpenDialog1.Title := 'Selecione a NFe';
@@ -2143,6 +2334,75 @@ begin
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
     ACBrNFe1.NotasFiscais.Imprimir;
   end;
+
+end;
+
+procedure TFRM_CONFIGURA.btSerialClick(Sender: TObject);
+begin
+  FRMCONFIGURASERIAL.Device.Porta        := ACBrPosPrinter1.Device.Porta;
+  FRMCONFIGURASERIAL.cmbPortaSerial.Text := cbxPorta.Text;
+  FRMCONFIGURASERIAL.Device.ParamsString := ACBrPosPrinter1.Device.ParamsString;
+
+  if frmConfiguraSerial.ShowModal = mrOk then
+  begin
+    cbxPorta.Text := frmConfiguraSerial.Device.Porta;
+    ACBrPosPrinter1.Device.ParamsString := frmConfiguraSerial.Device.ParamsString;
+  end;
+
+end;
+
+procedure TFRM_CONFIGURA.CancelarNota(aChaveNf,aProtocolo: String);
+var
+  Chave, idLote, CNPJ, Protocolo, Justificativa: string;
+begin
+  Chave  := Trim(OnlyNumber(aChaveNf));
+  idLote := '1';
+  //if not(InputQuery('WebServices Eventos: Cancelamento', 'Identificador de controle do Lote de envio do Evento', idLote)) then
+  //   exit;
+  CNPJ      := RemoveChar(DmdPrincipal.qryEMPRESASEMPRESA_CNPJ.Value);
+  Protocolo := Trim(OnlyNumber(aProtocolo));
+  Justificativa := 'Justificativa do Cancelamento';
+  if not(InputQuery('WebServices Eventos: Cancelamento', 'Justificativa do Cancelamento', Justificativa)) then
+     exit;
+
+  ACBrNFe1.EventoNFe.Evento.Clear;
+
+  with ACBrNFe1.EventoNFe.Evento.New do
+  begin
+    infEvento.chNFe := Chave;
+    infEvento.CNPJ   := CNPJ;
+    infEvento.dhEvento := now;
+    infEvento.tpEvento := teCancelamento;
+    infEvento.detEvento.xJust := Justificativa;
+    infEvento.detEvento.nProt := Protocolo;
+  end;
+
+  ACBrNFe1.EnviarEvento(StrToInt(idLote));
+
+  MemoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetWS;
+  memoRespWS.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetornoWS;
+
+  LoadXML(ACBrNFe1.WebServices.EnvEvento.RetornoWS, WBResposta);
+
+//  ArqXML := ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.XML;
+
+  MemoDados.Lines.Add('');
+  MemoDados.Lines.Add('Retorno do Evento');
+  MemoDados.Lines.Add('');
+  MemoDados.Lines.Add('Id.........: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.Id);
+  MemoDados.Lines.Add('tpAmb......: ' + TpAmbToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.TpAmb));
+  MemoDados.Lines.Add('verAplic...: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.verAplic);
+  MemoDados.Lines.Add('cOrgao.....: ' + IntToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.cOrgao));
+  MemoDados.Lines.Add('cStat......: ' + IntToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.cStat));
+  MemoDados.Lines.Add('xMotivo....: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.xMotivo);
+  MemoDados.Lines.Add('chNFe......: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.chNFe);
+  MemoDados.Lines.Add('tpEvento...: ' + TpEventoToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.tpEvento));
+  MemoDados.Lines.Add('xEvento....: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.xEvento);
+  MemoDados.Lines.Add('nSeqEvento.: ' + IntToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.nSeqEvento));
+  MemoDados.Lines.Add('CNPJDest...: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.CNPJDest);
+  MemoDados.Lines.Add('emailDest..: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.emailDest);
+  MemoDados.Lines.Add('dhRegEvento: ' + DateTimeToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.dhRegEvento));
+  MemoDados.Lines.Add('Protocolo..: '+ ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.nProt);
 
 end;
 
@@ -2214,6 +2474,10 @@ var
   V: TSSLHttpLib;
   X: TSSLXmlSignLib;
   Y: TSSLType;
+  N: TACBrPosPrinterModelo;
+  O: TACBrPosPaginaCodigo;
+  P: TpcnVersaoQrCode;
+
 begin
   cbSSLLib.Items.Clear;
   For T := Low(TSSLLib) to High(TSSLLib) do
@@ -2240,12 +2504,62 @@ begin
     cbSSLType.Items.Add(GetEnumName(TypeInfo(TSSLType), Integer(Y)));
   cbSSLType.ItemIndex := 0;
 
+  cbxModeloPosPrinter.Items.Clear ;
+  for N := Low(TACBrPosPrinterModelo) to High(TACBrPosPrinterModelo) do
+    cbxModeloPosPrinter.Items.Add( GetEnumName(TypeInfo(TACBrPosPrinterModelo), integer(N) ) ) ;
+
+  cbxPagCodigo.Items.Clear ;
+  for O := Low(TACBrPosPaginaCodigo) to High(TACBrPosPaginaCodigo) do
+     cbxPagCodigo.Items.Add( GetEnumName(TypeInfo(TACBrPosPaginaCodigo), integer(O) ) ) ;
+
+  cbVersaoQRCode.Items.Clear;
+  for P := Low(TpcnVersaoQrCode) to High(TpcnVersaoQrCode) do
+     cbVersaoQRCode.Items.Add( GetEnumName(TypeInfo(TpcnVersaoQrCode), integer(P) ) );
+  cbVersaoQRCode.ItemIndex := 0;
+
+  cbxPorta.Items.Clear;
+  ACBrPosPrinter1.Device.AcharPortasSeriais( cbxPorta.Items );
+  ACBrPosPrinter1.Device.AcharPortasRAW( cbxPorta.Items );
+
+  {$IfDef MSWINDOWS}
+  cbxPorta.Items.Add('LPT1') ;
+  cbxPorta.Items.Add('\\localhost\Epson') ;
+  cbxPorta.Items.Add('c:\temp\ecf.txt') ;
+  {$EndIf}
+
+  cbxPorta.Items.Add('TCP:192.168.0.31:9100') ;
+  {$IfDef LINUX}
+  cbxPorta.Items.Add('/dev/ttyS0') ;
+  cbxPorta.Items.Add('/dev/ttyUSB0') ;
+  cbxPorta.Items.Add('/tmp/ecf.txt') ;
+  {$EndIf}
+
   ACBrNFe1.Configuracoes.WebServices.Salvar := true;
 end;
 
 procedure TFRM_CONFIGURA.FormShow(Sender: TObject);
 begin
   ActLerConfIni.Execute;
+
+end;
+
+procedure TFRM_CONFIGURA.ImprimirNota(nIDNF: integer);
+begin
+  OpenDialog1.Title := 'Selecione a NFe';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFe (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+
+  if OpenDialog1.Execute then
+  begin
+    if ACBrNFe1.DANFE = ACBrNFeDANFeESCPOS1 then
+      PrepararImpressao;
+
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.NotasFiscais.Imprimir;
+  end;
 
 end;
 
@@ -2265,65 +2579,80 @@ begin
   ACBrPosPrinter1.Ativar;
 
 end;
+procedure TFRM_CONFIGURA.sbtnLogoMarcaClick(Sender: TObject);
+begin
+  OpenDialog1.Title := 'Selecione o Logo';
+  OpenDialog1.DefaultExt := '*.bmp';
+  OpenDialog1.Filter := 'Arquivos BMP (*.bmp)|*.bmp|Todos os Arquivos (*.*)|*.*';
+
+  OpenDialog1.InitialDir := ApplicationPath;
+
+  if OpenDialog1.Execute then
+    edtLogoMarca.Text := OpenDialog1.FileName;
+
+end;
+
 procedure TFRM_CONFIGURA.Enviar;
 begin
-  with DMD_PRO00315 do
+  if ENVIARNF then
   begin
-    If ACBrNFe1.Enviar(QryFiltroNFNF_NUMERO.Value) then
+    with DMD_PRO00315 do
     begin
-      ACBrNFe1.Configuracoes.Arquivos.PathNFe := QryEmpresaNFE_LOG.Value +
-        '\LOGs\'; // + FormatDateTime('mmyy',date)+StrZero(IntToStr(DMNFe.QryPadraoNF_NUMERO.Value),6)+'.xml';
-      ACBrNFe1.NotasFiscais.Items[0].GravarXML;
-      MsgInformacao('Nota Fiscal enviada com Sucesso ! ');
-      vcstatus := ACBrNFe1.WebServices.Retorno.cStat;
-      nProt    := ACBrNFe1.WebServices.Retorno.Protocolo;
-      chavenfe := ACBrNFe1.WebServices.Retorno.chavenfe;
-      // verifica se já existe protocolo
-      if (length(QryFiltroNFNFE_PROTOCOLO.Value) > 0) then
-        nProt := QryFiltroNFNFE_PROTOCOLO.Value;
-      // verifica se já existe protocolo
-      if (length(QryFiltroNFNFE_IDNOTA.Value) > 0) then
-        nProt := QryFiltroNFNFE_IDNOTA.Value;
-      QryObtProt.ParamByName('NROPROT').AsString := nProt;
-      // ACBrNFe1.WebServices.Retorno.Protocolo;
-      QryObtProt.ParamByName('CSTATUS').AsInteger := vcstatus;
-      QryObtProt.ParamByName('NF_ID').AsInteger := QryFiltroNFNF_ID.Value;
-      QryObtProt.ParamByName('STATUS').AsString :=
-        Copy(ACBrNFe1.WebServices.Retorno.xMotivo, 1, 20);
-      QryObtProt.ParamByName('FLAG').AsString := 'E';
-      QryObtProt.ParamByName('IDNOTA').AsString := chavenfe;
-
-      IF vcstatus = 100 then
-        QryObtProt.ParamByName('FLAG').AsString := 'A'; // aceita com sucesso
-      IF vcstatus = 101 then
-        QryObtProt.ParamByName('FLAG').AsString := 'C';
-      // cancelada com sucesso
-      IF vcstatus = 102 then
-        QryObtProt.ParamByName('FLAG').AsString := 'I';
-      // Unitilizada com sucesso
-      IF vcstatus = 105 then
-        QryObtProt.ParamByName('FLAG').AsString := 'S';
-      // esperando processamento
-      IF vcstatus = 204 then
-        QryObtProt.ParamByName('FLAG').AsString := 'A';
-      // Duplicidade volta a aceita com sucesso
-
-      MDS := 'EMISSOR NFE';
-      ACT := 'ENVIO SEFAZ';
-      OBS := 'Enviado NFCe ' + INTTOSTR(qryfiltroNFNF_NUMERO.Value)
-         + ' - ' + IntToStr(vcstatus) + ' - ' + nProt;
-      //ActLogGeral.Execute;
-
-      if length(nProt) > 1 then
+      If ACBrNFe1.Enviar(QryFiltroNFNF_NUMERO.Value,true,True) then
       begin
-        // enviar para o contas a receber só depois de enviar para o sefaz
-        if Copy(QryParamsIMPRESSAO.Value, 45, 1) = 'S' then
-        Begin
-          // validar financeiro
-          ActInsereReceber.Execute;
-        end;
+        deubom := true;
+        ACBrNFe1.Configuracoes.Arquivos.PathNFe := QryEmpresaNFE_LOG.Value +
+          '\LOGs\'; // + FormatDateTime('mmyy',date)+StrZero(IntToStr(DMNFe.QryPadraoNF_NUMERO.Value),6)+'.xml';
+        ACBrNFe1.NotasFiscais.Items[0].GravarXML;
+        MsgInformacao('Nota Fiscal enviada com Sucesso ! ');
 
-        QryObtProt.ExecSQL;
+        vcstatus := ACBrNFe1.WebServices.Enviar.cStat;
+        nProt    := ACBrNFe1.WebServices.Enviar.Protocolo;
+        chavenfe := Copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,4,44);//ACBrNFe1.WebServices.Retorno.chavenfe;
+        nNSU     := ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF;
+        QryObtProt.Close;
+        //vcstatus := ACBrNFe1.WebServices.Retorno.cStat;
+        //nProt    := ACBrNFe1.WebServices.Retorno.Protocolo;
+        //chavenfe := ACBrNFe1.WebServices.Retorno.chavenfe;
+        //nNSU     := ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF;
+        // verifica se já existe protocolo
+        if (length(QryFiltroNFNFE_PROTOCOLO.Value) > 0) then
+          nProt := QryFiltroNFNFE_PROTOCOLO.Value;
+        if (length(QryFiltroNFNFE_IDNOTA.Value) > 0) then
+          nProt := QryFiltroNFNFE_IDNOTA.Value;
+        QryObtProt.ParamByName('NROPROT').AsString  := nProt;
+        QryObtProt.ParamByName('CSTATUS').AsInteger := vcstatus;
+        QryObtProt.ParamByName('NSU').AsInteger     := nNSU;
+        QryObtProt.ParamByName('NF_ID').AsInteger   := QryFiltroNFNF_ID.Value;
+        QryObtProt.ParamByName('STATUS').AsString   := Copy(ACBrNFe1.WebServices.Enviar.xMotivo, 1, 20);
+        QryObtProt.ParamByName('FLAG').AsString     := 'E';
+        QryObtProt.ParamByName('IDNOTA').AsString   := chavenfe;
+
+        IF vcstatus = 100 then
+          QryObtProt.ParamByName('FLAG').AsString := 'A'; // aceita com sucesso
+        IF vcstatus = 101 then
+          QryObtProt.ParamByName('FLAG').AsString := 'C';
+        // cancelada com sucesso
+        IF vcstatus = 102 then
+          QryObtProt.ParamByName('FLAG').AsString := 'I';
+        // Unitilizada com sucesso
+        IF vcstatus = 105 then
+          QryObtProt.ParamByName('FLAG').AsString := 'S';
+        // esperando processamento
+        IF vcstatus = 204 then
+          QryObtProt.ParamByName('FLAG').AsString := 'A';
+        // Duplicidade volta a aceita com sucesso
+
+        MDS := 'EMISSOR NFCe';
+        ACT := 'ENVIO SEFAZ';
+        OBS := 'Enviado NFCe ' + IntToStr(QryFiltroNFNF_NUMERO.Value)
+           + ' - ' + IntToStr(vcstatus) + ' - ' + nProt;
+        DmdPrincipal.ActLogGeral.Execute;
+
+        if length(nProt) > 1 then
+          QryObtProt.ExecSQL
+        else
+          MsgErro('Não Retorno Protocolo');
       end;
     end;
   end;
