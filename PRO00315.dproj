@@ -89,8 +89,8 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <VerInfo_Build>3</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.3;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Build>7</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.7;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
         <Debugger_RunParams>4 84 ALBERTO_DELL\SQL ALBERTO 31n8731n SPROC sa SEG@ti#TIF 1102</Debugger_RunParams>
         <DCC_ExeOutput>C:\prounion\EXECUTAVEIS\</DCC_ExeOutput>
@@ -166,6 +166,7 @@
             <Form>FRM_PGTOPEDCLI</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\Comum\URefTrib.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -194,6 +195,12 @@
             </Delphi.Personality>
             <Deployment Version="2">
                 <DeployFile LocalName="Win32\Debug\PRO00315.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>PRO00315.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="C:\prounion\EXECUTAVEIS\PRO00315.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>PRO00315.exe</RemoteName>
                         <Overwrite>true</Overwrite>

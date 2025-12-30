@@ -4,12 +4,12 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   ActiveControl = cxc_fpgto
   BorderIcons = [biMaximize]
   Caption = 'FORMA PAGAMENTO'
-  ClientHeight = 388
-  ClientWidth = 701
+  ClientHeight = 485
+  ClientWidth = 876
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
@@ -19,162 +19,210 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   OnKeyPress = FormKeyPress
   OnKeyUp = FormKeyUp
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object cxTabControl1: TcxTabControl
     Left = 0
     Top = 0
-    Width = 701
-    Height = 67
+    Width = 876
+    Height = 84
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alTop
     TabOrder = 0
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 63
+    ClientRectBottom = 80
     ClientRectLeft = 4
-    ClientRectRight = 697
+    ClientRectRight = 872
     ClientRectTop = 4
     object Label1: TLabel
-      Left = 132
-      Top = 11
-      Width = 45
-      Height = 13
+      Left = 165
+      Top = 14
+      Width = 53
+      Height = 17
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Cliente'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -14
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
       ParentFont = False
       Transparent = True
     end
     object Label2: TLabel
-      Left = 592
-      Top = 11
-      Width = 33
-      Height = 13
+      Left = 740
+      Top = 14
+      Width = 39
+      Height = 17
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Total'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -14
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
       ParentFont = False
       Transparent = True
     end
     object Label14: TLabel
-      Left = 16
-      Top = 11
-      Width = 44
-      Height = 13
+      Left = 20
+      Top = 14
+      Width = 53
+      Height = 17
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Pedido'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -14
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
       ParentFont = False
       Transparent = True
     end
     object cx_cliente: TcxTextEdit
-      Left = 132
-      Top = 27
+      Left = 165
+      Top = 34
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       TabStop = False
       ParentFont = False
       Properties.ReadOnly = True
       Style.Font.Charset = ANSI_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -13
+      Style.Font.Height = -16
       Style.Font.Name = 'Verdana'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 0
-      Width = 441
+      Width = 551
     end
     object cx_total: TcxCurrencyEdit
-      Left = 592
-      Top = 27
+      Left = 740
+      Top = 34
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       TabStop = False
       ParentFont = False
       Properties.DisplayFormat = '0.00'
       Properties.ReadOnly = True
       Style.Font.Charset = ANSI_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -13
+      Style.Font.Height = -16
       Style.Font.Name = 'Verdana'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 1
-      Width = 97
+      Width = 121
     end
     object CXPEDIDO: TcxCurrencyEdit
-      Left = 16
-      Top = 27
+      Left = 20
+      Top = 34
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       TabStop = False
       ParentFont = False
       Properties.DisplayFormat = '0'
       Properties.ReadOnly = True
       Style.Font.Charset = ANSI_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -13
+      Style.Font.Height = -16
       Style.Font.Name = 'Verdana'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 2
-      Width = 97
+      Width = 121
     end
   end
   object Panel1: TPanel
     Left = 0
-    Top = 67
-    Width = 701
-    Height = 56
+    Top = 84
+    Width = 876
+    Height = 70
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alTop
     TabOrder = 1
     object Label3: TLabel
-      Left = 15
-      Top = 6
-      Width = 119
-      Height = 13
+      Left = 19
+      Top = 8
+      Width = 141
+      Height = 17
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Forma pagamento'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -14
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
       ParentFont = False
       Transparent = True
     end
     object Label4: TLabel
-      Left = 167
-      Top = 6
-      Width = 34
-      Height = 13
+      Left = 209
+      Top = 8
+      Width = 41
+      Height = 17
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Valor'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -14
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
       ParentFont = False
       Transparent = True
     end
     object Label16: TLabel
-      Left = 397
-      Top = 6
-      Width = 56
-      Height = 13
+      Left = 496
+      Top = 8
+      Width = 67
+      Height = 17
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = #218'lt.Valor'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -14
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
       ParentFont = False
       Transparent = True
     end
     object cxc_fpgto: TcxComboBox
-      Left = 14
-      Top = 21
+      Left = 18
+      Top = 26
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.Items.Strings = (
@@ -193,7 +241,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         'VALE COMUSTIVEL')
       Style.Font.Charset = ANSI_CHARSET
       Style.Font.Color = clBlack
-      Style.Font.Height = -11
+      Style.Font.Height = -14
       Style.Font.Name = 'Verdana'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
@@ -201,32 +249,40 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Text = 'DINHEIRO'
       OnClick = cxc_fpgtoClick
       OnExit = cxc_fpgtoExit
-      Width = 139
+      Width = 173
     end
     object cx_VALOR: TcxCurrencyEdit
-      Left = 167
-      Top = 21
+      Left = 209
+      Top = 26
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       EditValue = '0'
       ParentFont = False
       Properties.DisplayFormat = '0.00'
       Properties.OnChange = cx_VALORPropertiesChange
       Style.Font.Charset = ANSI_CHARSET
       Style.Font.Color = clBlack
-      Style.Font.Height = -11
+      Style.Font.Height = -14
       Style.Font.Name = 'Verdana'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 1
       OnEnter = cx_VALOREnter
       OnExit = cx_VALORExit
-      Width = 89
+      Width = 111
     end
     object BT_IOK: TcxButton
-      Left = 270
-      Top = 20
-      Width = 25
-      Height = 23
+      Left = 338
+      Top = 25
+      Width = 31
+      Height = 29
       Cursor = crHandPoint
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Colors.Default = 14211272
       Colors.Hot = 14211272
       OptionsImage.Glyph.SourceDPI = 96
@@ -250,15 +306,20 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         03E095C79303A4CA20984111CBFCDDE6D6F6CA70D0C39B571F2A7164AF129589
         14C65E59B0FB631765596C03C8030033E929BA8A0C4D8443F6A2982AF67E037E
         F6AC9379188DF20000000049454E44AE426082}
+      OptionsImage.Spacing = 5
       TabOrder = 2
       OnClick = BT_IOKClick
     end
     object BT_ICANCEL: TcxButton
-      Left = 297
-      Top = 20
-      Width = 25
-      Height = 23
+      Left = 371
+      Top = 25
+      Width = 32
+      Height = 29
       Cursor = crHandPoint
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Colors.Default = 14211272
       Colors.Hot = 14211272
       OptionsImage.Glyph.SourceDPI = 96
@@ -295,66 +356,87 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         65406DCAF6B05ABAE6246753A68D19FCEF13B28291A80D864CC31F90A6F3AAF8
         020E6FEE7DA4EC0C25FF0EDF77F5F761816F66D4B93E0430AE4F7EEB7F004FCE
         9AEBD9E212700000000049454E44AE426082}
+      OptionsImage.Spacing = 5
       TabOrder = 3
       OnClick = BT_ICANCELClick
     end
     object cx_ultValor: TcxCurrencyEdit
-      Left = 397
-      Top = 21
+      Left = 496
+      Top = 26
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       EditValue = '0'
       Enabled = False
       ParentFont = False
       Properties.DisplayFormat = '0.00'
       Style.Font.Charset = ANSI_CHARSET
       Style.Font.Color = clBlack
-      Style.Font.Height = -11
+      Style.Font.Height = -14
       Style.Font.Name = 'Verdana'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 4
-      Width = 89
+      Width = 112
     end
   end
   object cxTabControl4: TcxTabControl
     Left = 0
-    Top = 347
-    Width = 701
-    Height = 41
+    Top = 434
+    Width = 876
+    Height = 51
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alBottom
     TabOrder = 2
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 37
+    ClientRectBottom = 47
     ClientRectLeft = 4
-    ClientRectRight = 697
+    ClientRectRight = 872
     ClientRectTop = 4
     object Label13: TLabel
-      Left = 339
-      Top = 15
-      Width = 33
-      Height = 13
+      Left = 424
+      Top = 19
+      Width = 42
+      Height = 16
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'FALTA'
       Transparent = True
     end
     object Label15: TLabel
-      Left = 16
-      Top = 11
-      Width = 40
-      Height = 13
+      Left = 20
+      Top = 14
+      Width = 48
+      Height = 17
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Caixa:'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -14
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
       ParentFont = False
       Transparent = True
     end
     object bt_grava: TcxButton
-      Left = 488
-      Top = 10
-      Width = 91
-      Height = 23
+      Left = 610
+      Top = 13
+      Width = 114
+      Height = 28
       Cursor = crHandPoint
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Confirma'
       Colors.Default = 14211272
       Colors.Hot = 14211272
@@ -380,15 +462,20 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         03E095C79303A4CA20984111CBFCDDE6D6F6CA70D0C39B571F2A7164AF129589
         14C65E59B0FB631765596C03C8030033E929BA8A0C4D8443F6A2982AF67E037E
         F6AC9379188DF20000000049454E44AE426082}
+      OptionsImage.Spacing = 5
       TabOrder = 0
       OnClick = bt_gravaClick
     end
     object bt_cancela: TcxButton
-      Left = 586
-      Top = 10
-      Width = 88
-      Height = 23
+      Left = 733
+      Top = 13
+      Width = 110
+      Height = 28
       Cursor = crHandPoint
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Cancela'
       Colors.Default = 14211272
       Colors.Hot = 14211272
@@ -426,120 +513,177 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         CF738AAF6ED6EA4B006882CE77A14ABFD255D2799903606830E4EF28E274070C
         1C67D74255041044C25C9CE43B4149F8B16735F41B8038DB9300E07F6924ECFB
         01D589CC0000000049454E44AE426082}
+      OptionsImage.Spacing = 5
       TabOrder = 1
       OnClick = bt_cancelaClick
     end
     object CX_FALTA: TcxCurrencyEdit
-      Left = 381
-      Top = 11
+      Left = 476
+      Top = 14
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       TabStop = False
       Properties.DisplayFormat = '0.00'
       Properties.ReadOnly = True
       Style.BorderStyle = ebsNone
       TabOrder = 2
-      Width = 89
+      Width = 112
     end
     object cx_caixa: TcxMaskEdit
-      Left = 64
-      Top = 8
+      Left = 80
+      Top = 10
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Enabled = False
       Properties.MaxLength = 0
       TabOrder = 3
-      Width = 148
+      Width = 185
     end
     object ID_CONTROLE: TcxMaskEdit
-      Left = 213
-      Top = 8
+      Left = 266
+      Top = 10
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Enabled = False
       Properties.MaskKind = emkRegExpr
       Properties.EditMask = '\d+'
       Properties.MaxLength = 0
       TabOrder = 4
       Visible = False
-      Width = 57
+      Width = 72
     end
     object ID_PEDID: TcxMaskEdit
-      Left = 269
-      Top = 8
+      Left = 336
+      Top = 10
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Enabled = False
       Properties.MaskKind = emkRegExpr
       Properties.EditMask = '\d+'
       Properties.MaxLength = 0
       TabOrder = 5
       Visible = False
-      Width = 57
+      Width = 72
     end
   end
   object cxpagecontrol1: TcxPageControl
     Left = 0
-    Top = 123
-    Width = 701
-    Height = 78
+    Top = 154
+    Width = 876
+    Height = 97
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alTop
     TabOrder = 3
     Visible = False
     Properties.ActivePage = cxtab_cheque
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 74
+    ClientRectBottom = 93
     ClientRectLeft = 4
-    ClientRectRight = 697
-    ClientRectTop = 24
+    ClientRectRight = 872
+    ClientRectTop = 29
     object cxtab_cheque: TcxTabSheet
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Cheques'
       ImageIndex = 0
       object Label5: TLabel
-        Left = 182
-        Top = 5
-        Width = 53
-        Height = 13
+        Left = 228
+        Top = 6
+        Width = 66
+        Height = 16
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'N'#250'm.Conta'
         Transparent = True
       end
       object Label6: TLabel
-        Left = 289
-        Top = 5
-        Width = 62
-        Height = 13
+        Left = 361
+        Top = 6
+        Width = 78
+        Height = 16
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'N'#250'm.Cheque'
         Transparent = True
       end
       object Label7: TLabel
-        Left = 396
-        Top = 5
-        Width = 56
-        Height = 13
+        Left = 495
+        Top = 6
+        Width = 71
+        Height = 16
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Vencimento'
         Transparent = True
       end
       object Label8: TLabel
-        Left = 11
-        Top = 5
-        Width = 31
-        Height = 13
+        Left = 14
+        Top = 6
+        Width = 39
+        Height = 16
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Banco'
         Transparent = True
       end
       object cx_cta: TcxTextEdit
-        Left = 182
-        Top = 20
+        Left = 228
+        Top = 25
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         TabOrder = 1
-        Width = 94
+        Width = 117
       end
       object cx_chq: TcxTextEdit
-        Left = 289
-        Top = 20
+        Left = 361
+        Top = 25
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         TabOrder = 2
-        Width = 94
+        Width = 118
       end
       object cx_venc: TcxDateEdit
-        Left = 395
-        Top = 20
+        Left = 494
+        Top = 25
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         TabOrder = 3
-        Width = 105
+        Width = 131
       end
       object CX_BCO: TcxLookupComboBox
-        Left = 12
-        Top = 20
+        Left = 15
+        Top = 25
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Properties.GridMode = True
         Properties.KeyFieldNames = 'BANCO_ABREV'
         Properties.ListColumns = <
@@ -548,14 +692,18 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
           end>
         Properties.ListSource = DSBCO
         TabOrder = 0
-        Width = 156
+        Width = 195
       end
       object bt_confirmaCheque: TcxButton
-        Left = 512
-        Top = 19
-        Width = 25
-        Height = 23
+        Left = 640
+        Top = 24
+        Width = 31
+        Height = 29
         Cursor = crHandPoint
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Colors.Default = 14211272
         Colors.Hot = 14211272
         OptionsImage.Glyph.SourceDPI = 96
@@ -579,15 +727,20 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
           03E095C79303A4CA20984111CBFCDDE6D6F6CA70D0C39B571F2A7164AF129589
           14C65E59B0FB631765596C03C8030033E929BA8A0C4D8443F6A2982AF67E037E
           F6AC9379188DF20000000049454E44AE426082}
+        OptionsImage.Spacing = 5
         TabOrder = 4
         OnClick = bt_confirmaChequeClick
       end
       object btretornacheque: TcxButton
-        Left = 538
-        Top = 19
-        Width = 25
-        Height = 23
+        Left = 673
+        Top = 24
+        Width = 31
+        Height = 29
         Cursor = crHandPoint
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Colors.Default = 14211272
         Colors.Hot = 14211272
         OptionsImage.Glyph.SourceDPI = 96
@@ -624,32 +777,49 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
           65406DCAF6B05ABAE6246753A68D19FCEF13B28291A80D864CC31F90A6F3AAF8
           020E6FEE7DA4EC0C25FF0EDF77F5F761816F66D4B93E0430AE4F7EEB7F004FCE
           9AEBD9E212700000000049454E44AE426082}
+        OptionsImage.Spacing = 5
         TabOrder = 5
         OnClick = btretornachequeClick
       end
     end
     object cxtab_deb: TcxTabSheet
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Cart'#227'o de D'#233'bito'
       ImageIndex = 1
       object Label9: TLabel
-        Left = 12
-        Top = 5
-        Width = 31
-        Height = 13
+        Left = 15
+        Top = 6
+        Width = 40
+        Height = 16
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Cart'#227'o'
         Transparent = True
       end
       object Label12: TLabel
-        Left = 183
-        Top = 5
-        Width = 56
-        Height = 13
+        Left = 229
+        Top = 6
+        Width = 71
+        Height = 16
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'N'#250'm.Cart'#227'o'
         Transparent = True
       end
       object cxc_cartaodeb: TcxLookupComboBox
-        Left = 12
-        Top = 20
+        Left = 15
+        Top = 25
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Properties.GridMode = True
         Properties.KeyFieldNames = 'CARTAO_DESCR'
         Properties.ListColumns = <
@@ -658,20 +828,28 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
           end>
         Properties.ListSource = DSCartao
         TabOrder = 0
-        Width = 157
+        Width = 196
       end
       object cx_nrcartaodeb: TcxTextEdit
-        Left = 183
-        Top = 20
+        Left = 229
+        Top = 25
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         TabOrder = 1
-        Width = 161
+        Width = 201
       end
       object bt_confirmaDebito: TcxButton
-        Left = 352
-        Top = 19
-        Width = 25
-        Height = 23
+        Left = 440
+        Top = 24
+        Width = 31
+        Height = 29
         Cursor = crHandPoint
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Colors.Default = 14211272
         Colors.Hot = 14211272
         OptionsImage.Glyph.SourceDPI = 96
@@ -695,15 +873,20 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
           03E095C79303A4CA20984111CBFCDDE6D6F6CA70D0C39B571F2A7164AF129589
           14C65E59B0FB631765596C03C8030033E929BA8A0C4D8443F6A2982AF67E037E
           F6AC9379188DF20000000049454E44AE426082}
+        OptionsImage.Spacing = 5
         TabOrder = 2
         OnClick = bt_confirmaDebitoClick
       end
       object btretornadebito: TcxButton
-        Left = 378
-        Top = 19
-        Width = 25
-        Height = 23
+        Left = 473
+        Top = 24
+        Width = 31
+        Height = 29
         Cursor = crHandPoint
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Colors.Default = 14211272
         Colors.Hot = 14211272
         OptionsImage.Glyph.SourceDPI = 96
@@ -740,32 +923,49 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
           65406DCAF6B05ABAE6246753A68D19FCEF13B28291A80D864CC31F90A6F3AAF8
           020E6FEE7DA4EC0C25FF0EDF77F5F761816F66D4B93E0430AE4F7EEB7F004FCE
           9AEBD9E212700000000049454E44AE426082}
+        OptionsImage.Spacing = 5
         TabOrder = 3
         OnClick = btretornadebitoClick
       end
     end
     object cxtab_cred: TcxTabSheet
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Cart'#227'o de cr'#233'dito'
       ImageIndex = 2
       object Label10: TLabel
-        Left = 12
-        Top = 5
-        Width = 31
-        Height = 13
+        Left = 15
+        Top = 6
+        Width = 40
+        Height = 16
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Cart'#227'o'
         Transparent = True
       end
       object Label11: TLabel
-        Left = 183
-        Top = 5
-        Width = 56
-        Height = 13
+        Left = 229
+        Top = 6
+        Width = 71
+        Height = 16
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'N'#250'm.Cart'#227'o'
         Transparent = True
       end
       object cxc_cartaocred: TcxLookupComboBox
-        Left = 12
-        Top = 20
+        Left = 15
+        Top = 25
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Properties.GridMode = True
         Properties.KeyFieldNames = 'CARTAO_DESCR'
         Properties.ListColumns = <
@@ -775,20 +975,28 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         Properties.ListSource = DSCartao
         TabOrder = 0
         OnClick = cxc_cartaocredClick
-        Width = 157
+        Width = 196
       end
       object cx_nrcartaocred: TcxTextEdit
-        Left = 183
-        Top = 20
+        Left = 229
+        Top = 25
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         TabOrder = 1
-        Width = 161
+        Width = 201
       end
       object bt_confirmaCredito: TcxButton
-        Left = 432
-        Top = 19
-        Width = 25
-        Height = 23
+        Left = 540
+        Top = 24
+        Width = 31
+        Height = 29
         Cursor = crHandPoint
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Colors.Default = 14211272
         Colors.Hot = 14211272
         OptionsImage.Glyph.SourceDPI = 96
@@ -812,15 +1020,20 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
           03E095C79303A4CA20984111CBFCDDE6D6F6CA70D0C39B571F2A7164AF129589
           14C65E59B0FB631765596C03C8030033E929BA8A0C4D8443F6A2982AF67E037E
           F6AC9379188DF20000000049454E44AE426082}
+        OptionsImage.Spacing = 5
         TabOrder = 3
         OnClick = bt_confirmaCreditoClick
       end
       object btretornacredito: TcxButton
-        Left = 458
-        Top = 19
-        Width = 25
-        Height = 23
+        Left = 573
+        Top = 24
+        Width = 31
+        Height = 29
         Cursor = crHandPoint
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Colors.Default = 14211272
         Colors.Hot = 14211272
         OptionsImage.Glyph.SourceDPI = 96
@@ -857,42 +1070,63 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
           65406DCAF6B05ABAE6246753A68D19FCEF13B28291A80D864CC31F90A6F3AAF8
           020E6FEE7DA4EC0C25FF0EDF77F5F761816F66D4B93E0430AE4F7EEB7F004FCE
           9AEBD9E212700000000049454E44AE426082}
+        OptionsImage.Spacing = 5
         TabOrder = 4
         OnClick = btretornacreditoClick
       end
       object cx_parccred: TcxComboBox
-        Left = 358
-        Top = 20
+        Left = 448
+        Top = 25
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Properties.DropDownListStyle = lsFixedList
         Properties.Sorted = True
         TabOrder = 2
-        Width = 57
+        Width = 71
       end
     end
     object cxTab_troca: TcxTabSheet
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Trocas'
       ImageIndex = 3
       object Label17: TLabel
-        Left = 14
-        Top = 5
-        Width = 53
-        Height = 13
+        Left = 18
+        Top = 6
+        Width = 67
+        Height = 16
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'N'#250'm.Troca'
         Transparent = True
       end
       object cx_numTroca: TcxTextEdit
-        Left = 14
-        Top = 20
+        Left = 18
+        Top = 25
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         TabOrder = 0
         OnExit = cx_numTrocaExit
-        Width = 94
+        Width = 117
       end
       object bt_confirmaTroca: TcxButton
-        Left = 121
-        Top = 19
-        Width = 25
-        Height = 23
+        Left = 151
+        Top = 24
+        Width = 32
+        Height = 29
         Cursor = crHandPoint
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Colors.Default = 14211272
         Colors.Hot = 14211272
         OptionsImage.Glyph.SourceDPI = 96
@@ -916,15 +1150,20 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
           03E095C79303A4CA20984111CBFCDDE6D6F6CA70D0C39B571F2A7164AF129589
           14C65E59B0FB631765596C03C8030033E929BA8A0C4D8443F6A2982AF67E037E
           F6AC9379188DF20000000049454E44AE426082}
+        OptionsImage.Spacing = 5
         TabOrder = 1
         OnClick = bt_confirmaTrocaClick
       end
       object btretornatroca: TcxButton
-        Left = 147
-        Top = 19
-        Width = 25
-        Height = 23
+        Left = 184
+        Top = 24
+        Width = 31
+        Height = 29
         Cursor = crHandPoint
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Colors.Default = 14211272
         Colors.Hot = 14211272
         OptionsImage.Glyph.SourceDPI = 96
@@ -961,6 +1200,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
           65406DCAF6B05ABAE6246753A68D19FCEF13B28291A80D864CC31F90A6F3AAF8
           020E6FEE7DA4EC0C25FF0EDF77F5F761816F66D4B93E0430AE4F7EEB7F004FCE
           9AEBD9E212700000000049454E44AE426082}
+        OptionsImage.Spacing = 5
         TabOrder = 2
         OnClick = btretornadebitoClick
       end
@@ -968,13 +1208,17 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   end
   object cxGrid1: TcxGrid
     Left = 0
-    Top = 201
-    Width = 701
-    Height = 146
+    Top = 251
+    Width = 876
+    Height = 183
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alClient
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -14
     Font.Name = 'Verdana'
     Font.Style = [fsBold]
     ParentFont = False
@@ -997,27 +1241,37 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
           Column = cxGrid1DBTableView1VALOR
         end>
       DataController.Summary.SummaryGroups = <>
+      FilterRow.SeparatorWidth = 8
+      FixedDataRows.SeparatorWidth = 8
+      NewItemRow.SeparatorWidth = 8
       OptionsData.DeletingConfirmation = False
+      OptionsView.NavigatorOffset = 63
       OptionsView.Footer = True
       OptionsView.GroupByBox = False
+      OptionsView.IndicatorWidth = 15
+      Preview.LeftIndent = 25
+      Preview.RightIndent = 6
       object cxGrid1DBTableView1FORMA: TcxGridDBColumn
         Caption = 'Forma'
         DataBinding.FieldName = 'FORMA'
+        MinWidth = 25
         Options.Editing = False
         Options.Filtering = False
-        Width = 116
+        Width = 145
       end
       object cxGrid1DBTableView1VALOR: TcxGridDBColumn
         Caption = 'Valor'
         DataBinding.FieldName = 'VALOR'
+        MinWidth = 25
         Options.Editing = False
         Options.Filtering = False
-        Width = 89
+        Width = 111
       end
       object cxGrid1DBTableView1BCO: TcxGridDBColumn
         Caption = 'Banco'
         DataBinding.FieldName = 'BCO'
         Visible = False
+        MinWidth = 25
         Options.Editing = False
         Options.Filtering = False
       end
@@ -1025,6 +1279,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         Caption = 'Conta'
         DataBinding.FieldName = 'CONTA'
         Visible = False
+        MinWidth = 25
         Options.Editing = False
         Options.Filtering = False
       end
@@ -1032,6 +1287,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         Caption = 'Cheque'
         DataBinding.FieldName = 'CHEQUE'
         Visible = False
+        MinWidth = 25
         Options.Editing = False
         Options.Filtering = False
       end
@@ -1039,6 +1295,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         Caption = 'Vencimento'
         DataBinding.FieldName = 'VENCIMENTO'
         Visible = False
+        MinWidth = 25
         Options.Editing = False
         Options.Filtering = False
       end
@@ -1046,6 +1303,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         Caption = 'Cart'#227'o'
         DataBinding.FieldName = 'CARTAO'
         Visible = False
+        MinWidth = 25
         Options.Editing = False
         Options.Filtering = False
       end
@@ -1053,6 +1311,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         Caption = 'N'#250'm.Cart'#227'o'
         DataBinding.FieldName = 'NRCARTAO'
         Visible = False
+        MinWidth = 25
         Options.Editing = False
         Options.Filtering = False
       end
@@ -1060,19 +1319,22 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         Caption = 'Parcelas'
         DataBinding.FieldName = 'PARCELAS'
         Visible = False
+        MinWidth = 25
         Options.Editing = False
         Options.Filtering = False
       end
       object cxGrid1DBTableView1Column1: TcxGridDBColumn
         DataBinding.FieldName = 'LK_LINHA'
+        MinWidth = 25
         Options.Editing = False
         Options.Filtering = False
-        Width = 484
+        Width = 605
         IsCaptionAssigned = True
       end
       object cxGrid1DBTableView1Column2: TcxGridDBColumn
         DataBinding.FieldName = 'autoid'
         Visible = False
+        MinWidth = 25
         Options.Editing = False
         Options.Filtering = False
         SortIndex = 0
@@ -1212,6 +1474,10 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
     object ActMovEstoque: TAction
       Caption = 'ActMovEstoque'
       OnExecute = ActMovEstoqueExecute
+    end
+    object GravaRefTrib: TAction
+      Caption = 'GravaRefTrib'
+      OnExecute = GravaRefTribExecute
     end
   end
   object DsPgtoFinal: TDataSource
@@ -1872,5 +2138,494 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       FieldName = 'PEDID'
       Origin = 'PEDID'
     end
+  end
+  object QryInsRefTrib: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      'INSERT INTO NOTA_FISCAL_ITEM_CLASSTRIB'
+      '           (NF_ID '
+      '           ,NF_ITEM_ID '
+      '           ,CSTIS '
+      '           ,cClassTribIS '
+      '           ,vBCIS '
+      '           ,pIS '
+      '           ,pISEspec '
+      '           ,uTrib '
+      '           ,qTrib '
+      '           ,vIS '
+      '           ,CST '
+      '           ,cClassTrib '
+      '           ,vBC '
+      '           ,pIBSUF '
+      '           ,vIBSUF '
+      '           ,gIBSUFpDif '
+      '           ,gIBSUFvDif '
+      '           ,gIBSUFvDevTrib '
+      '           ,gIBSUFpRedAliq '
+      '           ,gIBSUFpAliqEfet '
+      '           ,pIBSMun '
+      '           ,vIBSMun '
+      '           ,gIBSMpDif '
+      '           ,gIBSMvDif '
+      '           ,gIBSMvDevTrib '
+      '           ,gIBSMpRedAliq '
+      '           ,gIBSMpAliqEfet '
+      '           ,pCBS '
+      '           ,vCBS '
+      '           ,gCBSpDif '
+      '           ,gCBSvDif '
+      '           ,gCBSvDevTrib '
+      '           ,gCBSpRedAliq '
+      '           ,gCBSpAliqEfet '
+      '           ,CSTReg '
+      '           ,cClassTribReg '
+      '           ,pAliqEfetRegIBSUF '
+      '           ,vTribRegIBSUF '
+      '           ,pAliqEfetRegIBSMun '
+      '           ,vTribRegIBSMun '
+      '           ,pAliqEfetRegCBS '
+      '           ,vTribRegCBS '
+      '           ,CBScCredPres '
+      '           ,CBSpCredPres '
+      '           ,CBSvCredPres '
+      '           ,CBSvCredPresCondSus '
+      '           ,IBScCredPres '
+      '           ,IBSpCredPres '
+      '           ,IBSvCredPres '
+      '           ,IBSvCredPresCondSus '
+      '           ,gGovpAliqIBSUF '
+      '           ,gGovvTribIBSUF '
+      '           ,gGovpAliqIBSMun '
+      '           ,gGovvTribIBSMun '
+      '           ,gGovpAliqCBS '
+      '           ,gGovvTribCBS '
+      '           ,MonoqBCMono '
+      '           ,MonoadRemIBS '
+      '           ,MonoadRemCBS '
+      '           ,MonovIBSMono '
+      '           ,MonovCBSMono '
+      '           ,MonoqBCMonoReten '
+      '           ,MonoadRemIBSReten '
+      '           ,MonovIBSMonoReten '
+      '           ,MonovCBSMonoReten '
+      '           ,MonoqBCMonoRet '
+      '           ,MonoadRemIBSRet '
+      '           ,MonovIBSMonoRet '
+      '           ,MonovCBSMonoRet '
+      '           ,MonopDifIBS '
+      '           ,MonovIBSMonoDif '
+      '           ,MonopDifCBS '
+      '           ,MonovCBSMonoDif '
+      '           ,MonovTotIBSMonoItem '
+      '           ,MonovTotCBSMonoItem '
+      '           ,TransfCredvIBS '
+      '           ,TransfCredvCBS '
+      '           ,tpCredPresIBSZFM '
+      '           ,vCredPresIBSZFM '
+      '           ,vIBS )'
+      '     VALUES'
+      '           (:NF_ID'
+      '           ,:NF_ITEM_ID'
+      '           ,:CSTIS'
+      '           ,:cClassTribIS'
+      '           ,:vBCIS'
+      '           ,:pIS'
+      '           ,:pISEspec'
+      '           ,:uTrib'
+      '           ,:qTrib'
+      '           ,:vIS'
+      '           ,:CST'
+      '           ,:cClassTrib'
+      '           ,:vBC'
+      '           ,:pIBSUF'
+      '           ,:vIBSUF'
+      '           ,:gIBSUFpDif'
+      '           ,:gIBSUFvDif'
+      '           ,:gIBSUFvDevTrib'
+      '           ,:gIBSUFpRedAliq'
+      '           ,:gIBSUFpAliqEfet'
+      '           ,:pIBSMun'
+      '           ,:vIBSMun'
+      '           ,:gIBSMpDif'
+      '           ,:gIBSMvDif'
+      '           ,:gIBSMvDevTrib'
+      '           ,:gIBSMpRedAliq'
+      '           ,:gIBSMpAliqEfet'
+      '           ,:pCBS'
+      '           ,:vCBS'
+      '           ,:gCBSpDif'
+      '           ,:gCBSvDif'
+      '           ,:gCBSvDevTrib'
+      '           ,:gCBSpRedAliq'
+      '           ,:gCBSpAliqEfet'
+      '           ,:CSTReg'
+      '           ,:cClassTribReg'
+      '           ,:pAliqEfetRegIBSUF'
+      '           ,:vTribRegIBSUF'
+      '           ,:pAliqEfetRegIBSMun'
+      '           ,:vTribRegIBSMun'
+      '           ,:pAliqEfetRegCBS'
+      '           ,:vTribRegCBS'
+      '           ,:CBScCredPres'
+      '           ,:CBSpCredPres'
+      '           ,:CBSvCredPres'
+      '           ,:CBSvCredPresCondSus'
+      '           ,:IBScCredPres'
+      '           ,:IBSpCredPres'
+      '           ,:IBSvCredPres'
+      '           ,:IBSvCredPresCondSus'
+      '           ,:gGovpAliqIBSUF'
+      '           ,:gGovvTribIBSUF'
+      '           ,:gGovpAliqIBSMun'
+      '           ,:gGovvTribIBSMun'
+      '           ,:gGovpAliqCBS'
+      '           ,:gGovvTribCBS'
+      '           ,:MonoqBCMono'
+      '           ,:MonoadRemIBS'
+      '           ,:MonoadRemCBS'
+      '           ,:MonovIBSMono'
+      '           ,:MonovCBSMono'
+      '           ,:MonoqBCMonoReten'
+      '           ,:MonoadRemIBSReten'
+      '           ,:MonovIBSMonoReten'
+      '           ,:MonovCBSMonoReten'
+      '           ,:MonoqBCMonoRet'
+      '           ,:MonoadRemIBSRet'
+      '           ,:MonovIBSMonoRet'
+      '           ,:MonovCBSMonoRet'
+      '           ,:MonopDifIBS'
+      '           ,:MonovIBSMonoDif'
+      '           ,:MonopDifCBS'
+      '           ,:MonovCBSMonoDif'
+      '           ,:MonovTotIBSMonoItem'
+      '           ,:MonovTotCBSMonoItem'
+      '           ,:TransfCredvIBS'
+      '           ,:TransfCredvCBS'
+      '           ,:tpCredPresIBSZFM'
+      '           ,:vCredPresIBSZFM'
+      '           ,:vIBS)')
+    Left = 49
+    Top = 353
+    ParamData = <
+      item
+        Name = 'NF_ID'
+        ParamType = ptInput
+      end
+      item
+        Name = 'NF_ITEM_ID'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CSTIS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CCLASSTRIBIS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VBCIS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PIS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PISESPEC'
+        ParamType = ptInput
+      end
+      item
+        Name = 'UTRIB'
+        ParamType = ptInput
+      end
+      item
+        Name = 'QTRIB'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VIS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CST'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CCLASSTRIB'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VBC'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PIBSUF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VIBSUF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSUFPDIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSUFVDIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSUFVDEVTRIB'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSUFPREDALIQ'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSUFPALIQEFET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PIBSMUN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VIBSMUN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSMPDIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSMVDIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSMVDEVTRIB'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSMPREDALIQ'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSMPALIQEFET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GCBSPDIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GCBSVDIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GCBSVDEVTRIB'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GCBSPREDALIQ'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GCBSPALIQEFET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CSTREG'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CCLASSTRIBREG'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PALIQEFETREGIBSUF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VTRIBREGIBSUF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PALIQEFETREGIBSMUN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VTRIBREGIBSMUN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PALIQEFETREGCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VTRIBREGCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CBSCCREDPRES'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CBSPCREDPRES'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CBSVCREDPRES'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CBSVCREDPRESCONDSUS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'IBSCCREDPRES'
+        ParamType = ptInput
+      end
+      item
+        Name = 'IBSPCREDPRES'
+        ParamType = ptInput
+      end
+      item
+        Name = 'IBSVCREDPRES'
+        ParamType = ptInput
+      end
+      item
+        Name = 'IBSVCREDPRESCONDSUS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GGOVPALIQIBSUF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GGOVVTRIBIBSUF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GGOVPALIQIBSMUN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GGOVVTRIBIBSMUN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GGOVPALIQCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GGOVVTRIBCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOQBCMONO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOADREMIBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOADREMCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVIBSMONO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVCBSMONO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOQBCMONORETEN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOADREMIBSRETEN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVIBSMONORETEN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVCBSMONORETEN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOQBCMONORET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOADREMIBSRET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVIBSMONORET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVCBSMONORET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOPDIFIBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVIBSMONODIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOPDIFCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVCBSMONODIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVTOTIBSMONOITEM'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVTOTCBSMONOITEM'
+        ParamType = ptInput
+      end
+      item
+        Name = 'TRANSFCREDVIBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'TRANSFCREDVCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'TPCREDPRESIBSZFM'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VCREDPRESIBSZFM'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VIBS'
+        ParamType = ptInput
+      end>
   end
 end

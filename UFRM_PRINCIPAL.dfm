@@ -2,67 +2,83 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
   Left = 0
   Top = 0
   Caption = 'FRM_PRINCIPAL'
-  ClientHeight = 595
-  ClientWidth = 831
+  ClientHeight = 744
+  ClientWidth = 1039
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'Tahoma'
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 17
   object cxPageControl1: TcxPageControl
     Left = 0
     Top = 0
-    Width = 831
-    Height = 595
+    Width = 1039
+    Height = 744
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alClient
     TabOrder = 0
     Properties.ActivePage = tabVenda
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 591
+    ClientRectBottom = 740
     ClientRectLeft = 4
-    ClientRectRight = 827
-    ClientRectTop = 24
+    ClientRectRight = 1035
+    ClientRectTop = 29
     object tabVenda: TcxTabSheet
-      Margins.Left = 2
-      Margins.Top = 2
-      Margins.Right = 2
-      Margins.Bottom = 2
       Caption = 'Venda'
       ImageIndex = 0
       object PnlPrincipal: TPanel
         Left = 0
-        Top = 61
-        Width = 823
-        Height = 506
+        Top = 76
+        Width = 1031
+        Height = 635
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Align = alClient
         TabOrder = 0
         object spacesso: TSpeedButton
-          Left = 472
-          Top = 392
-          Width = 23
-          Height = 22
+          Left = 590
+          Top = 490
+          Width = 29
+          Height = 28
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Visible = False
         end
         object pnlLogo: TPanel
           Left = 1
           Top = 1
-          Width = 799
-          Height = 343
+          Width = 1001
+          Height = 432
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Align = alClient
           Alignment = taLeftJustify
           TabOrder = 0
           object cxGrid1: TcxGrid
             Left = 1
             Top = 1
-            Width = 797
-            Height = 341
+            Width = 999
+            Height = 430
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Align = alClient
             TabOrder = 0
             object cxGrid1DBTableView1: TcxGridDBTableView
@@ -190,206 +206,259 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
                   Column = cxGrid1DBTableView1VLR_FCP
                 end>
               DataController.Summary.SummaryGroups = <>
+              FilterRow.SeparatorWidth = 8
+              FixedDataRows.SeparatorWidth = 8
+              NewItemRow.SeparatorWidth = 8
+              OptionsCustomize.ColumnsQuickCustomization = True
               OptionsData.Editing = False
+              OptionsView.NavigatorOffset = 63
               OptionsView.NoDataToDisplayInfoText = 'sem itens'
               OptionsView.Footer = True
               OptionsView.GroupByBox = False
+              OptionsView.IndicatorWidth = 15
+              Preview.LeftIndent = 25
+              Preview.RightIndent = 6
               object cxGrid1DBTableView1ITEM: TcxGridDBColumn
                 Caption = 'It'
                 DataBinding.FieldName = 'ITEM'
+                MinWidth = 25
                 SortIndex = 0
                 SortOrder = soAscending
-                Width = 25
+                Width = 31
               end
               object cxGrid1DBTableView1DESCRICAO: TcxGridDBColumn
                 Caption = 'Produto'
                 DataBinding.FieldName = 'DESCRICAO'
-                Width = 276
+                MinWidth = 25
+                Width = 345
               end
               object cxGrid1DBTableView1QTDE: TcxGridDBColumn
                 Caption = 'Qtde'
                 DataBinding.FieldName = 'QTDE'
+                MinWidth = 25
               end
               object cxGrid1DBTableView1UNI_CODIGO: TcxGridDBColumn
                 Caption = 'Und'
                 DataBinding.FieldName = 'UNI_CODIGO'
-                Width = 38
+                MinWidth = 25
+                Width = 48
               end
               object cxGrid1DBTableView1VLR_UNIT: TcxGridDBColumn
                 Caption = 'Pre'#231'o'
                 DataBinding.FieldName = 'VLR_UNIT'
                 PropertiesClassName = 'TcxCurrencyEditProperties'
-                Width = 80
+                MinWidth = 25
+                Width = 100
               end
               object cxGrid1DBTableView1VLR_MERCADORIA: TcxGridDBColumn
                 Caption = 'Valor'
                 DataBinding.FieldName = 'VLR_MERCADORIA'
                 PropertiesClassName = 'TcxCurrencyEditProperties'
-                Width = 111
+                MinWidth = 25
+                Width = 139
               end
               object cxGrid1DBTableView1CFOP: TcxGridDBColumn
                 Caption = 'Cfop'
                 DataBinding.FieldName = 'CFOP'
                 Visible = False
-                Width = 54
+                MinWidth = 25
+                Width = 68
               end
               object cxGrid1DBTableView1GTIN: TcxGridDBColumn
                 Caption = 'Cod.barras'
                 DataBinding.FieldName = 'GTIN'
+                MinWidth = 25
               end
               object cxGrid1DBTableView1COD_INTERNO: TcxGridDBColumn
                 Caption = 'C'#243'd.Interno'
                 DataBinding.FieldName = 'COD_INTERNO'
-                Width = 74
+                MinWidth = 25
+                Width = 93
               end
               object cxGrid1DBTableView1CODID: TcxGridDBColumn
                 DataBinding.FieldName = 'CODID'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1ESTOQUE_ID: TcxGridDBColumn
                 DataBinding.FieldName = 'ESTOQUE_ID'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1PESO: TcxGridDBColumn
                 DataBinding.FieldName = 'PESO'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1VLR_TOTAL: TcxGridDBColumn
                 DataBinding.FieldName = 'VLR_TOTAL'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1POSICAO: TcxGridDBColumn
                 DataBinding.FieldName = 'POSICAO'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1NCM: TcxGridDBColumn
                 Caption = 'Ncm'
                 DataBinding.FieldName = 'NCM'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1BAIXA_ESTOQUE: TcxGridDBColumn
                 DataBinding.FieldName = 'BAIXA_ESTOQUE'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1CFOP_ID: TcxGridDBColumn
                 DataBinding.FieldName = 'CFOP_ID'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1RecId: TcxGridDBColumn
                 DataBinding.FieldName = 'RecId'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1SEL: TcxGridDBColumn
                 DataBinding.FieldName = 'SEL'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1ALIQ_IPI: TcxGridDBColumn
                 DataBinding.FieldName = 'ALIQ_IPI'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1BASE_IPI: TcxGridDBColumn
                 DataBinding.FieldName = 'BASE_IPI'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1VLR_IPI: TcxGridDBColumn
                 DataBinding.FieldName = 'VLR_IPI'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1ALIQ_ICMS: TcxGridDBColumn
                 DataBinding.FieldName = 'ALIQ_ICMS'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1BASE_ICMS: TcxGridDBColumn
                 DataBinding.FieldName = 'BASE_ICMS'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1VLR_ICMS: TcxGridDBColumn
                 DataBinding.FieldName = 'VLR_ICMS'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1CSOSN: TcxGridDBColumn
                 DataBinding.FieldName = 'CSOSN'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1ST: TcxGridDBColumn
                 DataBinding.FieldName = 'ST'
-                Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1IVA: TcxGridDBColumn
                 DataBinding.FieldName = 'IVA'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1ALIQ_ICMSSUB: TcxGridDBColumn
                 DataBinding.FieldName = 'ALIQ_ICMSSUB'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1BASE_ICMSSUB: TcxGridDBColumn
                 DataBinding.FieldName = 'BASE_ICMSSUB'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1VLR_ICMSSUB: TcxGridDBColumn
                 DataBinding.FieldName = 'VLR_ICMSSUB'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1VLR_DESCONTO: TcxGridDBColumn
                 DataBinding.FieldName = 'VLR_DESCONTO'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1VLR_OUTROS: TcxGridDBColumn
                 DataBinding.FieldName = 'VLR_OUTROS'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1VLR_FRETE: TcxGridDBColumn
                 DataBinding.FieldName = 'VLR_FRETE'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1VLR_CREDICMS: TcxGridDBColumn
                 DataBinding.FieldName = 'VLR_CREDICMS'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1CEST: TcxGridDBColumn
                 DataBinding.FieldName = 'CEST'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1CONTABIL: TcxGridDBColumn
                 DataBinding.FieldName = 'CONTABIL'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1REDUZ_ICMS: TcxGridDBColumn
                 DataBinding.FieldName = 'REDUZ_ICMS'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1PERC_REDBICMS: TcxGridDBColumn
                 DataBinding.FieldName = 'PERC_REDBICMS'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1VLR_FCP: TcxGridDBColumn
                 DataBinding.FieldName = 'VLR_FCP'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1NF_ID: TcxGridDBColumn
                 DataBinding.FieldName = 'NF_ID'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1NF_ITEM_ID: TcxGridDBColumn
                 DataBinding.FieldName = 'NF_ITEM_ID'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1PEDID: TcxGridDBColumn
                 DataBinding.FieldName = 'PEDID'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1AUTOID: TcxGridDBColumn
                 DataBinding.FieldName = 'AUTOID'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1MOVIMENTOU_ESTOQUE: TcxGridDBColumn
                 DataBinding.FieldName = 'MOVIMENTOU_ESTOQUE'
                 Visible = False
+                MinWidth = 25
               end
               object cxGrid1DBTableView1IDOSP: TcxGridDBColumn
                 DataBinding.FieldName = 'IDOSP'
                 Visible = False
+                MinWidth = 25
               end
             end
             object cxGrid1Level1: TcxGridLevel
@@ -397,22 +466,34 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
             end
           end
           object pnlTabpreco: TPanel
-            Left = 200
-            Top = 96
-            Width = 361
-            Height = 145
+            Left = 250
+            Top = 120
+            Width = 451
+            Height = 181
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             TabOrder = 1
             Visible = False
             object Label11: TLabel
-              Left = 32
-              Top = 29
-              Width = 123
-              Height = 13
+              Left = 40
+              Top = 36
+              Width = 155
+              Height = 17
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
               Caption = 'Escolha a tabela de pre'#231'o'
             end
             object cx_tabpreco: TcxLookupComboBox
-              Left = 32
-              Top = 48
+              Left = 40
+              Top = 60
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
               Properties.KeyFieldNames = 'COD_TABELA'
               Properties.ListColumns = <
                 item
@@ -420,13 +501,17 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
                 end>
               Properties.ListSource = DMD_PRO00315.DsrTabPreco
               TabOrder = 0
-              Width = 297
+              Width = 371
             end
             object btnconfirmatab: TcxButton
-              Left = 246
-              Top = 88
-              Width = 83
-              Height = 25
+              Left = 308
+              Top = 110
+              Width = 103
+              Height = 31
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
               Caption = 'Confirmar'
               OptionsImage.Glyph.SourceDPI = 96
               OptionsImage.Glyph.Data = {
@@ -459,181 +544,250 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
                 B14AD909655B7FA6505933BB0D734F9124803E5DD91B24A927EC0E57B1927216
                 65523C3A9DB2F75750B6BE72CA76AB018B8D6E4C0C15AD0DE7FF0DD6E05FDF42
                 745F4BE48E490000000049454E44AE426082}
+              OptionsImage.Spacing = 5
               TabOrder = 1
               OnClick = btnconfirmatabClick
             end
           end
         end
         object pnlitens: TPanel
-          Left = 800
+          Left = 1002
           Top = 1
-          Width = 22
-          Height = 343
+          Width = 28
+          Height = 432
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Align = alRight
           Alignment = taRightJustify
           TabOrder = 1
           Visible = False
           object cxmemItens: TcxMemo
-            Left = 49
+            Left = 61
             Top = 1
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Lines.Strings = (
               '')
             ParentFont = False
             Style.Font.Charset = OEM_CHARSET
             Style.Font.Color = clWindowText
-            Style.Font.Height = -11
+            Style.Font.Height = -14
             Style.Font.Name = 'Terminal'
             Style.Font.Style = []
             Style.IsFontAssigned = True
             TabOrder = 0
-            Height = 205
-            Width = 460
+            Height = 257
+            Width = 575
           end
         end
         object pnlproduto: TPanel
           Left = 1
-          Top = 344
-          Width = 821
-          Height = 132
+          Top = 433
+          Width = 1029
+          Height = 165
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Align = alBottom
           TabOrder = 2
           object cxGroupBox1: TcxGroupBox
-            Left = 12
-            Top = 9
+            Left = 15
+            Top = 11
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Caption = 'Produto'
+            PanelStyle.CaptionIndent = 3
             TabOrder = 0
-            Height = 53
-            Width = 297
+            Height = 67
+            Width = 371
             object cx_codbarras: TcxTextEdit
-              Left = 16
-              Top = 21
+              Left = 20
+              Top = 26
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
               TabOrder = 0
               OnExit = cx_codbarrasExit
-              Width = 265
+              Width = 331
             end
           end
           object cxGroupBox2: TcxGroupBox
-            Left = 12
-            Top = 66
+            Left = 15
+            Top = 83
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Caption = 'Qtde Itens'
+            PanelStyle.CaptionIndent = 3
             TabOrder = 1
-            Height = 53
-            Width = 89
+            Height = 66
+            Width = 111
             object cx_qtdeitens: TcxCurrencyEdit
-              Left = 12
-              Top = 23
+              Left = 15
+              Top = 29
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
               Properties.AssignedValues.DisplayFormat = True
               Properties.DecimalPlaces = 0
               TabOrder = 0
-              Width = 56
+              Width = 70
             end
           end
           object cxGroupBox3: TcxGroupBox
-            Left = 124
-            Top = 66
+            Left = 155
+            Top = 83
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Caption = 'Sub Total'
+            PanelStyle.CaptionIndent = 3
             TabOrder = 2
-            Height = 53
-            Width = 185
+            Height = 66
+            Width = 231
             object cx_subtotal: TcxCurrencyEdit
-              Left = 24
-              Top = 23
+              Left = 30
+              Top = 29
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
               TabOrder = 0
-              Width = 121
+              Width = 151
             end
           end
           object cxGroupBox4: TcxGroupBox
-            Left = 670
-            Top = 9
+            Left = 838
+            Top = 11
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Caption = 'Atalhos'
+            PanelStyle.CaptionIndent = 3
             TabOrder = 3
-            Height = 110
-            Width = 137
+            Height = 138
+            Width = 171
             object Label3: TLabel
-              Left = 10
-              Top = 17
-              Width = 96
-              Height = 13
+              Left = 13
+              Top = 21
+              Width = 121
+              Height = 17
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
               Caption = 'F-9 = Fechar Venda'
               Color = clRed
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clRed
-              Font.Height = -11
+              Font.Height = -14
               Font.Name = 'Tahoma'
               Font.Style = []
               ParentColor = False
               ParentFont = False
             end
             object Label4: TLabel
-              Left = 10
-              Top = 47
-              Width = 66
-              Height = 13
+              Left = 13
+              Top = 59
+              Width = 84
+              Height = 17
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
               Caption = 'F-5 = Op'#231#245'es'
               Color = clRed
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clRed
-              Font.Height = -11
+              Font.Height = -14
               Font.Name = 'Tahoma'
               Font.Style = []
               ParentColor = False
               ParentFont = False
             end
             object Label5: TLabel
-              Left = 10
-              Top = 78
-              Width = 97
-              Height = 13
+              Left = 13
+              Top = 98
+              Width = 124
+              Height = 17
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
               Caption = 'F-3 = Buscar Pedido'
               Color = clWhite
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clRed
-              Font.Height = -11
+              Font.Height = -14
               Font.Name = 'Tahoma'
               Font.Style = []
               ParentColor = False
               ParentFont = False
             end
             object Label6: TLabel
-              Left = 10
-              Top = 92
-              Width = 115
-              Height = 13
+              Left = 13
+              Top = 115
+              Width = 141
+              Height = 17
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
               Caption = 'F-2 = Identificar Cliente'
               Color = clWhite
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clRed
-              Font.Height = -11
+              Font.Height = -14
               Font.Name = 'Tahoma'
               Font.Style = []
               ParentColor = False
               ParentFont = False
             end
             object Label10: TLabel
-              Left = 10
-              Top = 62
-              Width = 92
-              Height = 13
+              Left = 13
+              Top = 78
+              Width = 116
+              Height = 17
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
               Caption = 'F-4 = Tabela Pre'#231'o'
               Color = clWhite
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clRed
-              Font.Height = -11
+              Font.Height = -14
               Font.Name = 'Tahoma'
               Font.Style = []
               ParentColor = False
               ParentFont = False
             end
             object Label12: TLabel
-              Left = 10
-              Top = 32
-              Width = 108
-              Height = 13
+              Left = 13
+              Top = 40
+              Width = 140
+              Height = 17
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
               Caption = 'F-6 = Consulta Cupom'
               Color = clRed
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clRed
-              Font.Height = -11
+              Font.Height = -14
               Font.Name = 'Tahoma'
               Font.Style = []
               ParentColor = False
@@ -643,59 +797,91 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
         end
         object PnlStatus: TPanel
           Left = 1
-          Top = 476
-          Width = 821
-          Height = 29
+          Top = 598
+          Width = 1029
+          Height = 36
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Align = alBottom
           TabOrder = 3
           object Label7: TLabel
-            Left = 16
-            Top = 9
-            Width = 35
-            Height = 13
+            Left = 20
+            Top = 11
+            Width = 42
+            Height = 17
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Caption = 'CAIXA:'
           end
           object LbFecha: TLabel
-            Left = 770
-            Top = 9
-            Width = 59
-            Height = 13
+            Left = 963
+            Top = 11
+            Width = 76
+            Height = 17
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Caption = 'Fechamento'
             Visible = False
           end
           object lblcaixa: TLabel
-            Left = 58
-            Top = 9
-            Width = 25
-            Height = 13
+            Left = 73
+            Top = 11
+            Width = 31
+            Height = 17
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Caption = 'caixa'
           end
           object Label8: TLabel
-            Left = 293
-            Top = 9
-            Width = 50
-            Height = 13
+            Left = 366
+            Top = 11
+            Width = 62
+            Height = 17
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Caption = 'USU'#193'RIO:'
           end
           object lblusuario: TLabel
-            Left = 351
-            Top = 9
-            Width = 35
-            Height = 13
+            Left = 439
+            Top = 11
+            Width = 44
+            Height = 17
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Caption = 'usuario'
           end
           object Label9: TLabel
-            Left = 565
-            Top = 9
-            Width = 41
-            Height = 13
+            Left = 706
+            Top = 11
+            Width = 52
+            Height = 17
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Caption = 'TABELA:'
           end
           object lbltabela: TLabel
-            Left = 615
-            Top = 9
-            Width = 52
-            Height = 13
+            Left = 769
+            Top = 11
+            Width = 65
+            Height = 17
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Caption = 'sem tabela'
           end
         end
@@ -703,128 +889,167 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
       object pnlcabecalho: TPanel
         Left = 0
         Top = 0
-        Width = 823
-        Height = 61
-        Margins.Left = 2
-        Margins.Top = 2
-        Margins.Right = 2
-        Margins.Bottom = 2
+        Width = 1031
+        Height = 76
         Align = alTop
         TabOrder = 1
         object Label1: TLabel
-          Left = 13
-          Top = 8
-          Width = 37
-          Height = 13
+          Left = 16
+          Top = 10
+          Width = 45
+          Height = 17
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Caption = 'Cliente:'
         end
         object Label2: TLabel
-          Left = 13
-          Top = 34
-          Width = 23
-          Height = 13
+          Left = 16
+          Top = 43
+          Width = 29
+          Height = 17
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Caption = 'CPF:'
         end
         object cx_nomecliente: TcxTextEdit
-          Left = 56
-          Top = 5
+          Left = 70
+          Top = 6
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           TabOrder = 0
-          Width = 369
+          Width = 461
         end
         object cx_cpf: TcxMaskEdit
-          Left = 56
-          Top = 31
+          Left = 70
+          Top = 39
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Properties.EditMask = '000.000.000-00;1;_'
           TabOrder = 1
           Text = '   .   .   -  '
           OnExit = cx_cpfExit
-          Width = 121
+          Width = 151
         end
       end
     end
     object tabconsulta: TcxTabSheet
-      Margins.Left = 2
-      Margins.Top = 2
-      Margins.Right = 2
-      Margins.Bottom = 2
       Caption = 'Consulta'
       ImageIndex = 1
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 823
-        Height = 97
-        Margins.Left = 2
-        Margins.Top = 2
-        Margins.Right = 2
-        Margins.Bottom = 2
+        Width = 1031
+        Height = 121
         Align = alTop
         TabOrder = 0
         object cxGroupBox6: TcxGroupBox
-          Left = 6
-          Top = 8
+          Left = 8
+          Top = 10
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Caption = 'Nro.Nota fiscal'
+          PanelStyle.CaptionIndent = 3
           Style.BorderStyle = ebsOffice11
           Style.LookAndFeel.Kind = lfOffice11
           StyleDisabled.LookAndFeel.Kind = lfOffice11
           TabOrder = 0
           Transparent = True
-          Height = 46
-          Width = 105
+          Height = 58
+          Width = 131
           object cx_nota: TcxCurrencyEdit
-            Left = 7
-            Top = 17
+            Left = 9
+            Top = 21
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             Properties.Alignment.Horz = taCenter
             Properties.AssignedValues.DisplayFormat = True
             TabOrder = 0
-            Width = 75
+            Width = 94
           end
           object cx_serie: TcxTextEdit
-            Left = 81
-            Top = 17
+            Left = 101
+            Top = 21
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             TabOrder = 1
             Text = '2'
-            Width = 18
+            Width = 23
           end
         end
         object cxGroupBox7: TcxGroupBox
-          Left = 114
-          Top = 8
+          Left = 143
+          Top = 10
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Caption = 'Data Emiss'#227'o'
+          PanelStyle.CaptionIndent = 3
           Style.BorderStyle = ebsOffice11
           Style.LookAndFeel.Kind = lfOffice11
           StyleDisabled.LookAndFeel.Kind = lfOffice11
           TabOrder = 1
           Transparent = True
-          Height = 46
-          Width = 257
+          Height = 58
+          Width = 321
           object cxdt1: TcxDateEdit
-            Left = 11
-            Top = 17
+            Left = 14
+            Top = 21
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             TabOrder = 0
-            Width = 113
+            Width = 141
           end
           object cxdt2: TcxDateEdit
-            Left = 130
-            Top = 17
+            Left = 163
+            Top = 21
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             TabOrder = 1
-            Width = 113
+            Width = 141
           end
         end
         object cxGroupBox5: TcxGroupBox
-          Left = 374
-          Top = 8
+          Left = 468
+          Top = 10
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Caption = 'Status'
+          PanelStyle.CaptionIndent = 3
           Style.BorderStyle = ebsOffice11
           Style.LookAndFeel.Kind = lfOffice11
           StyleDisabled.LookAndFeel.Kind = lfOffice11
           TabOrder = 2
           Transparent = True
-          Height = 46
-          Width = 165
+          Height = 58
+          Width = 206
           object CXSTATUS: TcxImageComboBox
-            Left = 9
-            Top = 17
+            Left = 11
+            Top = 21
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
             EditValue = 'TODOS'
             Properties.Alignment.Horz = taCenter
             Properties.ImageAlign = iaRight
@@ -883,15 +1108,19 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
                 Value = 'AGUARDANDO SEFAZ'
               end>
             TabOrder = 0
-            Width = 147
+            Width = 184
           end
         end
         object btconsulta: TcxButton
-          Left = 545
-          Top = 22
-          Width = 85
-          Height = 25
+          Left = 681
+          Top = 28
+          Width = 107
+          Height = 31
           Cursor = crHandPoint
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Caption = 'Consulta'
           LookAndFeel.Kind = lfOffice11
           LookAndFeel.NativeStyle = False
@@ -925,15 +1154,20 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
             D61B656D52B5D79FBC8564248F0B536E7BC2DBC1EF39FCD9CB5E11B905E0B6ED
             584749B03DCF348B8524DBCD5D88A94920088EED74020A13F02F6091C585D250
             35850000000049454E44AE426082}
+          OptionsImage.Spacing = 5
           TabOrder = 3
           OnClick = btconsultaClick
         end
         object btlimpar: TcxButton
-          Left = 630
-          Top = 22
-          Width = 85
-          Height = 25
+          Left = 788
+          Top = 28
+          Width = 106
+          Height = 31
           Cursor = crHandPoint
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Caption = 'Limpar'
           LookAndFeel.Kind = lfOffice11
           LookAndFeel.NativeStyle = False
@@ -963,26 +1197,27 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
             87F0740DB6CB55D8965A879014E56C60E255DDF2B541F39333DD5C28471CB7E0
             465849F0227833CC9D3D1C3F6C1100FE8B5F5E8AB24DCA40F5DB000000004945
             4E44AE426082}
+          OptionsImage.Spacing = 5
           TabOrder = 4
         end
       end
       object Panel2: TPanel
         Left = 0
-        Top = 510
-        Width = 823
-        Height = 57
-        Margins.Left = 2
-        Margins.Top = 2
-        Margins.Right = 2
-        Margins.Bottom = 2
+        Top = 640
+        Width = 1031
+        Height = 71
         Align = alBottom
         TabOrder = 1
       end
       object cxGrid2: TcxGrid
         Left = 0
-        Top = 97
-        Width = 823
-        Height = 413
+        Top = 121
+        Width = 1031
+        Height = 519
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Align = alClient
         TabOrder = 2
         object cxGrid2DBTableView1: TcxGridDBTableView
@@ -993,139 +1228,120 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
+          FilterRow.SeparatorWidth = 8
+          FixedDataRows.SeparatorWidth = 8
+          NewItemRow.SeparatorWidth = 8
+          OptionsView.NavigatorOffset = 63
           OptionsView.GroupByBox = False
+          OptionsView.IndicatorWidth = 15
+          Preview.LeftIndent = 25
+          Preview.RightIndent = 6
           object cxGrid2DBTableView1NF_NUMERO: TcxGridDBColumn
             Caption = 'N'#250'm.Cupom'
             DataBinding.FieldName = 'NF_NUMERO'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NF_DT_EMISSAO: TcxGridDBColumn
             Caption = 'Dt.Emiss'#227'o'
             DataBinding.FieldName = 'NF_DT_EMISSAO'
-            MinWidth = 16
-            Width = 95
+            Width = 119
           end
           object cxGrid2DBTableView1NOME: TcxGridDBColumn
             Caption = 'Cliente'
             DataBinding.FieldName = 'NOME'
-            MinWidth = 16
-            Width = 201
+            Width = 251
           end
           object cxGrid2DBTableView1NF_VLR_TOTAL: TcxGridDBColumn
             Caption = 'Vlr.Total'
             DataBinding.FieldName = 'NF_VLR_TOTAL'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NF_VLR_TOTMERC: TcxGridDBColumn
             Caption = 'Vlr.Mercadorias'
             DataBinding.FieldName = 'NF_VLR_TOTMERC'
-            MinWidth = 16
-            Width = 83
+            Width = 104
           end
           object cxGrid2DBTableView1NF_VLR_ICMS: TcxGridDBColumn
             Caption = 'Vlr.Icms'
             DataBinding.FieldName = 'NF_VLR_ICMS'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NF_VLR_ISS: TcxGridDBColumn
             Caption = 'Vlr.Iss'
             DataBinding.FieldName = 'NF_VLR_ISS'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NF_VLR_IPI: TcxGridDBColumn
             Caption = 'Vlr.Ipi'
             DataBinding.FieldName = 'NF_VLR_IPI'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1STATUS: TcxGridDBColumn
             Caption = 'Status'
             DataBinding.FieldName = 'STATUS'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NF_ID: TcxGridDBColumn
             Caption = 'Id.NF'
             DataBinding.FieldName = 'NF_ID'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1SERIE_ID: TcxGridDBColumn
             Caption = 'Serie'
             DataBinding.FieldName = 'SERIE_ID'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NFE_RECIBO: TcxGridDBColumn
             Caption = 'Recibo'
             DataBinding.FieldName = 'NFE_RECIBO'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NFE_IDNOTA: TcxGridDBColumn
             Caption = 'Chave NFe'
             DataBinding.FieldName = 'NFE_IDNOTA'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NFE_PROTOCOLO: TcxGridDBColumn
             Caption = 'Protocolo'
             DataBinding.FieldName = 'NFE_PROTOCOLO'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NFE_STATUS: TcxGridDBColumn
             Caption = 'Status Retorno'
             DataBinding.FieldName = 'NFE_STATUS'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NFE_FINALIDADE: TcxGridDBColumn
             Caption = 'Finalidade'
             DataBinding.FieldName = 'NFE_FINALIDADE'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NFE_MODELO: TcxGridDBColumn
             Caption = 'Modelo'
             DataBinding.FieldName = 'NFE_MODELO'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NFE_SERIE: TcxGridDBColumn
             Caption = 'serie id'
             DataBinding.FieldName = 'NFE_SERIE'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NFE_CODSTATUS: TcxGridDBColumn
             Caption = 'C'#243'd.Status'
             DataBinding.FieldName = 'NFE_CODSTATUS'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NFE_NROCANCELAMENTO: TcxGridDBColumn
             Caption = 'Nro.Cancelamento'
             DataBinding.FieldName = 'NFE_NROCANCELAMENTO'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1CFOP_ID: TcxGridDBColumn
             Caption = 'Id.Cfop'
             DataBinding.FieldName = 'CFOP_ID'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1SITUACAO: TcxGridDBColumn
             Caption = 'Situa'#231#227'o'
             DataBinding.FieldName = 'SITUACAO'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1GESTOR_CLIENTE: TcxGridDBColumn
             Caption = 'Id.Cliente'
             DataBinding.FieldName = 'GESTOR_CLIENTE'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1VLR_RETENCAO: TcxGridDBColumn
             Caption = 'Vlr.Reten'#231#227'o'
             DataBinding.FieldName = 'VLR_RETENCAO'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1VENDEDOR_ID: TcxGridDBColumn
             Caption = 'Id.Vendedor'
             DataBinding.FieldName = 'VENDEDOR_ID'
-            MinWidth = 16
           end
           object cxGrid2DBTableView1NFE_DTENVIO: TcxGridDBColumn
             Caption = 'Dt.Envio'
             DataBinding.FieldName = 'NFE_DTENVIO'
-            MinWidth = 16
           end
         end
         object cxGrid2Level1: TcxGridLevel
@@ -1137,33 +1353,6 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
   object ActionList1: TActionList
     Left = 284
     Top = 76
-    object ActGerarNFe: TAction
-      Caption = 'ActGerarNFe'
-    end
-    object ActLerConfIni: TAction
-      Caption = 'ActLerConfIni'
-      ShortCut = 49228
-    end
-    object ActGravarConfIni: TAction
-      Caption = 'ActGravarConfIni'
-      ShortCut = 49235
-    end
-    object ActConsultaRecibo: TAction
-      Caption = 'ActConsultaRecibo'
-    end
-    object ActEnviarEmail: TAction
-      Caption = 'ActEnviarEmail'
-    end
-    object ActInsereReceber: TAction
-      Caption = 'ActInsereReceber'
-    end
-    object ActGerarNFCe: TAction
-      Caption = 'ActGerarNFCe'
-    end
-    object ActTrocarFilial: TAction
-      Caption = 'ActTrocarFilial'
-      ShortCut = 16503
-    end
     object ActFecharVenda: TAction
       Caption = 'ActFecharVenda'
       ShortCut = 120

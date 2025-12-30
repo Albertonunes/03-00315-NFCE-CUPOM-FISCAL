@@ -121,14 +121,6 @@ type
     cx_nomecliente: TcxTextEdit;
     cx_cpf: TcxMaskEdit;
     ActionList1: TActionList;
-    ActGerarNFe: TAction;
-    ActLerConfIni: TAction;
-    ActGravarConfIni: TAction;
-    ActConsultaRecibo: TAction;
-    ActEnviarEmail: TAction;
-    ActInsereReceber: TAction;
-    ActGerarNFCe: TAction;
-    ActTrocarFilial: TAction;
     ActFecharVenda: TAction;
     ActOpcoes: TAction;
     buscapedido: TAction;
@@ -596,7 +588,7 @@ begin
       QryCodBarras.SQL.Add('     MATERIAIS AS B ON A.CODID = B.CODID LEFT JOIN                            ');
       QryCodBarras.SQL.Add('  	 TABELA_PRECO_MATERIAIS T ON A.CODID = T.CODID AND T.COD_TABELA = :CODTAB ');
       QryCodBarras.SQL.Add('WHERE (A.BLOQUEIO = ''N'') AND (A.FILIAL = :FILIAL)                           ');
-      QryCodBarras.SQL.Add('  AND ((TRIM(A.CODIGO) = :CODBARRAS) OR  (TRIM(B.COD_BARRAS) = :CODBARRAS))   ');
+      QryCodBarras.SQL.Add('  AND ((LTRIM(RTRIM(A.CODIGO)) = :CODBARRAS) OR  (LTRIM(RTRIM(B.COD_BARRAS)) = :CODBARRAS))   ');
       QryCodBarras.ParamByName('CODTAB').AsInteger := TABPRECO;
 
       if DmdPrincipal.QryParamsPRODUTO_INDIVIDUAL.Value = 'S' then
@@ -625,14 +617,14 @@ begin
         // se não não encontrar como codigo de barras, procurar como cod_interno
         QryCodBarras.Close;
         QryCodBarras.SQL.Clear;
-        QryCodBarras.SQL.Add('SELECT A.CODID, A.CODID AS BARID, A.COD_INTERNO AS CODIGO, A.DESCRICAO,       ');
-        QryCodBarras.SQL.Add('       ISNULL(A.ANGULO,1.000) AS QTDE_UNIT, A.UNIDADE_SAI AS UNIDADE,         ');
-        QryCodBarras.SQL.Add('       ''1'' AS EMBALAGEM, A.FILIAL, A.BLOQUEIO, A.ALIQ_IPI AS IPI,           ');
-        QryCodBarras.SQL.Add('       A.VLR_VENDA, A.VLR_VENDA2, A.VLR_VENDA3, T.VENDA                       ');
-        QryCodBarras.SQL.Add('FROM MATERIAIS A  LEFT JOIN                                                   ');
-        QryCodBarras.SQL.Add('     TABELA_PRECO_MATERIAIS T ON A.CODID = T.CODID AND T.COD_TABELA = :CODTAB ');
-        QryCodBarras.SQL.Add('WHERE (BLOQUEIO = ''N'') AND (FILIAL = :FILIAL)                               ');
-        QryCodBarras.SQL.Add('  AND ((TRIM(COD_INTERNO) = :CODBARRAS) OR  (TRIM(COD_BARRAS) = :CODBARRAS))  ');
+        QryCodBarras.SQL.Add('SELECT A.CODID, A.CODID AS BARID, A.COD_INTERNO AS CODIGO, A.DESCRICAO,         ');
+        QryCodBarras.SQL.Add('       ISNULL(A.ANGULO,1.000) AS QTDE_UNIT, A.UNIDADE_SAI AS UNIDADE,           ');
+        QryCodBarras.SQL.Add('       ''1'' AS EMBALAGEM, A.FILIAL, A.BLOQUEIO, A.ALIQ_IPI AS IPI,             ');
+        QryCodBarras.SQL.Add('       A.VLR_VENDA, A.VLR_VENDA2, A.VLR_VENDA3, T.VENDA                         ');
+        QryCodBarras.SQL.Add('FROM MATERIAIS A  LEFT JOIN                                                     ');
+        QryCodBarras.SQL.Add('     TABELA_PRECO_MATERIAIS T ON A.CODID = T.CODID AND T.COD_TABELA = :CODTAB   ');
+        QryCodBarras.SQL.Add('WHERE (A.BLOQUEIO = ''N'') AND (A.FILIAL = :FILIAL)                             ');
+        QryCodBarras.SQL.Add('  AND ((LTRIM(RTRIM(A.COD_INTERNO)) = :CODBARRAS) OR  (LTRIM(RTRIM(A.COD_BARRAS)) = :CODBARRAS))');
         QryCodBarras.ParamByName('CODTAB').AsInteger := TABPRECO;
         if DmdPrincipal.QryParamsPRODUTO_INDIVIDUAL.Value = 'S' then
           QryCodBarras.ParamByName('FILIAL').AsInteger := PRO_FILIAL
@@ -727,7 +719,7 @@ begin
   PreencherCaption(Self);
   spacesso.Click;
   cxPageControl1.HideTabs := true;
-  ActLerConfIni.Execute;
+  //ActLerConfIni.Execute;
   MULTIPLICADOR := 1;
   SERIE         := 2;
   TABPRECO      := 0;

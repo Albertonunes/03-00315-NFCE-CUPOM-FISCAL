@@ -202,7 +202,7 @@ type
 
 var
   FRM_CONFIGURA: TFRM_CONFIGURA;
-  vcstatus, NFID, nNSU, NUMNF: Integer;
+  vcstatus, NFID, nNSU, NUMNF, NFITEMID: Integer;
   nrorecibo, nProt, codmotivo, chavenfe, Motivo: string;
 
 implementation
@@ -287,11 +287,25 @@ var
   VnSerie, VtpComb, VnMotor, VCMT, Vdist, VtpPint, VVIN, VcMod  : String;
   VanoMod, VanoFab, VtpVeic, VespVeic, VcorDENATRAN, Vlota, VtpRest : String;
 
+  vtIS, vtBCIBSCBS, vtIBS, vtCredPres, vtCredPresCondSus, vtDif : real;
+  vtDevTrib, vtIBSUF, vtIBSUFDif, vtIBSUFDevTrib : real;
+  vtIBSMun, vtIBSMunDif, vtIBSMunDevTrib : real;
+  vtCBS, vtCBSCredPres, vtCBSCredPresCondSus, vtIBSMono, vtCBSMono : real;
+  vtIBSMonoReten, vtCBSMonoReten, vtIBSMonoRet, vtCBSMonoRet : real;
+
 begin
   icmsZF := 0;
   NumCTe := '1';
   icmspartorig := 0; icmspartdest := 0; icmsOrigem := 0;
   icmsDest := 0; vFcp := 0; FcpST := 0; icmsFcp := 0;
+  vtIS := 0; vtBCIBSCBS := 0; vtIBS := 0; vtCredPres := 0;
+  vtCredPresCondSus := 0; vtDif := 0; vtDevTrib := 0;
+  vtIBSUF := 0; vtIBSUFDif := 0; vtIBSUFDevTrib := 0;
+  vtIBSMun := 0; vtIBSMunDif := 0; vtIBSMunDevTrib := 0;
+  vtCBS := 0; vtCBSCredPres := 0; vtCBSCredPresCondSus := 0;
+  vtIBSMono := 0; vtCBSMono := 0; vtIBSMonoReten := 0;
+  vtCBSMonoReten := 0; vtIBSMonoRet := 0; vtCBSMonoRet := 0;
+
   with DMD_PRO00315 do
   begin
     QryCfopItem.Close;
@@ -394,7 +408,7 @@ begin
         Ide.tpNFCredito := tcNenhum;
 
         Ide.gCompraGov.tpEnteGov := tcgNenhum;//tcgOutro ,tcgMunicipios ,tcgDistritoFederal ,tcgEstados ,tcgUniao ,tcgNenhum
-        Ide.gCompraGov.pRedutor  := 5;
+        Ide.gCompraGov.pRedutor  := 0;
         Ide.gCompraGov.tpOperGov := togNenhum;//togRecebimentoPag,togFornecimento,togNenhum
       end;
 
@@ -610,6 +624,18 @@ begin
               ICMSCons.vICMSSTCons   := 0;
               ICMSCons.UFcons        := '';
             end;
+          end;
+          if rgReformaTributaria.ItemIndex = 0 then
+          begin
+            // Indicador de fornecimento de bem móvel usado
+            Prod.indBemMovelUsado := tieNenhum;
+
+            // Valor total do Item, correspondente à sua participação no total da nota.
+            // A soma dos itens deverá corresponder ao total da nota.
+            vItem := QryFiltroItensNF_ITEM_VLR_TOTAL.Value;
+            // Referenciamento de item de outro Documento Fiscal Eletrônico - DF-e
+            DFeReferenciado.chaveAcesso := '';
+            DFeReferenciado.nItem := 1;
           end;
           with Imposto do
           begin
@@ -1264,111 +1290,164 @@ begin
               vCOFINS   := 0;
             end;
             // Reforma Tributária
-          (*  if rgReformaTributaria.ItemIndex = 0 then
+            if rgReformaTributaria.ItemIndex = 0 then
             begin
-              //  Informações do tributo: Imposto Seletivo
-              ISel.CSTIS := cstis000;
-              ISel.cClassTribIS := '000001';
+              if not QryFiltroIBSNF_ITEM_ID.IsNull then
+              begin
+                //  Informações do tributo: Imposto Seletivo
+                ISel.CSTIS        := StrToCSTIS(QryFiltroIBSCSTIS.Value);// cstisNenhum;
+                ISel.cClassTribIS := QryFiltroIBScClassTribIS.Value;
 
-              ISel.vBCIS := 100;
-              ISel.pIS := 5;
-              ISel.pISEspec := 5;
-              ISel.uTrib := 'UNIDAD';
-              ISel.qTrib := 10;
-              ISel.vIS := 100;
+                ISel.vBCIS    := QryFiltroIBSvBCIS.Value;
+                ISel.pIS      := QryFiltroIBSpIS.Value;
+                ISel.pISEspec := QryFiltroIBSpISEspec.Value;
+                ISel.uTrib    := QryFiltroIBSuTrib.Value;
+                ISel.qTrib    := QryFiltroIBSqTrib.Value;
+                ISel.vIS      := QryFiltroIBSvIS.Value;
 
-              //  Informações do tributo: IBS / CBS
-              IBSCBS.CST := cst000;
-              IBSCBS.cClassTrib := '000001';
+                //  Informações do tributo: IBS / CBS
+                IBSCBS.CST        := StrToCSTIBSCBS(QryFiltroIBSCST.Value);//cst000;
+                IBSCBS.cClassTrib := QryFiltroIBScClassTrib.Value;
+                IBSCBS.indDoacao  := tieSim;
 
-              IBSCBS.gIBSCBS.vBC := 100;
+                IBSCBS.gIBSCBS.vBC := QryFiltroIBSvBC.Value;
 
-              IBSCBS.gIBSCBS.gIBSUF.pIBSUF := 5;
-              IBSCBS.gIBSCBS.gIBSUF.vIBSUF := 100;
+                IBSCBS.gIBSCBS.gIBSUF.pIBSUF := QryFiltroIBSpIBSUF.Value;
+                IBSCBS.gIBSCBS.gIBSUF.vIBSUF := QryFiltroIBSvIBSUF.Value;
 
-              IBSCBS.gIBSCBS.gIBSUF.gDif.pDif := 5;
-              IBSCBS.gIBSCBS.gIBSUF.gDif.vDif := 100;
+                IBSCBS.gIBSCBS.gIBSUF.gDif.pDif := QryFiltroIBSgIBSUFpDif.Value;
+                IBSCBS.gIBSCBS.gIBSUF.gDif.vDif := QryFiltroIBSgIBSUFvDif.Value;
 
-              IBSCBS.gIBSCBS.gIBSUF.gDevTrib.vDevTrib := 100;
+                IBSCBS.gIBSCBS.gIBSUF.gDevTrib.vDevTrib := QryFiltroIBSgIBSUFvDevTrib.Value;
+                if QryFiltroIBSgIBSUFpRedAliq.Value > 0 then
+                begin
+                  IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq  := QryFiltroIBSgIBSUFpRedAliq.Value;
+                  IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := QryFiltroIBSgIBSUFpAliqEfet.Value;
+                end;
+                IBSCBS.gIBSCBS.gIBSMun.pIBSMun := QryFiltroIBSpIBSMun.Value;
+                IBSCBS.gIBSCBS.gIBSMun.vIBSMun := QryFiltroIBSvIBSMun.Value;
 
-              IBSCBS.gIBSCBS.gIBSUF.gRed.pRedAliq := 5;
-              IBSCBS.gIBSCBS.gIBSUF.gRed.pAliqEfet := 5;
+                IBSCBS.gIBSCBS.gIBSMun.gDif.pDif := QryFiltroIBSgIBSMpDif.Value;
+                IBSCBS.gIBSCBS.gIBSMun.gDif.vDif := QryFiltroIBSgIBSMvDif.Value;
 
-              IBSCBS.gIBSCBS.gIBSMun.pIBSMun := 5;
-              IBSCBS.gIBSCBS.gIBSMun.vIBSMun := 100;
+                IBSCBS.gIBSCBS.gIBSMun.gDevTrib.vDevTrib := QryFiltroIBSgIBSMvDevTrib.Value;
 
-              IBSCBS.gIBSCBS.gIBSMun.gDif.pDif := 5;
-              IBSCBS.gIBSCBS.gIBSMun.gDif.vDif := 100;
+                if QryFiltroIBSgIBSMpRedAliq.Value > 0 then
+                begin
+                  IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq  := QryFiltroIBSgIBSMpRedAliq.Value;
+                  IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := QryFiltroIBSgIBSMpAliqEfet.Value;
+                end;
+                // vIBS = vIBSUF + vIBSMun
+                IBSCBS.gIBSCBS.vIBS := QryFiltroIBSvIBSMun.Value+QryFiltroIBSvIBSUF.Value;
 
-              IBSCBS.gIBSCBS.gIBSMun.gDevTrib.vDevTrib := 100;
+                IBSCBS.gIBSCBS.gCBS.pCBS := QryFiltroIBSpCBS.Value;
+                IBSCBS.gIBSCBS.gCBS.vCBS := QryFiltroIBSvCBS.Value;
 
-              IBSCBS.gIBSCBS.gIBSMun.gRed.pRedAliq := 5;
-              IBSCBS.gIBSCBS.gIBSMun.gRed.pAliqEfet := 5;
+                IBSCBS.gIBSCBS.gCBS.gDif.pDif := QryFiltroIBSgCBSpDif.Value;
+                IBSCBS.gIBSCBS.gCBS.gDif.vDif := QryFiltroIBSgCBSvDif.Value;
 
-              IBSCBS.gIBSCBS.gCBS.pCBS := 5;
-              IBSCBS.gIBSCBS.gCBS.vCBS := 100;
+                IBSCBS.gIBSCBS.gCBS.gDevTrib.vDevTrib := QryFiltroIBSgCBSvDevTrib.Value;
 
-              IBSCBS.gIBSCBS.gCBS.gDif.pDif := 5;
-              IBSCBS.gIBSCBS.gCBS.gDif.vDif := 100;
+                IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq  := QryFiltroIBSgCBSpRedAliq.Value;
+                IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := QryFiltroIBSgCBSpAliqEfet.Value;
 
-              IBSCBS.gIBSCBS.gCBS.gDevTrib.vDevTrib := 100;
+                IBSCBS.gIBSCBS.gTribRegular.CSTReg             := StrToCSTIBSCBS(QryFiltroIBSCSTReg.Value);//cstNenhum;
+                IBSCBS.gIBSCBS.gTribRegular.cClassTribReg      := QryFiltroIBScClassTribReg.Value;
+                IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSUF  := QryFiltroIBSpAliqEfetRegIBSUF.Value;
+                IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSUF      := QryFiltroIBSvTribRegIBSUF.Value;
+                IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSMun := QryFiltroIBSpAliqEfetRegIBSMun.Value;
+                IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSMun     := QryFiltroIBSvTribRegIBSMun.Value;
+                IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegCBS    := QryFiltroIBSpAliqEfetRegCBS.Value;
+                IBSCBS.gIBSCBS.gTribRegular.vTribRegCBS        := QryFiltroIBSvTribRegCBS.Value;
 
-              IBSCBS.gIBSCBS.gCBS.gRed.pRedAliq := 5;
-              IBSCBS.gIBSCBS.gCBS.gRed.pAliqEfet := 5;
+                // Tipo Tributação Compra Governamental
+                IBSCBS.gIBSCBS.gTribCompraGov.pAliqIBSUF  := QryFiltroIBSgGovpAliqIBSUF.Value;
+                IBSCBS.gIBSCBS.gTribCompraGov.vTribIBSUF  := QryFiltroIBSgGovvTribIBSUF.Value;
+                IBSCBS.gIBSCBS.gTribCompraGov.pAliqIBSMun := QryFiltroIBSgGovpAliqIBSMun.Value;
+                IBSCBS.gIBSCBS.gTribCompraGov.vTribIBSMun := QryFiltroIBSgGovvTribIBSMun.Value;
+                IBSCBS.gIBSCBS.gTribCompraGov.pAliqCBS    := QryFiltroIBSgGovpAliqCBS.Value;
+                IBSCBS.gIBSCBS.gTribCompraGov.vTribCBS    := QryFiltroIBSgGovvTribCBS.Value;
 
-              IBSCBS.gIBSCBS.gTribRegular.CSTReg := cst000;
-              IBSCBS.gIBSCBS.gTribRegular.cClassTribReg := '000001';
-              IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSUF := 5;
-              IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSUF := 50;
-              IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegIBSMun := 5;
-              IBSCBS.gIBSCBS.gTribRegular.vTribRegIBSMun := 50;
-              IBSCBS.gIBSCBS.gTribRegular.pAliqEfetRegCBS := 5;
-              IBSCBS.gIBSCBS.gTribRegular.vTribRegCBS := 50;
+                //  Informações do tributo: IBS / CBS em operações com imposto monofásico
+                IBSCBS.gIBSCBSMono.gMonoPadrao.qBCMono  := QryFiltroIBSMonoqBCMono.Value;
+                IBSCBS.gIBSCBSMono.gMonoPadrao.adRemIBS := QryFiltroIBSMonoadRemIBS.Value;
+                IBSCBS.gIBSCBSMono.gMonoPadrao.adRemCBS := QryFiltroIBSMonoadRemCBS.Value;
+                IBSCBS.gIBSCBSMono.gMonoPadrao.vIBSMono := QryFiltroIBSMonovIBSMono.Value;
+                IBSCBS.gIBSCBSMono.gMonoPadrao.vCBSMono := QryFiltroIBSMonovCBSMono.Value;
 
-              IBSCBS.gIBSCBS.gIBSCredPres.cCredPres := cp01;
-              IBSCBS.gIBSCBS.gIBSCredPres.pCredPres := 5;
-              IBSCBS.gIBSCBS.gIBSCredPres.vCredPres := 100;
-              IBSCBS.gIBSCBS.gIBSCredPres.vCredPresCondSus := 100;
+                IBSCBS.gIBSCBSMono.gMonoReten.qBCMonoReten  := QryFiltroIBSMonoqBCMonoReten.Value;
+                IBSCBS.gIBSCBSMono.gMonoReten.adRemIBSReten := QryFiltroIBSMonoadRemIBSReten.Value;
+                IBSCBS.gIBSCBSMono.gMonoReten.vIBSMonoReten := QryFiltroIBSMonovIBSMonoReten.Value;
+                IBSCBS.gIBSCBSMono.gMonoReten.vCBSMonoReten := QryFiltroIBSMonovCBSMonoReten.Value;
 
-              IBSCBS.gIBSCBS.gCBSCredPres.cCredPres := cp01;
-              IBSCBS.gIBSCBS.gCBSCredPres.pCredPres := 5;
-              IBSCBS.gIBSCBS.gCBSCredPres.vCredPres := 100;
-              IBSCBS.gIBSCBS.gCBSCredPres.vCredPresCondSus := 100;
+                IBSCBS.gIBSCBSMono.gMonoRet.qBCMonoRet  := QryFiltroIBSMonoqBCMonoRet.Value;
+                IBSCBS.gIBSCBSMono.gMonoRet.adRemIBSRet := QryFiltroIBSMonoadRemIBSRet.Value;
+                IBSCBS.gIBSCBSMono.gMonoRet.vIBSMonoRet := QryFiltroIBSMonovIBSMonoRet.Value;
+                IBSCBS.gIBSCBSMono.gMonoRet.vCBSMonoRet := QryFiltroIBSMonovCBSMonoRet.Value;
 
-              // Tipo Tributação Compra Governamental
-              IBSCBS.gIBSCBS.gTribCompraGov.pAliqIBSUF := 5;
-              IBSCBS.gIBSCBS.gTribCompraGov.vTribIBSUF := 50;
-              IBSCBS.gIBSCBS.gTribCompraGov.pAliqIBSMun := 5;
-              IBSCBS.gIBSCBS.gTribCompraGov.vTribIBSMun := 50;
-              IBSCBS.gIBSCBS.gTribCompraGov.pAliqCBS := 5;
-              IBSCBS.gIBSCBS.gTribCompraGov.vTribCBS := 50;
+                IBSCBS.gIBSCBSMono.gMonoDif.pDifIBS     := QryFiltroIBSMonopDifIBS.Value;
+                IBSCBS.gIBSCBSMono.gMonoDif.vIBSMonoDif := QryFiltroIBSMonovIBSMonoDif.Value;
+                IBSCBS.gIBSCBSMono.gMonoDif.pDifCBS     := QryFiltroIBSMonopDifCBS.Value;
+                IBSCBS.gIBSCBSMono.gMonoDif.vCBSMonoDif := QryFiltroIBSMonovCBSMonoDif.Value;
 
-              //  Informações do tributo: IBS / CBS em operações com imposto monofásico
-              IBSCBS.gIBSCBSMono.qBCMono := 1;
-              IBSCBS.gIBSCBSMono.adRemIBS := 5;
-              IBSCBS.gIBSCBSMono.adRemCBS := 5;
-              IBSCBS.gIBSCBSMono.vIBSMono := 100;
-              IBSCBS.gIBSCBSMono.vCBSMono := 100;
+                IBSCBS.gIBSCBSMono.vTotIBSMonoItem := QryFiltroIBSMonovTotIBSMonoItem.Value;
+                IBSCBS.gIBSCBSMono.vTotCBSMonoItem := QryFiltroIBSMonovTotCBSMonoItem.Value;
 
-              IBSCBS.gIBSCBSMono.qBCMonoReten := 1;
-              IBSCBS.gIBSCBSMono.adRemIBSReten := 5;
-              IBSCBS.gIBSCBSMono.vIBSMonoReten := 100;
-              IBSCBS.gIBSCBSMono.vCBSMonoReten := 100;
+                //  Informações da Transferencia de Crédito
+                IBSCBS.gTransfCred.vIBS := QryFiltroIBSTransfCredvIBS.Value;
+                IBSCBS.gTransfCred.vCBS := QryFiltroIBSTransfCredvCBS.Value;
+                 (*
+                //  Informações Ajuste de Competência
+                IBSCBS.gAjusteCompet.competApur := Date;
+                IBSCBS.gAjusteCompet.vIBS := 100;
+                IBSCBS.gAjusteCompet.vCBS := 100;
 
-              IBSCBS.gIBSCBSMono.qBCMonoRet := 1;
-              IBSCBS.gIBSCBSMono.adRemIBSRet := 5;
-              IBSCBS.gIBSCBSMono.vIBSMonoRet := 100;
-              IBSCBS.gIBSCBSMono.vCBSMonoRet := 100;
+                //  Informações Estorno de Crédito
+                IBSCBS.gEstornoCred.vIBSEstCred := 100;
+                IBSCBS.gEstornoCred.vCBSEstCred := 100;
+                            *)
+                //  Informações do Crédito Presumido Operacional
+                IBSCBS.gCredPresOper.cCredPres                     := StrTocCredPres(IntToStr(QryFiltroIBSCBScCredPres.Value));//cpNenhum;
+                IBSCBS.gCredPresOper.vBCCredPres                   := QryFiltroIBSvBC.Value;
+                IBSCBS.gCredPresOper.gIBSCredPres.pCredPres        := QryFiltroIBSIBSpCredPres.Value;
+                IBSCBS.gCredPresOper.gIBSCredPres.vCredPres        := QryFiltroIBSCBSvCredPres.Value;
+                IBSCBS.gCredPresOper.gIBSCredPres.vCredPresCondSus := QryFiltroIBSIBSvCredPresCondSus.Value;
+                IBSCBS.gCredPresOper.gCBSCredPres.pCredPres        := QryFiltroIBSCBSpCredPres.Value;
+                IBSCBS.gCredPresOper.gCBSCredPres.vCredPres        := QryFiltroIBSCBSvCredPres.Value;
+                IBSCBS.gCredPresOper.gCBSCredPres.vCredPresCondSus := QryFiltroIBSCBSvCredPresCondSus.Value;
 
-              IBSCBS.gIBSCBSMono.pDifIBS := 5;
-              IBSCBS.gIBSCBSMono.vIBSMonoDif := 100;
-              IBSCBS.gIBSCBSMono.pDifCBS := 5;
-              IBSCBS.gIBSCBSMono.vCBSMonoDif := 100;
+                //  Informações do Crédito Presumido IBS ZFM
+                // tcpNenhum, tcpSemCredito, tcpBensConsumoFinal, tcpBensCapital,
+                // tcpBensIntermediarios, tcpBensInformaticaOutros
+                IBSCBS.gCredPresIBSZFM.tpCredPresIBSZFM := StrToTpCredPresIBSZFM(IntToStr(QryFiltroIBSCBScCredPres.Value));//tcpNenhum;//tcpBensInformaticaOutros;
+                IBSCBS.gCredPresIBSZFM.vCredPresIBSZFM  := QryFiltroIBSvCredPresIBSZFM.Value;
+                IBSCBS.gCredPresIBSZFM.competApur       := date;
+                // totalização
+                vtIS       := vtIS      +QryFiltroIBSvIS.Value;
+                vtBCIBSCBS := vtBCIBSCBS+QryFiltroIBSvBC.Value;
+                vtIBS      := vtIBS     +QryFiltroIBSvIBSUF.Value+QryFiltroIBSvIBSMun.Value;
+                vtCredPres := vtCredPres+QryFiltroIBSCBSvCredPres.Value;
+                vtCredPresCondSus := vtCredPresCondSus+QryFiltroIBSCBSvCredPresCondSus.Value;
+                vtDif      := vtDif     +QryFiltroIBSgCBSvDif.Value;
+                vtDevTrib  := vtDevTrib +QryFiltroIBSgCBSvDevTrib.Value;
+                vtIBSUF    := vtIBSUF   +QryFiltroIBSvIBSUF.Value;
+                vtIBSUFDif := vtIBSUFDif+QryFiltroIBSgIBSUFvDif.Value;
+                vtIBSUFDevTrib  := vtIBSUFDevTrib+QryFiltroIBSgIBSUFvDevTrib.Value;
+                vtIBSMun        := vtIBSMun        +QryFiltroIBSvIBSMun.Value;
+                vtIBSMunDif     := vtIBSMunDif     +QryFiltroIBSgIBSMvDif.Value;
+                vtIBSMunDevTrib := vtIBSMunDevTrib +QryFiltroIBSgIBSMvDevTrib.Value;
+                vtCBS           := vtCBS           +QryFiltroIBSvCBS.Value;
+                vtCBSCredPres   := vtCBSCredPres   +QryFiltroIBSCBSvCredPres.Value;
+                vtCBSCredPresCondSus := vtCBSCredPresCondSus +QryFiltroIBSCBSvCredPresCondSus.Value;
+                vtIBSMono      := vtIBSMono      +QryFiltroIBSMonovIBSMono.Value;
+                vtCBSMono      := vtCBSMono      +QryFiltroIBSMonovCBSMono.Value;
+                vtIBSMonoReten := vtIBSMonoReten +QryFiltroIBSMonovIBSMonoReten.Value;
+                vtCBSMonoReten := vtCBSMonoReten +QryFiltroIBSMonovCBSMonoReten.Value;
+                vtIBSMonoRet   := vtIBSMonoRet   +QryFiltroIBSMonovIBSMonoRet.Value;
+                vtCBSMonoRet   := vtCBSMonoRet   +QryFiltroIBSMonovCBSMonoRet.Value;
 
-              IBSCBS.gIBSCBSMono.vTotIBSMonoItem := 100;
-              IBSCBS.gIBSCBSMono.vTotCBSMonoItem := 100;
+              end;
             end;
-            *)
           end;
 
           // Grupo para serviços
@@ -1460,42 +1539,43 @@ begin
         Total.retTrib.vIRRF      := 0;
         Total.retTrib.vBCRetPrev := 0;
         Total.retTrib.vRetPrev   := 0; }
-      (*
+
       // Reforma Tributária
       if rgReformaTributaria.ItemIndex = 0 then
       begin
-        Total.ISTot.vIS := 100;
+        Total.ISTot.vIS := vtIS;
 
-        Total.IBSCBSTot.vBCIBSCBS := 100;
+        Total.IBSCBSTot.vBCIBSCBS := vtBCIBSCBS;
 
-        Total.IBSCBSTot.gIBS.vIBS := 100;
-        Total.IBSCBSTot.gIBS.vCredPres := 100;
-        Total.IBSCBSTot.gIBS.vCredPresCondSus := 100;
+        Total.IBSCBSTot.gIBS.vIBS := vtIBS;
+        Total.IBSCBSTot.gIBS.vCredPres := vtCredPres;
+        Total.IBSCBSTot.gIBS.vCredPresCondSus := vtCredPresCondSus;
 
-        Total.IBSCBSTot.gIBS.gIBSUFTot.vDif := 100;
-        Total.IBSCBSTot.gIBS.gIBSUFTot.vDevTrib := 100;
-        Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF := 100;
+        Total.IBSCBSTot.gIBS.gIBSUFTot.vDif     := vtDif;
+        Total.IBSCBSTot.gIBS.gIBSUFTot.vDevTrib := vtDevTrib;
+        Total.IBSCBSTot.gIBS.gIBSUFTot.vIBSUF   := vtIBSUF;
 
-        Total.IBSCBSTot.gIBS.gIBSMunTot.vDif := 100;
-        Total.IBSCBSTot.gIBS.gIBSMunTot.vDevTrib := 100;
-        Total.IBSCBSTot.gIBS.gIBSMunTot.vIBSMun := 100;
+        Total.IBSCBSTot.gIBS.gIBSMunTot.vDif     := vtIBSUFDif;
+        Total.IBSCBSTot.gIBS.gIBSMunTot.vDevTrib := vtIBSUFDevTrib;
+        Total.IBSCBSTot.gIBS.gIBSMunTot.vIBSMun  := vtIBSMun;
 
-        Total.IBSCBSTot.gCBS.vDif := 100;
-        Total.IBSCBSTot.gCBS.vDevTrib := 100;
-        Total.IBSCBSTot.gCBS.vCBS := 100;
-        Total.IBSCBSTot.gCBS.vCredPres := 100;
-        Total.IBSCBSTot.gCBS.vCredPresCondSus := 100;
+        Total.IBSCBSTot.gCBS.vDif      := vtIBSMunDif;
+        Total.IBSCBSTot.gCBS.vDevTrib  := vtIBSMunDevTrib;
+        Total.IBSCBSTot.gCBS.vCBS      := vtCBS;
+        Total.IBSCBSTot.gCBS.vCredPres := vtCBSCredPres;
+        Total.IBSCBSTot.gCBS.vCredPresCondSus := vtCBSCredPresCondSus;
 
-        Total.IBSCBSTot.gMono.vIBSMono := 100;
-        Total.IBSCBSTot.gMono.vCBSMono := 100;
-        Total.IBSCBSTot.gMono.vIBSMonoReten := 100;
-        Total.IBSCBSTot.gMono.vCBSMonoReten := 100;
-        Total.IBSCBSTot.gMono.vIBSMonoRet := 100;
-        Total.IBSCBSTot.gMono.vCBSMonoRet := 100;
+        Total.IBSCBSTot.gMono.vIBSMono      := vtIBSMono;
+        Total.IBSCBSTot.gMono.vCBSMono      := vtCBSMono;
+        Total.IBSCBSTot.gMono.vIBSMonoReten := vtIBSMonoReten;
+        Total.IBSCBSTot.gMono.vCBSMonoReten := vtCBSMonoReten;
+        Total.IBSCBSTot.gMono.vIBSMonoRet   := vtIBSMonoRet;
+        Total.IBSCBSTot.gMono.vCBSMonoRet   := vtCBSMonoRet;
 
         // Valor total da NF-e com IBS / CBS / IS
-        Total.vNFTot := 100;
-      end;  *)
+        Total.vNFTot :=  QryFiltroNFNF_VLR_TOTAL.Value+icmsFcp+vtCBS+vtIBS;
+      end;
+
 
       // if Ide.idDest <> doInterestadual then
       // begin

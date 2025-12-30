@@ -253,7 +253,7 @@ begin
       MemItensGTIN.Value           := QryItensPedCODBARRAS.Value;
       MemItensCEST.Value           := QryLookMateriaisCEST.Value;
       MemItensESTOQUE_ID.Value     := QryItensPedESTOQUE_ID.Value;
-      MemItensST.Value             := QryItensPedST.Value;
+      MemItensST.Value             := iif( length(QryItensPedST.Value)>1,QryItensPedST.Value,QryLookMateriaisSIT_TRIBUTARIA.Value);
       MemItensPESO.Value           := QryItensPedPESO.Value;
       MemItensAUTOID.Value         := QryItensPedAUTOID.Value;
       MemItensESTOQUE_ID.Value     := QryItensPedESTOQUE_ID.Value;

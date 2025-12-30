@@ -274,6 +274,8 @@ type
     AbrirEmissor: TAction;
     ActGravarDuplicata: TAction;
     ActMovEstoque: TAction;
+    GravaRefTrib: TAction;
+    QryInsRefTrib: TFDQuery;
     procedure BT_IOKClick(Sender: TObject);
     procedure bt_confirmaChequeClick(Sender: TObject);
     procedure bt_confirmaDebitoClick(Sender: TObject);
@@ -311,6 +313,7 @@ type
     procedure AbrirEmissorExecute(Sender: TObject);
     procedure ActGravarDuplicataExecute(Sender: TObject);
     procedure ActMovEstoqueExecute(Sender: TObject);
+    procedure GravaRefTribExecute(Sender: TObject);
   private
     { Private declarations }
     procedure AbrirNota(nIDNF:integer);
@@ -328,7 +331,7 @@ uses
   untFuncoes_Advensys, // UnitDeclaracoes,
   Math, UDmdPrincipal, UntPrincipal, UDMD_PRO00315, FRM_CONFIGURASERIAL,
   UFRM_BUSCAPED, UFRM_CAIXA, UFRM_CONFIGURA, UFRM_FECHAVENDA, UFRM_OPCOES,
-  UFRM_PRINCIPAL, ULibrary;
+  UFRM_PRINCIPAL, ULibrary, URefTrib;
 
 {$R *.dfm}
 
@@ -1122,12 +1125,13 @@ begin
         ParamByName('VLR_COFINS').AsFloat     := MemItensALIQ_IPI.Value;
         ParamByName('VLR_SUBST').AsFloat      := MemItensVLR_ICMSSUB.Value;
         ParamByName('UNI_CODIGO').AsString    := MemItensUNI_CODIGO.Value;
-        ParamByName('SIT_TRIB').AsString      := MemItensST.Value;
+        ParamByName('SIT_TRIB').AsString      := copy(iif( length( MemItensST.Value) > 1,
+                                                 MemItensST.Value,QryLookMateriaisSIT_TRIBUTARIA.Value),1,2);
         ParamByName('OBS').AsString           := '';
         ParamByName('CLASS_FISCAL').AsString  := MemItensNCM.Value;
         ParamByName('BAIXA_ESTOQUE').AsString := 'B';
         ParamByName('ORIGEM').AsString        := '0';
-        ParamByName('CSOSN').AsString         := '102';
+        ParamByName('CSOSN').AsString         := iif(length(MemItensCSOSN.Value)>1,MemItensCSOSN.Value,'102');
         ParamByName('SOMA_NO_TOTAL').AsString := 'S';
         ParamByName('GTIN').AsString          := MemItensGTIN.Value;
         ParamByName('CFOP_ID').AsInteger      := MemItensCFOP_ID.Value;
@@ -1142,6 +1146,12 @@ begin
         ParamByName('VLR_FRETE').AsFloat      := MemItensVLR_FRETE.Value;
         ExecSQL;
 
+        DMD_PRO00315.retornaid.Prepare;
+        DMD_PRO00315.retornaid.ParamByName('@NOME_TABELA').AsString := 'NOTA_FISCAL_ITEM';
+        DMD_PRO00315.retornaid.ExecProc;
+        NFITEMID := DMD_PRO00315.retornaid.Params[2].Value;
+        if DmdPrincipal.qryEMPRESASCRT.Value = '3' then
+          GravaRefTrib.Execute;
       end;
       MemItens.Next;
     end;
@@ -1257,6 +1267,7 @@ begin
     begin
       If not MemItensAUTOID.IsNull then
       begin
+        QryInsPedido.Open;
         QryInsPedido.Insert;
         QryInsPedidoNF_ID.Value      := NFID;
         QryInsPedidoNF_ITEM_ID.Value := MemItensAUTOID.Value;
@@ -1268,6 +1279,7 @@ begin
         QryInsPedidoESTOQUE_ID.Value := MemItensESTOQUE_ID.Value;
         QryInsPedidoPEDIDO.Value     := MemItensPEDIDO.Value;
         QryInsPedido.Post;
+        QryInsPedido.Close;
         // verifica se o cfop movimenta o saldo do pedido
         // procura se usa o saldo do pedido pelo cfop
         //RXITENS.Locate('IDPEDITEM',MemItensPedCFOP_ID.Value , []);
@@ -1397,6 +1409,117 @@ begin
   MemTroca.Open;
   Atualiza_Calculo.Execute;
   cxc_fpgto.SetFocus;
+end;
+
+procedure TFRM_PGTOPEDCLI.GravaRefTribExecute(Sender: TObject);
+var
+  input: TInputTributo;
+  tributo: TRefTrib;
+  VlrBase : real;
+begin
+  with DMD_PRO00315 do
+  begin
+
+  VlrBase := Arredondar((MemItensQTDE.Value * MemItensVLR_UNIT.Value),2)+
+             MemItensVLR_IPI.Value+MemItensVLR_FRETE.Value+MemItensVLR_OUTROS.Value+MemItensVLR_IS.Value -
+             MemItensVLR_ICMS.Value-MemItensVLR_PIS.Value-MemItensVLR_COFINS.Value-
+             MemItensVLR_DESC.Value-MemItensVLR_FCP.Value;
+  input := TInputTributo.Create;
+  input.cClassTrib := MemItensCCLASSTRIB.Value;
+  input.CBS        := DmdPrincipal.QryParamsALIQ_CBS.Value;
+  input.IBSUF      := DMD_PRO00315.QryCliNFIBS_UF.Value;// 0.1;
+  input.IBSMUN     := DMD_PRO00315.QryCliNFIBS_MUN.Value;// 0;
+  input.ImpostoSel := MemItensALIQ_IS.Value;
+  input.vBC        := VlrBase;
+  //input.vBCIS      := VlrBase;
+  input.FDConexao  := DmdPrincipal.FDConexao;
+  tributo := TRefTrib.GetTributo(input);
+    with QryInsRefTrib do
+    begin
+      ParamByName('NF_ID').AsInteger             := NFID;
+      ParamByName('NF_ITEM_ID').AsInteger        := NFITEMID;
+      ParamByName('CSTIS').AsString              := tributo.CSTIS;
+      ParamByName('cClassTribIS').AsString       := tributo.cClassTribIS;
+      ParamByName('vBCIS').AsFloat               := tributo.vBCIS;
+      ParamByName('pIS').AsFloat                 := tributo.pIS;
+      ParamByName('pISEspec').AsFloat            := tributo.pISEspec;
+      ParamByName('uTrib').AsString              := tributo.uTrib;
+      ParamByName('qTrib').AsFloat               := tributo.qTrib;
+      ParamByName('vIS').AsFloat                 := tributo.vIS;
+      ParamByName('CST').AsString                := tributo.CST;
+      ParamByName('cClassTrib').AsString         := tributo.cClassTrib;
+      ParamByName('vBC').AsFloat                 := tributo.vBC;
+      ParamByName('pIBSUF').AsFloat              := tributo.pIBSUF;
+      ParamByName('vIBSUF').AsFloat              := tributo.vIBSUF;
+      ParamByName('gIBSUFpDif').AsFloat          := tributo.gIBSUFpDif;
+      ParamByName('gIBSUFvDif').AsFloat          := tributo.gIBSUFvDif;
+      ParamByName('gIBSUFvDevTrib').AsFloat      := tributo.gIBSUFvDevTrib;
+      ParamByName('gIBSUFpRedAliq').AsFloat      := tributo.gIBSUFpRedAliq;
+      ParamByName('gIBSUFpAliqEfet').AsFloat     := tributo.gIBSUFpAliqEfet;
+      ParamByName('pIBSMun').AsFloat             := tributo.pIBSMun;
+      ParamByName('vIBSMun').AsFloat             := tributo.vIBSMun;
+      ParamByName('gIBSMpDif').AsFloat           := tributo.gIBSMpDif;
+      ParamByName('gIBSMvDif').AsFloat           := tributo.gIBSMvDif;
+      ParamByName('gIBSMvDevTrib').AsFloat       := tributo.gIBSMvDevTrib;
+      ParamByName('gIBSMpRedAliq').AsFloat       := tributo.gIBSMpRedAliq;
+      ParamByName('gIBSMpAliqEfet').AsFloat      := tributo.gIBSMpAliqEfet;
+      ParamByName('pCBS').AsFloat                := tributo.pCBS;
+      ParamByName('vCBS').AsFloat                := tributo.vCBS;
+      ParamByName('gCBSpDif').AsFloat            := tributo.gCBSpDif;
+      ParamByName('gCBSvDif').AsFloat            := tributo.gCBSvDif;
+      ParamByName('gCBSvDevTrib').AsFloat        := tributo.gCBSvDevTrib;
+      ParamByName('gCBSpRedAliq').AsFloat        := tributo.gCBSpRedAliq;
+      ParamByName('gCBSpAliqEfet').AsFloat       := tributo.gCBSpAliqEfet;
+      ParamByName('CSTReg').AsString             := tributo.CSTReg;
+      ParamByName('cClassTribReg').AsString      := tributo.cClassTribReg;
+      ParamByName('pAliqEfetRegIBSUF').AsFloat   := tributo.pAliqEfetRegIBSUF;
+      ParamByName('vTribRegIBSUF').AsFloat       := tributo.vTribRegIBSUF;
+      ParamByName('pAliqEfetRegIBSMun').AsFloat  := tributo.pAliqEfetRegIBSMun;
+      ParamByName('vTribRegIBSMun').AsFloat      := tributo.vTribRegIBSMun;
+      ParamByName('pAliqEfetRegCBS').AsFloat     := tributo.pAliqEfetRegCBS;
+      ParamByName('vTribRegCBS').AsFloat         := tributo.vTribRegCBS;
+      ParamByName('CBScCredPres').AsFloat        := tributo.CBScCredPres;
+      ParamByName('CBSpCredPres').AsFloat        := tributo.CBSpCredPres;
+      ParamByName('CBSvCredPres').AsFloat        := tributo.CBSvCredPres;
+      ParamByName('CBSvCredPresCondSus').AsFloat := tributo.CBSvCredPresCondSus;
+      ParamByName('IBScCredPres').AsFloat        := tributo.IBScCredPres;
+      ParamByName('IBSpCredPres').AsFloat        := tributo.IBSpCredPres;
+      ParamByName('IBSvCredPres').AsFloat        := tributo.IBSvCredPres;
+      ParamByName('IBSvCredPresCondSus').AsFloat := tributo.IBSvCredPresCondSus;
+      ParamByName('gGovpAliqIBSUF').AsFloat      := tributo.gGovpAliqIBSUF;
+      ParamByName('gGovvTribIBSUF').AsFloat      := tributo.gGovvTribIBSUF;
+      ParamByName('gGovpAliqIBSMun').AsFloat     := tributo.gGovpAliqIBSMun;
+      ParamByName('gGovvTribIBSMun').AsFloat     := tributo.gGovvTribIBSMun;
+      ParamByName('gGovpAliqCBS').AsFloat        := tributo.gGovpAliqCBS;
+      ParamByName('gGovvTribCBS').AsFloat        := tributo.gGovvTribCBS;
+      ParamByName('MonoqBCMono').AsFloat         := tributo.MonoqBCMono;
+      ParamByName('MonoadRemIBS').AsFloat        := tributo.MonoadRemIBS;
+      ParamByName('MonoadRemCBS').AsFloat        := tributo.MonoadRemCBS;
+      ParamByName('MonovIBSMono').AsFloat        := tributo.MonovIBSMono;
+      ParamByName('MonovCBSMono').AsFloat        := tributo.MonovCBSMono;
+      ParamByName('MonoqBCMonoReten').AsFloat    := tributo.MonoqBCMonoReten;
+      ParamByName('MonoadRemIBSReten').AsFloat   := tributo.MonoadRemIBSReten;
+      ParamByName('MonovIBSMonoReten').AsFloat   := tributo.MonovIBSMonoReten;
+      ParamByName('MonovCBSMonoReten').AsFloat   := tributo.MonovCBSMonoReten;
+      ParamByName('MonoqBCMonoRet').AsFloat      := tributo.MonoqBCMonoRet;
+      ParamByName('MonoadRemIBSRet').AsFloat     := tributo.MonoadRemIBSRet;
+      ParamByName('MonovIBSMonoRet').AsFloat     := tributo.MonovIBSMonoRet;
+      ParamByName('MonovCBSMonoRet').AsFloat     := tributo.MonovCBSMonoRet;
+      ParamByName('MonopDifIBS').AsFloat         := tributo.MonopDifIBS;
+      ParamByName('MonovIBSMonoDif').AsFloat     := tributo.MonovIBSMonoDif;
+      ParamByName('MonopDifCBS').AsFloat         := tributo.MonopDifCBS;
+      ParamByName('MonovCBSMonoDif').AsFloat     := tributo.MonovCBSMonoDif;
+      ParamByName('MonovTotIBSMonoItem').AsFloat := tributo.MonovTotIBSMonoItem;
+      ParamByName('MonovTotCBSMonoItem').AsFloat := tributo.MonovTotCBSMonoItem;
+      ParamByName('TransfCredvIBS').AsFloat      := tributo.TransfCredvIBS;
+      ParamByName('TransfCredvCBS').AsFloat      := tributo.TransfCredvCBS;
+      ParamByName('tpCredPresIBSZFM').AsFloat    := tributo.tpCredPresIBSZFM;
+      ParamByName('vCredPresIBSZFM').AsFloat     := tributo.vCredPresIBSZFM;
+      ParamByName('vIBS').AsFloat                := tributo.vIBS;
+      ExecSQL;
+    end;
+  end;
+
 end;
 
 procedure TFRM_PGTOPEDCLI.InsereReceberExecute(Sender: TObject);

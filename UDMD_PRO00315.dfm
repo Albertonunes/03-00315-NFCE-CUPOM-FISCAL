@@ -1345,6 +1345,25 @@ object DMD_PRO00315: TDMD_PRO00315
       FieldName = 'MOVIMENTA_ESTOQUE'
       Size = 1
     end
+    object MemItensVLR_PIS: TFloatField
+      FieldName = 'VLR_PIS'
+    end
+    object MemItensVLR_COFINS: TFloatField
+      FieldName = 'VLR_COFINS'
+    end
+    object MemItensVLR_DESC: TFloatField
+      FieldName = 'VLR_DESC'
+    end
+    object MemItensALIQ_IS: TFloatField
+      FieldName = 'ALIQ_IS'
+    end
+    object MemItensVLR_IS: TFloatField
+      FieldName = 'VLR_IS'
+    end
+    object MemItensCCLASSTRIB: TStringField
+      FieldName = 'CCLASSTRIB'
+      Size = 6
+    end
   end
   object DsMemItens: TDataSource
     DataSet = MemItens
@@ -2215,45 +2234,46 @@ object DMD_PRO00315: TDMD_PRO00315
     Connection = DmdPrincipal.FDConexao
     SQL.Strings = (
       
-        'SELECT     A.COD_CLIENTE, A.FILIAL, A.COD_INTERNO, A.COD_ORIGEM,' +
-        ' A.TIPO, A.DATA, A.FJ, A.CPF_CNPJ, A.NOME, A.FANTASIA, A.ENDEREC' +
-        'O, A.BAIRRO, '
+        'SELECT  A.COD_CLIENTE, A.FILIAL, A.COD_INTERNO, A.COD_ORIGEM, A.' +
+        'TIPO, A.DATA, A.FJ, A.CPF_CNPJ, A.NOME, A.FANTASIA, A.ENDERECO, ' +
+        'A.BAIRRO, '
       
-        '                      A.CIDADE, A.UF, A.CEP, A.ENDERECO_NUM, A.E' +
-        'NDERECO_COMPL, A.ENDERECO_COB, A.BAIRRO_COB, A.CIDADE_COB, A.UF_' +
-        'COB, A.CEP_COB, '
+        '        A.CIDADE, A.UF, A.CEP, A.ENDERECO_NUM, A.ENDERECO_COMPL,' +
+        ' A.ENDERECO_COB, A.BAIRRO_COB, A.CIDADE_COB, A.UF_COB, A.CEP_COB' +
+        ', '
       
-        '                      A.TELCOB, A.CONTATO_COB, A.ENDERECO_ENT, A' +
-        '.BAIRRO_ENT, A.CIDADE_ENT, A.UF_ENT, A.CEP_ENT, A.TELENT, A.CONT' +
-        'ATO_ENT, A.R1, A.R2, '
+        '        A.TELCOB, A.CONTATO_COB, A.ENDERECO_ENT, A.BAIRRO_ENT, A' +
+        '.CIDADE_ENT, A.UF_ENT, A.CEP_ENT, A.TELENT, A.CONTATO_ENT, A.R1,' +
+        ' A.R2, '
       
-        '                      A.TEL1, A.TEL2, A.DTEL1, A.DTEL2, A.SITE, ' +
-        'A.EMAIL, A.PORTADOR, A.ESPDOC, A.CENTROCUSTO, A.TIPOCOBR, A.CATE' +
-        'G, A.CLASS, A.CONTABIL, '
+        '        A.TEL1, A.TEL2, A.DTEL1, A.DTEL2, A.SITE, A.EMAIL, A.POR' +
+        'TADOR, A.ESPDOC, A.CENTROCUSTO, A.TIPOCOBR, A.CATEG, A.CLASS, A.' +
+        'CONTABIL, '
       
-        '                      A.RG_INSC, A.ISS, A.PIS, A.COFINS, A.IR, A' +
-        '.CSLL, A.OUTROS, A.OBS, A.DTNASC, A.CONTATO1, A.CONTATO2, A.CONT' +
-        'ATO3, A.VENDEDOR, '
+        '        A.RG_INSC, A.ISS, A.PIS, A.COFINS, A.IR, A.CSLL, A.OUTRO' +
+        'S, A.OBS, A.DTNASC, A.CONTATO1, A.CONTATO2, A.CONTATO3, A.VENDED' +
+        'OR, '
       
-        '                      A.TRANSPORTADORA, A.SERASA, A.INDICACAO, A' +
-        '.PORTE, A.FPGTO, A.CREDITO, A.MOTIVO, A.STATUS, A.GESTOR_BANCO, ' +
-        'A.SALDO, A.RESTRICAO, '
+        '        A.TRANSPORTADORA, A.SERASA, A.INDICACAO, A.PORTE, A.FPGT' +
+        'O, A.CREDITO, A.MOTIVO, A.STATUS, A.GESTOR_BANCO, A.SALDO, A.RES' +
+        'TRICAO, '
       
-        '                      A.IBGE, A.OP_SIMPLES, A.RESTRICAO_OBS, A.F' +
-        'ECHAMENTO, A.TABELA_FRETE, A.SUB_TRIBUTARIA, A.ENDERECO_COB_NUM,' +
+        '        A.IBGE, A.OP_SIMPLES, A.RESTRICAO_OBS, A.FECHAMENTO, A.T' +
+        'ABELA_FRETE, A.SUB_TRIBUTARIA, A.ENDERECO_COB_NUM, '
+      
+        '        A.ENDERECO_COB_COMPL, A.ENDERECO_ENT_NUM, A.ENDERECO_ENT' +
+        '_COMPL, A.SUFRAMA, A.EMAIL_NFE, A.PRACA, A.REGIAO, A.CONSUMIDOR,' +
         ' '
       
-        '                      A.ENDERECO_COB_COMPL, A.ENDERECO_ENT_NUM, ' +
-        'A.ENDERECO_ENT_COMPL, A.SUFRAMA, A.EMAIL_NFE, A.PRACA, A.REGIAO,' +
-        ' A.CONSUMIDOR, '
+        '        A.TEXTO_LEGAL_ID, A.ORGAO_PUBLICO, C.BLOQUEIO, E.ALIQ_IB' +
+        'S AS IBS_UF, B.ALIQ_IBS AS IBS_MUN,A.TPGOV, G.DESCRICAO AS TIPOC' +
+        'LI'
+      'FROM GESTOR_CLIENTE AS A LEFT OUTER JOIN'
+      '        MOTIVO_CREDITO AS C ON A.MOTIVO = C.MOTIVO LEFT JOIN '
       
-        '                      A.TEXTO_LEGAL_ID, A.ORGAO_PUBLICO, C.BLOQU' +
-        'EIO,  B.DESCRICAO AS TIPOCLI'
-      'FROM   GESTOR_CLIENTE AS A LEFT OUTER JOIN'
-      
-        '             MOTIVO_CREDITO AS C ON A.MOTIVO = C.MOTIVO  LEFT OU' +
-        'TER JOIN'
-      '             GESTOR_TIPOCLIENTE AS B ON A.TIPO = B.TIPO'
+        '        CIDADES B ON A.IBGE=B.CIDADE_IBGE LEFT JOIN ESTADOS E ON' +
+        ' B.CIDADE_UF=E.UF_ID LEFT OUTER JOIN'
+      '        GESTOR_TIPOCLIENTE AS G ON A.TIPO = G.TIPO'
       'WHERE A.COD_CLIENTE = :CLIENTE')
     Left = 504
     Top = 211
@@ -2660,6 +2680,18 @@ object DMD_PRO00315: TDMD_PRO00315
       Origin = 'TIPOCLI'
       FixedChar = True
       Size = 40
+    end
+    object QryCliNFIBS_UF: TFloatField
+      FieldName = 'IBS_UF'
+      Origin = 'IBS_UF'
+    end
+    object QryCliNFIBS_MUN: TFloatField
+      FieldName = 'IBS_MUN'
+      Origin = 'IBS_MUN'
+    end
+    object QryCliNFTPGOV: TIntegerField
+      FieldName = 'TPGOV'
+      Origin = 'TPGOV'
     end
   end
   object QryUFICMS: TFDQuery
@@ -5583,5 +5615,904 @@ object DMD_PRO00315: TDMD_PRO00315
     DataSet = QryPadrao
     Left = 159
     Top = 158
+  end
+  object DSFiltroIBS: TDataSource
+    DataSet = QryFiltroIBS
+    Left = 40
+    Top = 608
+  end
+  object QryFiltroIBS: TFDQuery
+    MasterFields = 'NF_ITEM_ID'
+    SQL.Strings = (
+      
+        'SELECT  NF_ID, NF_ITEM_ID, CSTIS, cClassTribIS, vBCIS, pIS, pISE' +
+        'spec, uTrib, qTrib, vIS, CST, cClassTrib, vBC, pIBSUF, vIBSUF, g' +
+        'IBSUFpDif, gIBSUFvDif, gIBSUFvDevTrib, gIBSUFpRedAliq, gIBSUFpAl' +
+        'iqEfet, pIBSMun, vIBSMun, '
+      
+        '                  gIBSMpDif, gIBSMvDif, gIBSMvDevTrib, gIBSMpRed' +
+        'Aliq, gIBSMpAliqEfet, pCBS, vCBS, gCBSpDif, gCBSvDif, gCBSvDevTr' +
+        'ib, gCBSpRedAliq, gCBSpAliqEfet, CSTReg, cClassTribReg, pAliqEfe' +
+        'tRegIBSUF, vTribRegIBSUF, '
+      
+        '                  pAliqEfetRegIBSMun, vTribRegIBSMun, pAliqEfetR' +
+        'egCBS, vTribRegCBS, CBScCredPres, CBSpCredPres, CBSvCredPres, CB' +
+        'SvCredPresCondSus, IBScCredPres, IBSpCredPres, IBSvCredPres, IBS' +
+        'vCredPresCondSus, gGovpAliqIBSUF, '
+      
+        '                  gGovvTribIBSUF, gGovpAliqIBSMun, gGovvTribIBSM' +
+        'un, gGovpAliqCBS, gGovvTribCBS, MonoqBCMono, MonoadRemIBS, Monoa' +
+        'dRemCBS, MonovIBSMono, MonovCBSMono, MonoqBCMonoReten, MonoadRem' +
+        'IBSReten, '
+      
+        '                  MonovIBSMonoReten, MonovCBSMonoReten, MonoqBCM' +
+        'onoRet, MonoadRemIBSRet, MonovIBSMonoRet, MonovCBSMonoRet, Monop' +
+        'DifIBS, MonovIBSMonoDif, MonopDifCBS, MonovCBSMonoDif, MonovTotI' +
+        'BSMonoItem, '
+      
+        '                  MonovTotCBSMonoItem, TransfCredvIBS, TransfCre' +
+        'dvCBS, tpCredPresIBSZFM, vCredPresIBSZFM'
+      'FROM     NOTA_FISCAL_ITEM_CLASSTRIB'
+      'WHERE NF_ITEM_ID = :NF_ITEM_ID'
+      'ORDER BY NF_ITEM_ID')
+    Left = 32
+    Top = 552
+    ParamData = <
+      item
+        Name = 'NF_ITEM_ID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object QryFiltroIBSNF_ID: TIntegerField
+      FieldName = 'NF_ID'
+      Origin = 'NF_ID'
+    end
+    object QryFiltroIBSNF_ITEM_ID: TIntegerField
+      FieldName = 'NF_ITEM_ID'
+      Origin = 'NF_ITEM_ID'
+    end
+    object QryFiltroIBSCSTIS: TStringField
+      FieldName = 'CSTIS'
+      Origin = 'CSTIS'
+      Required = True
+      FixedChar = True
+      Size = 3
+    end
+    object QryFiltroIBScClassTribIS: TStringField
+      FieldName = 'cClassTribIS'
+      Origin = 'cClassTribIS'
+      Required = True
+      FixedChar = True
+      Size = 6
+    end
+    object QryFiltroIBSvBCIS: TFloatField
+      FieldName = 'vBCIS'
+      Origin = 'vBCIS'
+    end
+    object QryFiltroIBSpIS: TFloatField
+      FieldName = 'pIS'
+      Origin = 'pIS'
+    end
+    object QryFiltroIBSpISEspec: TFloatField
+      FieldName = 'pISEspec'
+      Origin = 'pISEspec'
+    end
+    object QryFiltroIBSuTrib: TStringField
+      FieldName = 'uTrib'
+      Origin = 'uTrib'
+      FixedChar = True
+      Size = 3
+    end
+    object QryFiltroIBSqTrib: TFloatField
+      FieldName = 'qTrib'
+      Origin = 'qTrib'
+    end
+    object QryFiltroIBSvIS: TFloatField
+      FieldName = 'vIS'
+      Origin = 'vIS'
+    end
+    object QryFiltroIBSCST: TStringField
+      FieldName = 'CST'
+      Origin = 'CST'
+      Required = True
+      FixedChar = True
+      Size = 3
+    end
+    object QryFiltroIBScClassTrib: TStringField
+      FieldName = 'cClassTrib'
+      Origin = 'cClassTrib'
+      Required = True
+      FixedChar = True
+      Size = 6
+    end
+    object QryFiltroIBSvBC: TFloatField
+      FieldName = 'vBC'
+      Origin = 'vBC'
+    end
+    object QryFiltroIBSpIBSUF: TFloatField
+      FieldName = 'pIBSUF'
+      Origin = 'pIBSUF'
+    end
+    object QryFiltroIBSvIBSUF: TFloatField
+      FieldName = 'vIBSUF'
+      Origin = 'vIBSUF'
+    end
+    object QryFiltroIBSgIBSUFpDif: TFloatField
+      FieldName = 'gIBSUFpDif'
+      Origin = 'gIBSUFpDif'
+    end
+    object QryFiltroIBSgIBSUFvDif: TFloatField
+      FieldName = 'gIBSUFvDif'
+      Origin = 'gIBSUFvDif'
+    end
+    object QryFiltroIBSgIBSUFvDevTrib: TFloatField
+      FieldName = 'gIBSUFvDevTrib'
+      Origin = 'gIBSUFvDevTrib'
+    end
+    object QryFiltroIBSgIBSUFpRedAliq: TFloatField
+      FieldName = 'gIBSUFpRedAliq'
+      Origin = 'gIBSUFpRedAliq'
+    end
+    object QryFiltroIBSgIBSUFpAliqEfet: TFloatField
+      FieldName = 'gIBSUFpAliqEfet'
+      Origin = 'gIBSUFpAliqEfet'
+    end
+    object QryFiltroIBSpIBSMun: TFloatField
+      FieldName = 'pIBSMun'
+      Origin = 'pIBSMun'
+    end
+    object QryFiltroIBSvIBSMun: TFloatField
+      FieldName = 'vIBSMun'
+      Origin = 'vIBSMun'
+    end
+    object QryFiltroIBSgIBSMpDif: TFloatField
+      FieldName = 'gIBSMpDif'
+      Origin = 'gIBSMpDif'
+    end
+    object QryFiltroIBSgIBSMvDif: TFloatField
+      FieldName = 'gIBSMvDif'
+      Origin = 'gIBSMvDif'
+    end
+    object QryFiltroIBSgIBSMvDevTrib: TFloatField
+      FieldName = 'gIBSMvDevTrib'
+      Origin = 'gIBSMvDevTrib'
+    end
+    object QryFiltroIBSgIBSMpRedAliq: TFloatField
+      FieldName = 'gIBSMpRedAliq'
+      Origin = 'gIBSMpRedAliq'
+    end
+    object QryFiltroIBSgIBSMpAliqEfet: TFloatField
+      FieldName = 'gIBSMpAliqEfet'
+      Origin = 'gIBSMpAliqEfet'
+    end
+    object QryFiltroIBSpCBS: TFloatField
+      FieldName = 'pCBS'
+      Origin = 'pCBS'
+    end
+    object QryFiltroIBSvCBS: TFloatField
+      FieldName = 'vCBS'
+      Origin = 'vCBS'
+    end
+    object QryFiltroIBSgCBSpDif: TFloatField
+      FieldName = 'gCBSpDif'
+      Origin = 'gCBSpDif'
+    end
+    object QryFiltroIBSgCBSvDif: TFloatField
+      FieldName = 'gCBSvDif'
+      Origin = 'gCBSvDif'
+    end
+    object QryFiltroIBSgCBSvDevTrib: TFloatField
+      FieldName = 'gCBSvDevTrib'
+      Origin = 'gCBSvDevTrib'
+    end
+    object QryFiltroIBSgCBSpRedAliq: TFloatField
+      FieldName = 'gCBSpRedAliq'
+      Origin = 'gCBSpRedAliq'
+    end
+    object QryFiltroIBSgCBSpAliqEfet: TFloatField
+      FieldName = 'gCBSpAliqEfet'
+      Origin = 'gCBSpAliqEfet'
+    end
+    object QryFiltroIBSCSTReg: TStringField
+      FieldName = 'CSTReg'
+      Origin = 'CSTReg'
+      Required = True
+      FixedChar = True
+      Size = 3
+    end
+    object QryFiltroIBScClassTribReg: TStringField
+      FieldName = 'cClassTribReg'
+      Origin = 'cClassTribReg'
+      Required = True
+      FixedChar = True
+      Size = 6
+    end
+    object QryFiltroIBSpAliqEfetRegIBSUF: TFloatField
+      FieldName = 'pAliqEfetRegIBSUF'
+      Origin = 'pAliqEfetRegIBSUF'
+    end
+    object QryFiltroIBSvTribRegIBSUF: TFloatField
+      FieldName = 'vTribRegIBSUF'
+      Origin = 'vTribRegIBSUF'
+    end
+    object QryFiltroIBSpAliqEfetRegIBSMun: TFloatField
+      FieldName = 'pAliqEfetRegIBSMun'
+      Origin = 'pAliqEfetRegIBSMun'
+    end
+    object QryFiltroIBSvTribRegIBSMun: TFloatField
+      FieldName = 'vTribRegIBSMun'
+      Origin = 'vTribRegIBSMun'
+    end
+    object QryFiltroIBSpAliqEfetRegCBS: TFloatField
+      FieldName = 'pAliqEfetRegCBS'
+      Origin = 'pAliqEfetRegCBS'
+    end
+    object QryFiltroIBSvTribRegCBS: TFloatField
+      FieldName = 'vTribRegCBS'
+      Origin = 'vTribRegCBS'
+    end
+    object QryFiltroIBSCBScCredPres: TIntegerField
+      FieldName = 'CBScCredPres'
+      Origin = 'CBScCredPres'
+    end
+    object QryFiltroIBSCBSpCredPres: TFloatField
+      FieldName = 'CBSpCredPres'
+      Origin = 'CBSpCredPres'
+    end
+    object QryFiltroIBSCBSvCredPres: TFloatField
+      FieldName = 'CBSvCredPres'
+      Origin = 'CBSvCredPres'
+    end
+    object QryFiltroIBSCBSvCredPresCondSus: TFloatField
+      FieldName = 'CBSvCredPresCondSus'
+      Origin = 'CBSvCredPresCondSus'
+    end
+    object QryFiltroIBSIBScCredPres: TIntegerField
+      FieldName = 'IBScCredPres'
+      Origin = 'IBScCredPres'
+    end
+    object QryFiltroIBSIBSpCredPres: TFloatField
+      FieldName = 'IBSpCredPres'
+      Origin = 'IBSpCredPres'
+    end
+    object QryFiltroIBSIBSvCredPres: TFloatField
+      FieldName = 'IBSvCredPres'
+      Origin = 'IBSvCredPres'
+    end
+    object QryFiltroIBSIBSvCredPresCondSus: TFloatField
+      FieldName = 'IBSvCredPresCondSus'
+      Origin = 'IBSvCredPresCondSus'
+    end
+    object QryFiltroIBSgGovpAliqIBSUF: TFloatField
+      FieldName = 'gGovpAliqIBSUF'
+      Origin = 'gGovpAliqIBSUF'
+    end
+    object QryFiltroIBSgGovvTribIBSUF: TFloatField
+      FieldName = 'gGovvTribIBSUF'
+      Origin = 'gGovvTribIBSUF'
+    end
+    object QryFiltroIBSgGovpAliqIBSMun: TFloatField
+      FieldName = 'gGovpAliqIBSMun'
+      Origin = 'gGovpAliqIBSMun'
+    end
+    object QryFiltroIBSgGovvTribIBSMun: TFloatField
+      FieldName = 'gGovvTribIBSMun'
+      Origin = 'gGovvTribIBSMun'
+    end
+    object QryFiltroIBSgGovpAliqCBS: TFloatField
+      FieldName = 'gGovpAliqCBS'
+      Origin = 'gGovpAliqCBS'
+    end
+    object QryFiltroIBSgGovvTribCBS: TFloatField
+      FieldName = 'gGovvTribCBS'
+      Origin = 'gGovvTribCBS'
+    end
+    object QryFiltroIBSMonoqBCMono: TFloatField
+      FieldName = 'MonoqBCMono'
+      Origin = 'MonoqBCMono'
+    end
+    object QryFiltroIBSMonoadRemIBS: TFloatField
+      FieldName = 'MonoadRemIBS'
+      Origin = 'MonoadRemIBS'
+    end
+    object QryFiltroIBSMonoadRemCBS: TFloatField
+      FieldName = 'MonoadRemCBS'
+      Origin = 'MonoadRemCBS'
+    end
+    object QryFiltroIBSMonovIBSMono: TFloatField
+      FieldName = 'MonovIBSMono'
+      Origin = 'MonovIBSMono'
+    end
+    object QryFiltroIBSMonovCBSMono: TFloatField
+      FieldName = 'MonovCBSMono'
+      Origin = 'MonovCBSMono'
+    end
+    object QryFiltroIBSMonoqBCMonoReten: TFloatField
+      FieldName = 'MonoqBCMonoReten'
+      Origin = 'MonoqBCMonoReten'
+    end
+    object QryFiltroIBSMonoadRemIBSReten: TFloatField
+      FieldName = 'MonoadRemIBSReten'
+      Origin = 'MonoadRemIBSReten'
+    end
+    object QryFiltroIBSMonovIBSMonoReten: TFloatField
+      FieldName = 'MonovIBSMonoReten'
+      Origin = 'MonovIBSMonoReten'
+    end
+    object QryFiltroIBSMonovCBSMonoReten: TFloatField
+      FieldName = 'MonovCBSMonoReten'
+      Origin = 'MonovCBSMonoReten'
+    end
+    object QryFiltroIBSMonoqBCMonoRet: TFloatField
+      FieldName = 'MonoqBCMonoRet'
+      Origin = 'MonoqBCMonoRet'
+    end
+    object QryFiltroIBSMonoadRemIBSRet: TFloatField
+      FieldName = 'MonoadRemIBSRet'
+      Origin = 'MonoadRemIBSRet'
+    end
+    object QryFiltroIBSMonovIBSMonoRet: TFloatField
+      FieldName = 'MonovIBSMonoRet'
+      Origin = 'MonovIBSMonoRet'
+    end
+    object QryFiltroIBSMonovCBSMonoRet: TFloatField
+      FieldName = 'MonovCBSMonoRet'
+      Origin = 'MonovCBSMonoRet'
+    end
+    object QryFiltroIBSMonopDifIBS: TFloatField
+      FieldName = 'MonopDifIBS'
+      Origin = 'MonopDifIBS'
+    end
+    object QryFiltroIBSMonovIBSMonoDif: TFloatField
+      FieldName = 'MonovIBSMonoDif'
+      Origin = 'MonovIBSMonoDif'
+    end
+    object QryFiltroIBSMonopDifCBS: TFloatField
+      FieldName = 'MonopDifCBS'
+      Origin = 'MonopDifCBS'
+    end
+    object QryFiltroIBSMonovCBSMonoDif: TFloatField
+      FieldName = 'MonovCBSMonoDif'
+      Origin = 'MonovCBSMonoDif'
+    end
+    object QryFiltroIBSMonovTotIBSMonoItem: TFloatField
+      FieldName = 'MonovTotIBSMonoItem'
+      Origin = 'MonovTotIBSMonoItem'
+    end
+    object QryFiltroIBSMonovTotCBSMonoItem: TFloatField
+      FieldName = 'MonovTotCBSMonoItem'
+      Origin = 'MonovTotCBSMonoItem'
+    end
+    object QryFiltroIBSTransfCredvIBS: TFloatField
+      FieldName = 'TransfCredvIBS'
+      Origin = 'TransfCredvIBS'
+    end
+    object QryFiltroIBSTransfCredvCBS: TFloatField
+      FieldName = 'TransfCredvCBS'
+      Origin = 'TransfCredvCBS'
+    end
+    object QryFiltroIBStpCredPresIBSZFM: TIntegerField
+      FieldName = 'tpCredPresIBSZFM'
+      Origin = 'tpCredPresIBSZFM'
+    end
+    object QryFiltroIBSvCredPresIBSZFM: TFloatField
+      FieldName = 'vCredPresIBSZFM'
+      Origin = 'vCredPresIBSZFM'
+    end
+  end
+  object QryInsRefTrib: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      'INSERT INTO NOTA_FISCAL_ITEM_CLASSTRIB'
+      '           (NF_ID '
+      '           ,NF_ITEM_ID '
+      '           ,CSTIS '
+      '           ,cClassTribIS '
+      '           ,vBCIS '
+      '           ,pIS '
+      '           ,pISEspec '
+      '           ,uTrib '
+      '           ,qTrib '
+      '           ,vIS '
+      '           ,CST '
+      '           ,cClassTrib '
+      '           ,vBC '
+      '           ,pIBSUF '
+      '           ,vIBSUF '
+      '           ,gIBSUFpDif '
+      '           ,gIBSUFvDif '
+      '           ,gIBSUFvDevTrib '
+      '           ,gIBSUFpRedAliq '
+      '           ,gIBSUFpAliqEfet '
+      '           ,pIBSMun '
+      '           ,vIBSMun '
+      '           ,gIBSMpDif '
+      '           ,gIBSMvDif '
+      '           ,gIBSMvDevTrib '
+      '           ,gIBSMpRedAliq '
+      '           ,gIBSMpAliqEfet '
+      '           ,pCBS '
+      '           ,vCBS '
+      '           ,gCBSpDif '
+      '           ,gCBSvDif '
+      '           ,gCBSvDevTrib '
+      '           ,gCBSpRedAliq '
+      '           ,gCBSpAliqEfet '
+      '           ,CSTReg '
+      '           ,cClassTribReg '
+      '           ,pAliqEfetRegIBSUF '
+      '           ,vTribRegIBSUF '
+      '           ,pAliqEfetRegIBSMun '
+      '           ,vTribRegIBSMun '
+      '           ,pAliqEfetRegCBS '
+      '           ,vTribRegCBS '
+      '           ,CBScCredPres '
+      '           ,CBSpCredPres '
+      '           ,CBSvCredPres '
+      '           ,CBSvCredPresCondSus '
+      '           ,IBScCredPres '
+      '           ,IBSpCredPres '
+      '           ,IBSvCredPres '
+      '           ,IBSvCredPresCondSus '
+      '           ,gGovpAliqIBSUF '
+      '           ,gGovvTribIBSUF '
+      '           ,gGovpAliqIBSMun '
+      '           ,gGovvTribIBSMun '
+      '           ,gGovpAliqCBS '
+      '           ,gGovvTribCBS '
+      '           ,MonoqBCMono '
+      '           ,MonoadRemIBS '
+      '           ,MonoadRemCBS '
+      '           ,MonovIBSMono '
+      '           ,MonovCBSMono '
+      '           ,MonoqBCMonoReten '
+      '           ,MonoadRemIBSReten '
+      '           ,MonovIBSMonoReten '
+      '           ,MonovCBSMonoReten '
+      '           ,MonoqBCMonoRet '
+      '           ,MonoadRemIBSRet '
+      '           ,MonovIBSMonoRet '
+      '           ,MonovCBSMonoRet '
+      '           ,MonopDifIBS '
+      '           ,MonovIBSMonoDif '
+      '           ,MonopDifCBS '
+      '           ,MonovCBSMonoDif '
+      '           ,MonovTotIBSMonoItem '
+      '           ,MonovTotCBSMonoItem '
+      '           ,TransfCredvIBS '
+      '           ,TransfCredvCBS '
+      '           ,tpCredPresIBSZFM '
+      '           ,vCredPresIBSZFM '
+      '           ,vIBS )'
+      '     VALUES'
+      '           (:NF_ID'
+      '           ,:NF_ITEM_ID'
+      '           ,:CSTIS'
+      '           ,:cClassTribIS'
+      '           ,:vBCIS'
+      '           ,:pIS'
+      '           ,:pISEspec'
+      '           ,:uTrib'
+      '           ,:qTrib'
+      '           ,:vIS'
+      '           ,:CST'
+      '           ,:cClassTrib'
+      '           ,:vBC'
+      '           ,:pIBSUF'
+      '           ,:vIBSUF'
+      '           ,:gIBSUFpDif'
+      '           ,:gIBSUFvDif'
+      '           ,:gIBSUFvDevTrib'
+      '           ,:gIBSUFpRedAliq'
+      '           ,:gIBSUFpAliqEfet'
+      '           ,:pIBSMun'
+      '           ,:vIBSMun'
+      '           ,:gIBSMpDif'
+      '           ,:gIBSMvDif'
+      '           ,:gIBSMvDevTrib'
+      '           ,:gIBSMpRedAliq'
+      '           ,:gIBSMpAliqEfet'
+      '           ,:pCBS'
+      '           ,:vCBS'
+      '           ,:gCBSpDif'
+      '           ,:gCBSvDif'
+      '           ,:gCBSvDevTrib'
+      '           ,:gCBSpRedAliq'
+      '           ,:gCBSpAliqEfet'
+      '           ,:CSTReg'
+      '           ,:cClassTribReg'
+      '           ,:pAliqEfetRegIBSUF'
+      '           ,:vTribRegIBSUF'
+      '           ,:pAliqEfetRegIBSMun'
+      '           ,:vTribRegIBSMun'
+      '           ,:pAliqEfetRegCBS'
+      '           ,:vTribRegCBS'
+      '           ,:CBScCredPres'
+      '           ,:CBSpCredPres'
+      '           ,:CBSvCredPres'
+      '           ,:CBSvCredPresCondSus'
+      '           ,:IBScCredPres'
+      '           ,:IBSpCredPres'
+      '           ,:IBSvCredPres'
+      '           ,:IBSvCredPresCondSus'
+      '           ,:gGovpAliqIBSUF'
+      '           ,:gGovvTribIBSUF'
+      '           ,:gGovpAliqIBSMun'
+      '           ,:gGovvTribIBSMun'
+      '           ,:gGovpAliqCBS'
+      '           ,:gGovvTribCBS'
+      '           ,:MonoqBCMono'
+      '           ,:MonoadRemIBS'
+      '           ,:MonoadRemCBS'
+      '           ,:MonovIBSMono'
+      '           ,:MonovCBSMono'
+      '           ,:MonoqBCMonoReten'
+      '           ,:MonoadRemIBSReten'
+      '           ,:MonovIBSMonoReten'
+      '           ,:MonovCBSMonoReten'
+      '           ,:MonoqBCMonoRet'
+      '           ,:MonoadRemIBSRet'
+      '           ,:MonovIBSMonoRet'
+      '           ,:MonovCBSMonoRet'
+      '           ,:MonopDifIBS'
+      '           ,:MonovIBSMonoDif'
+      '           ,:MonopDifCBS'
+      '           ,:MonovCBSMonoDif'
+      '           ,:MonovTotIBSMonoItem'
+      '           ,:MonovTotCBSMonoItem'
+      '           ,:TransfCredvIBS'
+      '           ,:TransfCredvCBS'
+      '           ,:tpCredPresIBSZFM'
+      '           ,:vCredPresIBSZFM'
+      '           ,:vIBS)')
+    Left = 177
+    Top = 521
+    ParamData = <
+      item
+        Name = 'NF_ID'
+        ParamType = ptInput
+      end
+      item
+        Name = 'NF_ITEM_ID'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CSTIS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CCLASSTRIBIS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VBCIS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PIS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PISESPEC'
+        ParamType = ptInput
+      end
+      item
+        Name = 'UTRIB'
+        ParamType = ptInput
+      end
+      item
+        Name = 'QTRIB'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VIS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CST'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CCLASSTRIB'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VBC'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PIBSUF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VIBSUF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSUFPDIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSUFVDIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSUFVDEVTRIB'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSUFPREDALIQ'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSUFPALIQEFET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PIBSMUN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VIBSMUN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSMPDIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSMVDIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSMVDEVTRIB'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSMPREDALIQ'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GIBSMPALIQEFET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GCBSPDIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GCBSVDIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GCBSVDEVTRIB'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GCBSPREDALIQ'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GCBSPALIQEFET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CSTREG'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CCLASSTRIBREG'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PALIQEFETREGIBSUF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VTRIBREGIBSUF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PALIQEFETREGIBSMUN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VTRIBREGIBSMUN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PALIQEFETREGCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VTRIBREGCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CBSCCREDPRES'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CBSPCREDPRES'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CBSVCREDPRES'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CBSVCREDPRESCONDSUS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'IBSCCREDPRES'
+        ParamType = ptInput
+      end
+      item
+        Name = 'IBSPCREDPRES'
+        ParamType = ptInput
+      end
+      item
+        Name = 'IBSVCREDPRES'
+        ParamType = ptInput
+      end
+      item
+        Name = 'IBSVCREDPRESCONDSUS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GGOVPALIQIBSUF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GGOVVTRIBIBSUF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GGOVPALIQIBSMUN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GGOVVTRIBIBSMUN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GGOVPALIQCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'GGOVVTRIBCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOQBCMONO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOADREMIBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOADREMCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVIBSMONO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVCBSMONO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOQBCMONORETEN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOADREMIBSRETEN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVIBSMONORETEN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVCBSMONORETEN'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOQBCMONORET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOADREMIBSRET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVIBSMONORET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVCBSMONORET'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOPDIFIBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVIBSMONODIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOPDIFCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVCBSMONODIF'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVTOTIBSMONOITEM'
+        ParamType = ptInput
+      end
+      item
+        Name = 'MONOVTOTCBSMONOITEM'
+        ParamType = ptInput
+      end
+      item
+        Name = 'TRANSFCREDVIBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'TRANSFCREDVCBS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'TPCREDPRESIBSZFM'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VCREDPRESIBSZFM'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VIBS'
+        ParamType = ptInput
+      end>
+  end
+  object retornaid: TFDStoredProc
+    Connection = DmdPrincipal.FDConexao
+    StoredProcName = 'dbo.RETORNA_ID'
+    Left = 616
+    Top = 281
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@NOME_TABELA'
+        DataType = ftFixedChar
+        ParamType = ptInput
+        Size = 50
+      end
+      item
+        Position = 3
+        Name = '@NUMERO_ID'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end>
   end
 end

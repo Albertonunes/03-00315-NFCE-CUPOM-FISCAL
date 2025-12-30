@@ -19,7 +19,8 @@ uses
   UFrmConsultaProcFornecedor in '..\Comum\LIBS\Consultas\UFrmConsultaProcFornecedor.pas' {FrmConsultaProcFornecedor},
   UFRM_BUSCAPED in 'UFRM_BUSCAPED.pas' {FRM_BUSCAPED},
   FRM_CONFIGURASERIAL in 'FRM_CONFIGURASERIAL.pas' {FRMCONFIGURASERIAL},
-  UFRM_FPGTOPEDCLI in 'UFRM_FPGTOPEDCLI.pas' {FRM_PGTOPEDCLI};
+  UFRM_FPGTOPEDCLI in 'UFRM_FPGTOPEDCLI.pas' {FRM_PGTOPEDCLI},
+  URefTrib in '..\Comum\URefTrib.pas';
 
 {$R *.res}
 
