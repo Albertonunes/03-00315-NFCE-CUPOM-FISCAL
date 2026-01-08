@@ -276,6 +276,18 @@ type
     ActMovEstoque: TAction;
     GravaRefTrib: TAction;
     QryInsRefTrib: TFDQuery;
+    QryCartaoLOGO: TIntegerField;
+    QryCartaoCODIGO: TStringField;
+    QryCartoes: TFDQuery;
+    DsrCartoes: TDataSource;
+    QryCartoesCARTAO_COD: TFDAutoIncField;
+    QryCartoesCARTAO_DESCR: TStringField;
+    QryCartoesDC: TStringField;
+    QryCartoesDIAS: TIntegerField;
+    QryCartoesPERCENTUAL: TFloatField;
+    QryCartoesPARCELAS_MAX: TIntegerField;
+    QryCartoesLOGO: TIntegerField;
+    QryCartoesCODIGO: TStringField;
     procedure BT_IOKClick(Sender: TObject);
     procedure bt_confirmaChequeClick(Sender: TObject);
     procedure bt_confirmaDebitoClick(Sender: TObject);
@@ -318,6 +330,8 @@ type
     { Private declarations }
     procedure AbrirNota(nIDNF:integer);
     procedure EnviarNota(nIDNF:integer);
+    function RetornaIndpag:String;
+    function RetornaBandeira:String;
   public
     { Public declarations }
   end;
@@ -845,6 +859,39 @@ begin
   end;
 end;
 
+function TFRM_PGTOPEDCLI.RetornaBandeira: String;
+var bandeira: string;
+begin
+
+  QryCartoes.Close;
+  QryCartoes.ParamByName('CODIGO').AsInteger := RxPgtoFinalCARTAO_COD.Value;
+  QryCartoes.Open;
+  bandeira := QryCartoesCODIGO.Value;
+  Result := bandeira;
+
+end;
+
+function TFRM_PGTOPEDCLI.RetornaIndpag: String;
+var
+  indpagto : string;
+begin
+  indpagto := '1';
+  if RxPgto.RecordCount > 1 then
+    indpagto := '2';
+  if RxPgto.RecordCount = 1 then
+    indpagto := '1';
+  if RxPgtoFORMA.IsNull then
+    indpagto := '3';
+  (*
+  RxPgto.First;
+  while not RxPgto.Eof do
+  begin
+
+    RxPgto.Next;
+  end; *)
+  Result := indpagto;
+end;
+
 procedure TFRM_PGTOPEDCLI.RxPgtoAfterDelete(DataSet: TDataSet);
 begin
   try
@@ -1066,7 +1113,7 @@ begin
       if RxPgtoFinalFORMA.Value = 'VALE ALIMENTACAO' then tppag := '10';
       if RxPgtoFinalFORMA.Value = 'VALE REFEICAO'    then tppag := '11';
       if RxPgtoFinalFORMA.Value = 'VALE PRESENTE'    then tppag := '12';
-      if RxPgtoFinalFORMA.Value = 'VALE COMUSTIVEL'  then tppag := '13';
+      if RxPgtoFinalFORMA.Value = 'VALE COMBUSTIVEL' then tppag := '13';
       if RxPgtoFinalFORMA.Value = 'CONTRA-VALE'      then tppag := '99';
       if RxPgtoFinalFORMA.Value = 'TROCA'            then tppag := '99';
 
@@ -1077,11 +1124,33 @@ begin
       QryInserirDupl.ParamByName('NF_VALOR').AsFloat    := RxPgtoFinalVALOR.Value;
       QryInserirDupl.ParamByName('NF_DT_VENCTO').AsDateTime := Date;//RxPgtoFinalVENCIMENTO.Value;
       QryInserirDupl.ParamByName('NF_TIPOPAG').AsString := tppag;
-      QryInserirDupl.ParamByName('NF_CODIGO').AsString  := RxPgtoFinalNRCARTAO.Value;
+      QryInserirDupl.ParamByName('NF_CODIGO').AsString  := RetornaBandeira;
       QryInserirDupl.ExecSQL;
     end;
     RxPgtoFinal.Next;
   end;
+   (* if vlrdupl > 0 then
+    begin
+      with pag.Add do // PAGAMENTOS apenas para NFC-e
+      begin
+        tPag := fpDuplicataMercantil;
+        // fpDinheiro;fpCheque;fpCartaoCredito;fpCartaoDebito;fpCreditoLoja;fpValeAlimentacao;
+        vPag := vlrdupl;
+        // fpValeRefeicao;fpValePresente;fpValeCombustivel;fpDuplicataMercantil;fpSemPagamento;
+      end;
+    end
+    else
+    begin
+      with pag.Add do // PAGAMENTOS apenas para NFC-e
+      begin
+        tPag := fpSemPagamento;
+        // fpDinheiro;fpCheque;fpCartaoCredito;fpCartaoDebito;fpCreditoLoja;fpValeAlimentacao;
+        vPag := vlrdupl;
+        // fpValeRefeicao;fpValePresente;fpValeCombustivel;fpDuplicataMercantil;fpSemPagamento;
+      end;
+    end;
+   *)
+
 end;
 
 procedure TFRM_PGTOPEDCLI.ActGravarItensExecute(Sender: TObject);
@@ -1235,7 +1304,7 @@ begin
     QryInserirNF.ParamByName('IE').AsString                := QryCliNFRG_INSC.Value;
     QryInserirNF.ParamByName('FONE').AsString              := QryCliNFTEL1.Value;
     QryInserirNF.ParamByName('FPAGTO').AsString            := '';
-    QryInserirNF.ParamByName('FPGTO_VPO').AsString         := '';
+    QryInserirNF.ParamByName('FPGTO_VPO').AsString         := RetornaIndPag;
     QryInserirNF.ParamByName('TIPO').AsString              := '';
     QryInserirNF.ParamByName('NFE_MODELO').AsString        := '65';
     QryInserirNF.ParamByName('NFE_SERIE').AsString         := IntToStr(SERIE);

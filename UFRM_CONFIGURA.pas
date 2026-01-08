@@ -349,10 +349,10 @@ begin
       Ide.cNF    := StrToInt(IntToStr(QryFiltroNFNF_ID.Value));
       //Ide.cNF    := GerarCodigoDFe(Ide.nNF);
       Ide.natOp  := iif( QryFiltroNFCFOP_NATOP.IsNull, 'VENDA' ,QryFiltroNFCFOP_NATOP.Value);
-      Ide.indPag := ipVista;
-      //Ide.indPag := IIf(QryFiltroNFFPGTO_VPO.Value = '1', ipVista,
-      //              IIf(QryFiltroNFFPGTO_VPO.Value = '2', ipPrazo,
-      //              IIf(QryFiltroNFFPGTO_VPO.Value = '3', ipOutras, ipNenhum)));
+      //Ide.indPag := ipVista;
+      Ide.indPag := IIf(QryFiltroNFFPGTO_VPO.Value = '1', ipVista,
+                    IIf(QryFiltroNFFPGTO_VPO.Value = '2', ipPrazo,
+                    IIf(QryFiltroNFFPGTO_VPO.Value = '3', ipOutras, ipNenhum)));
       Ide.modelo := 65;//StrToInt(QryFiltroNFNFE_MODELO.Value);
       Ide.serie  := serie;
       Ide.indPres:= pcPresencial; //pcNao,pcPresencial,pcInternet,
@@ -1627,7 +1627,21 @@ begin
             if QryFiltroDuplicataNF_TIPOPAG.Value = '99' then tPag := fpOutro;
             if QryFiltroDuplicataNF_TIPOPAG.Value = '99' then tPag := fpOutro;
 
-            vPag := QryFiltroDuplicataNF_VALOR.Value;
+            vPag      := QryFiltroDuplicataNF_VALOR.Value;
+            xPag      := '';
+            tpIntegra := tiNaoInformado;//tiPagNaoIntegrado tiPagIntegrado tiNaoInformado
+            CNPJ      := '';
+            tBand     := StrToBandeiraCartao(ok,QryFiltroDuplicataNF_CODIGO.Value); //bcOutros;// bcTicket bcVR bcVerocheque bcValeCard bcSodexo bcRedeCompras
+                                  // bcPolicard bcMaxVan bcMais bcJcB bcHiper bcGreenCard bcGoodCard
+                                  // bcDiscover bcCredz bcCalCard bcBanesCard bcAlelo bcCabal bcAura
+                                  // bcHipercard bcElo bcDinersClub bcSorocred bcAmericanExpress
+                                  // bcMasterCard bcVisa
+            cAut      := '';
+            dPag      := date;
+            CNPJPag   := '';
+            UFPag     := '';
+            CNPJReceb := '';
+            idTermPag := '';
           end;
           QryFiltroDuplicata.Next;
         end;

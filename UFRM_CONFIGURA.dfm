@@ -810,6 +810,10 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
       Margins.Bottom = 4
       Caption = 'Op'#231#245'es'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object btn_imprimir: TcxButton
         Left = 90
         Top = 90
@@ -965,6 +969,10 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
       Margins.Bottom = 4
       Caption = 'Parametros de impress'#227'o'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label7: TLabel
         Left = 465
         Top = 5
@@ -1303,6 +1311,10 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
       Margins.Bottom = 4
       Caption = 'Retorno'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxPageControl2: TcxPageControl
         Left = 0
         Top = 0
@@ -1327,6 +1339,10 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           Margins.Bottom = 4
           Caption = 'tabDados'
           ImageIndex = 0
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object MemoDados: TMemo
             Left = 0
             Top = 0
@@ -1349,6 +1365,10 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           Margins.Bottom = 4
           Caption = 'tabRespws'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object WebBrowser1: TWebBrowser
             Left = 0
             Top = 0
@@ -1377,6 +1397,10 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           Margins.Bottom = 4
           Caption = 'tabretornoWS'
           ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object memoRespWS: TMemo
             Left = 0
             Top = 0
@@ -1398,6 +1422,10 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           Margins.Bottom = 4
           Caption = 'cxTabSheet4'
           ImageIndex = 3
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object MemoResp: TMemo
             Left = 0
             Top = 0
@@ -1419,6 +1447,10 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           Margins.Bottom = 4
           Caption = 'cxTabSheet1'
           ImageIndex = 4
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object WBResposta: TWebBrowser
             Left = 0
             Top = 0

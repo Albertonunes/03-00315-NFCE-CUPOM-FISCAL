@@ -1348,7 +1348,9 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   object QryCartao: TFDQuery
     Connection = DmdPrincipal.FDConexao
     SQL.Strings = (
-      'select *'
+      
+        'SELECT CARTAO_COD, CARTAO_DESCR, DC, DIAS, PERCENTUAL, PARCELAS_' +
+        'MAX, LOGO, CODIGO'
       'FROM TEF_CARTAO'
       'WHERE DC = :DC'
       'ORDER BY CARTAO_DESCR')
@@ -1382,6 +1384,16 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
     end
     object QryCartaoPARCELAS_MAX: TIntegerField
       FieldName = 'PARCELAS_MAX'
+    end
+    object QryCartaoLOGO: TIntegerField
+      FieldName = 'LOGO'
+      Origin = 'LOGO'
+    end
+    object QryCartaoCODIGO: TStringField
+      FieldName = 'CODIGO'
+      Origin = 'CODIGO'
+      FixedChar = True
+      Size = 2
     end
   end
   object DSCartao: TDataSource
@@ -2304,8 +2316,8 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       '           ,:tpCredPresIBSZFM'
       '           ,:vCredPresIBSZFM'
       '           ,:vIBS)')
-    Left = 49
-    Top = 353
+    Left = 121
+    Top = 369
     ParamData = <
       item
         Name = 'NF_ID'
@@ -2627,5 +2639,68 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         Name = 'VIBS'
         ParamType = ptInput
       end>
+  end
+  object QryCartoes: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      
+        'SELECT CARTAO_COD, CARTAO_DESCR, DC, DIAS, PERCENTUAL, PARCELAS_' +
+        'MAX, LOGO, CODIGO'
+      'FROM TEF_CARTAO'
+      'WHERE CARTAO_COD = :CODIGO'
+      'ORDER BY CARTAO_COD')
+    Left = 26
+    Top = 306
+    ParamData = <
+      item
+        Name = 'CODIGO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object QryCartoesCARTAO_COD: TFDAutoIncField
+      FieldName = 'CARTAO_COD'
+      Origin = 'CARTAO_COD'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object QryCartoesCARTAO_DESCR: TStringField
+      FieldName = 'CARTAO_DESCR'
+      Origin = 'CARTAO_DESCR'
+      FixedChar = True
+      Size = 30
+    end
+    object QryCartoesDC: TStringField
+      FieldName = 'DC'
+      Origin = 'DC'
+      FixedChar = True
+      Size = 1
+    end
+    object QryCartoesDIAS: TIntegerField
+      FieldName = 'DIAS'
+      Origin = 'DIAS'
+    end
+    object QryCartoesPERCENTUAL: TFloatField
+      FieldName = 'PERCENTUAL'
+      Origin = 'PERCENTUAL'
+    end
+    object QryCartoesPARCELAS_MAX: TIntegerField
+      FieldName = 'PARCELAS_MAX'
+      Origin = 'PARCELAS_MAX'
+    end
+    object QryCartoesLOGO: TIntegerField
+      FieldName = 'LOGO'
+      Origin = 'LOGO'
+    end
+    object QryCartoesCODIGO: TStringField
+      FieldName = 'CODIGO'
+      Origin = 'CODIGO'
+      FixedChar = True
+      Size = 2
+    end
+  end
+  object DsrCartoes: TDataSource
+    DataSet = QryCartoes
+    Left = 26
+    Top = 322
   end
 end
