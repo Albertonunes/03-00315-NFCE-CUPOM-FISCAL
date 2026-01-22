@@ -28,7 +28,7 @@ uses
   cxDataStorage, cxNavigator, dxDateRanges, dxScrollbarAnnotations, Data.DB,
   cxDBData, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
   cxGridLevel, cxClasses, cxGridCustomView, cxGrid, cxButtons, cxLookupEdit,
-  cxDBLookupEdit, cxDBLookupComboBox;
+  cxDBLookupEdit, cxDBLookupComboBox, cxCheckBox;
 
 type
   TFRM_BUSCAPED = class(TForm)
@@ -90,6 +90,7 @@ type
     btnLimpar: TcxButton;
     Panel3: TPanel;
     Label4: TLabel;
+    cx_semcupom: TcxCheckBox;
     procedure FormShow(Sender: TObject);
     procedure btn_pesquisarClick(Sender: TObject);
     procedure cxGrid1DBTableView1CellDblClick(Sender: TcxCustomGridTableView;
@@ -147,6 +148,8 @@ begin
          ParamByName('FILIAL').AsInteger := DmdPrincipal.qryEMPRESASDIAG_EMPRESA.Value
       else
         ParamByName('FILIAL').AsInteger := 1;
+      if cx_semcupom.Checked then
+        SQL.Add('AND (A.DATA_FATURAMENTO IS NULL)                                            ');
 
       if (cx_pedido.Value > 0) then
       Begin
@@ -217,6 +220,7 @@ begin
       FRM_PRINCIPAL.cx_nomecliente.Text := cxGrid1DBTableView1NOME.EditValue;
       CLIENTE                           := cxGrid1DBTableView1COD_CLIENTE.EditValue;
     end;
+    FRM_PRINCIPAL.cx_frete.Value := cxGrid1DBTableView1VLRFRETE.EditValue;
     // buscar os itens do pedido
     PEDID := cxGrid1DBTableView1PEDID.EditValue;
     QryItensPed.Close;
@@ -253,7 +257,7 @@ begin
       MemItensGTIN.Value           := QryItensPedCODBARRAS.Value;
       MemItensCEST.Value           := QryLookMateriaisCEST.Value;
       MemItensESTOQUE_ID.Value     := QryItensPedESTOQUE_ID.Value;
-      MemItensST.Value             := iif( length(QryItensPedST.Value)>1,QryItensPedST.Value,QryLookMateriaisSIT_TRIBUTARIA.Value);
+      MemItensST.Value             := '000';//iif( length(QryItensPedST.Value)>1,QryItensPedST.Value,QryLookMateriaisSIT_TRIBUTARIA.Value);
       MemItensPESO.Value           := QryItensPedPESO.Value;
       MemItensAUTOID.Value         := QryItensPedAUTOID.Value;
       MemItensESTOQUE_ID.Value     := QryItensPedESTOQUE_ID.Value;
@@ -273,6 +277,8 @@ end;
 procedure TFRM_BUSCAPED.cxGrid1DBTableView1CellDblClick(
   Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
   AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+var
+  i:integer;
 begin
   with DMD_PRO00315 do
   begin
@@ -280,9 +286,14 @@ begin
     QryItensPed.Close;
     QryItensPed.ParamByName('PEDID').AsInteger := cxGrid1DBTableView1PEDID.EditValue;
     QryItensPed.Open;
+    i:=0;
     while not QryItensPed.Eof do
     begin
+      i:=i+1;
+      MemItens.Insert;
+      MemItensCODID.Value          := QryItensPedCODID.Value;
       QryLookMateriais.Close;
+      QryLookMateriais.ParamByName('CODID').AsInteger  := QryItensPedCODID.Value;
       if DmdPrincipal.QryParamsPRODUTO_INDIVIDUAL.Value = 'S' then
       begin
         QryLookMateriais.ParamByName('FILIAL').AsInteger  := PRO_FILIAL;
@@ -293,25 +304,29 @@ begin
       end;
       QryLookMateriais.ParamByName('CODID').AsInteger  := QryItensPedCODID.Value;
       QryLookMateriais.Open;
-      if not QryLookMateriaisCODID.IsNull then
-      begin
-        MemItensITEM.Value           := QryItensPedORDEM.Value;
-        MemItensCOD_INTERNO.Value    := QryLookMateriaisCOD_INTERNO.Value;
-        MemItensDESCRICAO.Value      := QryCodBarrasDESCRICAO.Value;
-        MemItensQTDE.Value           := QryItensPedQUANT.Value;
-        MemItensVLR_UNIT.Value       := QryItensPedVLR_UNIT.Value;
-        MemItensVLR_MERCADORIA.Value := QryItensPedVLR_TOTAL.Value;
-        MemItensUNI_CODIGO.Value     := QryItensPedUNIDADE.Value;
-        MemItensNCM.Value            := RemoveChar(QryLookMateriaisNCM.Value);
-        MemItensGTIN.Value           := QryLookMateriaisCOD_BARRAS.Value;
-        MemItensCEST.Value           := QryLookMateriaisCEST.Value;
-        MemItensESTOQUE_ID.Value     := QryLookMateriaisESTOQUE_PADRAO.Value;
-        MemItensST.Value             := QryLookMateriaisSIT_TRIBUTARIA.Value;
-        MemItensPESO.Value           := QryItensPedPESO.Value;
-        MemItensCFOP.Value           := '5102';
-        MemItens.Post;
-      end;
-      //RecalcularItens;
+      MemItensITEM.Value           := i;
+      MemItensCOD_INTERNO.Value    := QryItensPedCOD_INTERNO.Value;
+      MemItensDESCRICAO.Value      := QryItensPedDESCRICAOPROD.Value;
+      MemItensQTDE.Value           := QryItensPedQUANT.Value;
+      MemItensVLR_UNIT.Value       := QryItensPedVLR_UNIT.Value;
+      MemItensVLR_MERCADORIA.Value := QryItensPedVLR_MERCADORIA.Value;
+      MemItensVLR_TOTAL.Value      := QryItensPedVLR_TOTAL.Value;
+      MemItensUNI_CODIGO.Value     := QryItensPedUNIDADE.Value;
+      MemItensNCM.Value            := RemoveChar(QryLookMateriaisNCM.Value);
+      MemItensGTIN.Value           := QryItensPedCODBARRAS.Value;
+      MemItensCEST.Value           := QryLookMateriaisCEST.Value;
+      MemItensESTOQUE_ID.Value     := QryItensPedESTOQUE_ID.Value;
+      MemItensST.Value             := '000';iif( length(QryItensPedST.Value)>1,QryItensPedST.Value,QryLookMateriaisSIT_TRIBUTARIA.Value);
+      MemItensPESO.Value           := QryItensPedPESO.Value;
+      MemItensAUTOID.Value         := QryItensPedAUTOID.Value;
+      MemItensESTOQUE_ID.Value     := QryItensPedESTOQUE_ID.Value;
+      MemItensPEDIDO.Value         := QryItensPedPEDIDO.Value;
+      MemItensPEDID.Value          := QryItensPedPEDID.Value;
+      MemItensCFOP.Value           := '5102';
+      MemItensMOVIMENTOU_ESTOQUE.Value := QryItensPedMOVIMENTOU_ESTOQUE.Value;
+      MemItensMOVIMENTA_ESTOQUE.Value  := DmdPrincipal.QryParamsMOV_ESTOQUE_PEDIDO.Value;
+      MemItens.Post;
+
       QryItensPed.Next;
     end;
 
@@ -345,6 +360,8 @@ end;
 
 procedure TFRM_BUSCAPED.FormShow(Sender: TObject);
 begin
+  cx_dtinin.Date := date;
+  cx_dtfim.Date  := date;
   with DMD_PRO00315.QryBuscaCliente do
   begin
     Close;

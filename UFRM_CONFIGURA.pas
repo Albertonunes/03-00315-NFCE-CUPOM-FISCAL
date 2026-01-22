@@ -1614,7 +1614,9 @@ begin
         begin
           with pag.Add do // PAGAMENTOS apenas para NFC-e
           begin
-            tPag := fpDinheiro;
+            //tPag := fpDinheiro;
+            //vPag := vlrdupl;
+
             if QryFiltroDuplicataNF_TIPOPAG.Value = '01' then tPag := fpDinheiro;
             if QryFiltroDuplicataNF_TIPOPAG.Value = '02' then tPag := fpCheque;
             if QryFiltroDuplicataNF_TIPOPAG.Value = '03' then tPag := fpCartaoCredito;
@@ -1624,10 +1626,28 @@ begin
             if QryFiltroDuplicataNF_TIPOPAG.Value = '11' then tPag := fpValeRefeicao;
             if QryFiltroDuplicataNF_TIPOPAG.Value = '12' then tPag := fpValePresente;
             if QryFiltroDuplicataNF_TIPOPAG.Value = '13' then tPag := fpValeCombustivel;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '15' then tPag := fpBoletoBancario;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '16' then tPag := fpDepositoBancario;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '17' then tPag := fpPagamentoInstantaneo;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '18' then tPag := fpTransfBancario;
+            if QryFiltroDuplicataNF_TIPOPAG.Value = '19' then tPag := fpProgramaFidelidade;
             if QryFiltroDuplicataNF_TIPOPAG.Value = '99' then tPag := fpOutro;
             if QryFiltroDuplicataNF_TIPOPAG.Value = '99' then tPag := fpOutro;
 
             vPag      := QryFiltroDuplicataNF_VALOR.Value;
+            if (QryFiltroDuplicataNF_TIPOPAG.Value = '03') or (QryFiltroDuplicataNF_TIPOPAG.Value = '04') or
+               (QryFiltroDuplicataNF_TIPOPAG.Value = '17') then
+            begin
+              tpIntegra := tiPagNaoIntegrado;//tiPagNaoIntegrado tiPagIntegrado tiNaoInformado
+             // tBand     := StrToBandeiraCartao(ok,QryFiltroDuplicataNF_CODIGO.Value); //bcOutros;// bcTicket bcVR bcVerocheque bcValeCard bcSodexo bcRedeCompras
+                                  // bcPolicard bcMaxVan bcMais bcJcB bcHiper bcGreenCard bcGoodCard
+                                  // bcDiscover bcCredz bcCalCard bcBanesCard bcAlelo bcCabal bcAura
+                                  // bcHipercard bcElo bcDinersClub bcSorocred bcAmericanExpress
+                                  // bcMasterCard bcVisa
+
+            end;
+
+            (*
             xPag      := '';
             tpIntegra := tiNaoInformado;//tiPagNaoIntegrado tiPagIntegrado tiNaoInformado
             CNPJ      := '';
@@ -1641,7 +1661,7 @@ begin
             CNPJPag   := '';
             UFPag     := '';
             CNPJReceb := '';
-            idTermPag := '';
+            idTermPag := ''; *)
           end;
           QryFiltroDuplicata.Next;
         end;
@@ -2139,75 +2159,63 @@ begin
       QryCstNota.SQL.Add('        AND (SERIE_ID = :SERIE)                     ');
       QryCstNota.ParamByName('NF').AsInteger     := ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.nNF;
       QryCstNota.ParamByName('SERIE').AsInteger  := ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.serie;
-      QryCstNota.ParamByName('FILIAL').AsInteger := QryEmpresasDIAG_EMPRESA.Value;
+      QryCstNota.ParamByName('FILIAL').AsInteger := PRO_FILIAL;
       QryCstNota.Open;
       QryCstNota.First;
       If not QryCstNotaNF_ID.IsNull then
       begin
-        // MsgAtencao(inttostr(DMNFe.QryPadraoNF_ID.Value)+' - '+inttostr(QryCstNotaNF_ID.Value));
-        // verifica se a nota corresponde a mesma do xml e a mesma da grid
-        if QryFiltroNFNF_ID.Value = QryCstNotaNF_ID.Value then
+        vcstatus := ACBrNFe1.WebServices.Consulta.cStat;
+        nProt    := ACBrNFe1.WebServices.Consulta.Protocolo;
+        // If (QryCstNotaNFE_IDNOTA.IsNull) or (QryCstNotaNFE_IDNOTA.Value = '') then
+        // begin
+        Situacao := QryCstNotaSITUACAO.Value;
+        if vcstatus = 100 then
         begin
-          vcstatus := ACBrNFe1.WebServices.Consulta.cStat;
-          nProt    := ACBrNFe1.WebServices.Consulta.Protocolo;
-          // If (QryCstNotaNFE_IDNOTA.IsNull) or (QryCstNotaNFE_IDNOTA.Value = '') then
-          // begin
-          Situacao := QryCstNotaSITUACAO.Value;
-          if vcstatus = 100 then
-          begin
-            Situacao := 'A';
-            // verifica o financeiro
-            if Copy(QryParamsIMPRESSAO.Value, 45, 1) = 'S' then
-            Begin
-              // validar financeiro
-              ActInsereReceber.Execute;
-            end;
+          Situacao := 'A';
+          // verifica o financeiro
+          if Copy(QryParamsIMPRESSAO.Value, 45, 1) = 'S' then
+          Begin
+            // validar financeiro
+            ActInsereReceber.Execute;
           end;
-
-          IF vcstatus = 101 then
-            Situacao := 'C'; // cancelada com sucesso
-          IF vcstatus = 102 then
-            Situacao := 'I'; // Unitilizada com sucesso
-          IF vcstatus = 105 then
-            Situacao := 'S'; // esperando processamento
-          IF vcstatus = 204 then
-            Situacao := 'A'; // Duplicidade volta a aceita com sucesso
-
-          MDS := 'EMISSOR NFE';
-          ACT := 'ATUALIZADO SEFAZ';
-          OBS := 'Enviado NFe ' + IntToStr(QryCstNotaNF_NUMERO.Value) + ' - ' +
-            IntToStr(vcstatus) + ' - ' + nProt;
-          //ActLogGeral.Execute;
-
-          QryManu.Close;
-          QryManu.SQL.Clear;
-          QryManu.SQL.Add('UPDATE NOTA_FISCAL                 ');
-          QryManu.SQL.Add('SET NFE_PROTOCOLO = :NROPROT,      ');
-          QryManu.SQL.Add('NFE_IDNOTA = :IDNOTA,              ');
-          QryManu.SQL.Add('NFE_CODSTATUS = :CODSTATUS,        ');
-          QryManu.SQL.Add('NFE_STATUS = :STATUS,              ');
-          QryManu.SQL.Add('SITUACAO = :SITUA                  ');
-          QryManu.SQL.Add('WHERE NF_ID = :NF_ID               ');
-          QryManu.ParamByName('NF_ID').AsInteger := QryCstNotaNF_ID.Value;
-          QryManu.ParamByName('NROPROT').AsString :=
-            ACBrNFe1.WebServices.Consulta.Protocolo;
-          QryManu.ParamByName('IDNOTA').AsString :=
-            ACBrNFe1.WebServices.Consulta.NFeChave;
-          QryManu.ParamByName('STATUS').AsString :=
-            Copy(ACBrNFe1.WebServices.Consulta.xMotivo, 1, 20);
-          QryManu.ParamByName('CODSTATUS').AsInteger := vcstatus;
-          QryManu.ParamByName('SITUA').AsString := Situacao;
-          QryManu.ExecSQL;
-          // end;
-          MsgInformacao(IntToStr(vcstatus));
-          ACBrNFe1.NotasFiscais.Clear;
-          // ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
-          MsgInformacao('Arquivo XML Atualizado com Sucesso ! ');
-        end
-        else
-        begin
-          MsgAtencao('O XML não Corresponde ao Mesmo Número de NF Pesquisada ! ');
         end;
+
+        IF vcstatus = 101 then
+          Situacao := 'C'; // cancelada com sucesso
+        IF vcstatus = 102 then
+          Situacao := 'I'; // Unitilizada com sucesso
+        IF vcstatus = 105 then
+          Situacao := 'S'; // esperando processamento
+        IF vcstatus = 204 then
+          Situacao := 'A'; // Duplicidade volta a aceita com sucesso
+
+        MDS := 'EMISSOR NFE';
+        ACT := 'ATUALIZADO SEFAZ';
+        OBS := 'Enviado NFe ' + IntToStr(QryCstNotaNF_NUMERO.Value) + ' - ' +
+          IntToStr(vcstatus) + ' - ' + nProt;
+        //ActLogGeral.Execute;
+
+        QryManu.Close;
+        QryManu.SQL.Clear;
+        QryManu.SQL.Add('UPDATE NOTA_FISCAL                 ');
+        QryManu.SQL.Add('SET NFE_PROTOCOLO = :NROPROT,      ');
+        QryManu.SQL.Add('NFE_IDNOTA = :IDNOTA,              ');
+        QryManu.SQL.Add('NFE_CODSTATUS = :CODSTATUS,        ');
+        QryManu.SQL.Add('NFE_STATUS = :STATUS,              ');
+        QryManu.SQL.Add('SITUACAO = :SITUA                  ');
+        QryManu.SQL.Add('WHERE NF_ID = :NF_ID               ');
+        QryManu.ParamByName('NF_ID').AsInteger  := QryCstNotaNF_ID.Value;
+        QryManu.ParamByName('NROPROT').AsString := ACBrNFe1.WebServices.Consulta.Protocolo;
+        QryManu.ParamByName('IDNOTA').AsString  := ACBrNFe1.WebServices.Consulta.NFeChave;
+        QryManu.ParamByName('STATUS').AsString  := Copy(ACBrNFe1.WebServices.Consulta.xMotivo, 1, 20);
+        QryManu.ParamByName('CODSTATUS').AsInteger := vcstatus;
+        QryManu.ParamByName('SITUA').AsString      := Situacao;
+        QryManu.ExecSQL;
+        // end;
+        MsgInformacao(IntToStr(vcstatus));
+        ACBrNFe1.NotasFiscais.Clear;
+        // ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+        MsgInformacao('Arquivo XML Atualizado com Sucesso ! ');
       end
       else
       begin
@@ -2402,12 +2410,44 @@ end;
 procedure TFRM_CONFIGURA.btn_gerarxmlClick(Sender: TObject);
 var
   NFID : string;
+  nIDNF : integer;
 begin
   if not(InputQuery('Nota Fiscal', 'Numero da Nota', NFID)) then
     exit;
+  nIDNF := StrToInt(NFID);
+  with DMD_PRO00315 do
+  begin
+    QryFiltroNF.Close;
+    QryFiltroNF.ParamByName('NF_ID').AsInteger := nIDNF;
+    QryFiltroNF.Open;
+    QryFiltroItens.Close;
+    QryFiltroItens.ParamByName('NF_ID').AsInteger := nIDNF;
+    QryFiltroItens.Open;
+    QryFiltroDuplicata.Close;
+    QryFiltroDuplicata.ParamByName('NF_ID').AsInteger := nIDNF;
+    QryFiltroDuplicata.Open;
+    QryFiltroObs.Close;
+    QryFiltroObs.ParamByName('NF_ID').AsInteger := nIDNF;
+    QryFiltroObs.Open;
+    QryTranspNF.Close;
+    QryTranspNF.Open;
+    ForceDirectories(QryEmpresasNFE_LOG.Value + '\LOGs\' +
+    FormatDateTime('yyyymm',QryFiltroNFNF_DT_EMISSAO.AsDateTime));
+  end;
+  ActLerConfIni.Execute;
+  ActGerarNFe.Execute;
+  try
+    ACBrNFe1.NotasFiscais.Assinar;
+  except
 
-  AbrirNota(StrToInt(NFID));
-  //ActGerarNFe.Execute;
+  end;
+  //FRM_CONFIGURA.ACBrNFe1.NotasFiscais.Items[0].GravarXML;
+  //MsgInformacao('Arquivo gerado em: ' + ACBrNFe1.NotasFiscais.Items[0].NomeArq);
+  //FRM_CONFIGURA.ACBrNFe1.Consultar;
+  //FRM_CONFIGURA.ACBrNFe1.Configuracoes.Arquivos.PathSalvar := QryEmpresasNFE_LOG.Value +
+  //  '\LOGs\'; // + FormatDateTime('mmyy',now) ;
+  //FRM_CONFIGURA.ACBrNFe1.Configuracoes.Arquivos.PathNFe := QryEmpresasNFE_LOG.Value +
+  //  '\LOGs\'; // + FormatDateTime('mmyy',now) ;//+ FormatDateTime('mmyy',date);
   ACBrNFe1.NotasFiscais.Items[0].GravarXML();
 end;
 
@@ -2699,6 +2739,15 @@ begin
           '\LOGs\'; // + FormatDateTime('mmyy',date)+StrZero(IntToStr(DMNFe.QryPadraoNF_NUMERO.Value),6)+'.xml';
         ACBrNFe1.NotasFiscais.Items[0].GravarXML;
         MsgInformacao('Nota Fiscal enviada com Sucesso ! ');
+        // atualizar pedido com o numero do cupom
+        QryManu.Close;
+        QryManu.SQL.Clear;
+        QryManu.SQL.Add('UPDATE PEDIDO_MATERIAIS_CLIENTE ');
+        QryManu.SQL.Add('SET DATA_FATURAMENTO = :AGORA   ');
+        QryManu.SQL.Add('WHERE PEDID = :PEDID            ');
+        QryManu.ParamByName('AGORA').AsDateTime := now;
+        QryManu.ParamByName('PEDID').AsInteger  := PEDID;
+        QryManu.ExecSQL;
 
         vcstatus := ACBrNFe1.WebServices.Enviar.cStat;
         nProt    := ACBrNFe1.WebServices.Enviar.Protocolo;

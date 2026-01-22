@@ -326,6 +326,7 @@ type
     procedure ActGravarDuplicataExecute(Sender: TObject);
     procedure ActMovEstoqueExecute(Sender: TObject);
     procedure GravaRefTribExecute(Sender: TObject);
+    procedure cxpagecontrol1Change(Sender: TObject);
   private
     { Private declarations }
     procedure AbrirNota(nIDNF:integer);
@@ -446,6 +447,8 @@ begin
       end
       else
       Begin
+        cx_parccred.Text      := '1';
+        cx_parccred.EditValue := 1;
         QryCartao.Close;
         QryCartao.ParamByName('DC').AsString := 'C';
         QryCartao.Open;
@@ -460,6 +463,7 @@ begin
         cxpagecontrol1.ActivePage := cxtab_cred;
         cxc_cartaocred.SetFocus;
       end;
+      cxc_cartaocred.SetFocus;
     end;
     if cxc_fpgto.Text = 'TROCA' THEN
     begin
@@ -740,6 +744,9 @@ begin
   For I := 1 to QryCartaoPARCELAS_MAX.Value Do
   Begin
     cx_parccred.Properties.Items.Add(inttostr(I));
+    cx_parccred.ItemIndex := 0;
+    cx_parccred.Text      := '1';
+    cx_parccred.EditValue := 1;
   end;
 end;
 
@@ -1031,6 +1038,15 @@ begin
   // cxc_fpgto.Text := 'DINHEIRO';
 end;
 
+procedure TFRM_PGTOPEDCLI.cxpagecontrol1Change(Sender: TObject);
+begin
+  if cxpagecontrol1.ActivePage = cxtab_cred then
+  begin
+    cx_parccred.Text := '1';
+    cx_parccred.EditValue := 1;
+  end;
+end;
+
 procedure TFRM_PGTOPEDCLI.AtualizaTrocaExecute(Sender: TObject);
 begin
   RxPgto.First;
@@ -1114,6 +1130,11 @@ begin
       if RxPgtoFinalFORMA.Value = 'VALE REFEICAO'    then tppag := '11';
       if RxPgtoFinalFORMA.Value = 'VALE PRESENTE'    then tppag := '12';
       if RxPgtoFinalFORMA.Value = 'VALE COMBUSTIVEL' then tppag := '13';
+      if RxPgtoFinalFORMA.Value = 'BOLETO'           then tppag := '15';
+      if RxPgtoFinalFORMA.Value = 'DEPOSITO'         then tppag := '16';
+      if RxPgtoFinalFORMA.Value = 'PIX'              then tppag := '17';
+      if RxPgtoFinalFORMA.Value = 'TRANSFERENCIA'    then tppag := '18';
+      if RxPgtoFinalFORMA.Value = 'FIDELIDADE'       then tppag := '19';
       if RxPgtoFinalFORMA.Value = 'CONTRA-VALE'      then tppag := '99';
       if RxPgtoFinalFORMA.Value = 'TROCA'            then tppag := '99';
 
@@ -1289,8 +1310,8 @@ begin
     QryInserirNF.ParamByName('NF_VLR_ICMSUB').AsFloat      := VLR_ICMSUB;
     QryInserirNF.ParamByName('NF_VLR_FRETE').AsFloat       := VLR_FRETE;
     QryInserirNF.ParamByName('NF_FRETEXCONTA').AsString    := '1';
-    QryInserirNF.ParamByName('NF_OBS1').AsString           := 'simples';
-    QryInserirNF.ParamByName('NF_FISCAL1').AsString        := 'fiscal';
+    QryInserirNF.ParamByName('NF_OBS1').AsString           := '';
+    QryInserirNF.ParamByName('NF_FISCAL1').AsString        := '';
     QryInserirNF.ParamByName('ENDERECO').AsString          := QryCliNFENDERECO.Value;
     QryInserirNF.ParamByName('ENDERECO_NUM').AsInteger     := QryCliNFENDERECO_NUM.Value;
     QryInserirNF.ParamByName('ENDERECO_COMPL').AsString    := QryCliNFENDERECO_COMPL.Value;
@@ -1770,6 +1791,7 @@ end;
 
 procedure TFRM_PGTOPEDCLI.EnviarNota(nIDNF:integer);
 begin
+  ENVIARNF := true;
   deubom := false;
   FRM_CONFIGURA.Enviar;
   if deubom then

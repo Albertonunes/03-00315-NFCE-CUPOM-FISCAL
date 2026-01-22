@@ -176,6 +176,9 @@ type
     CancelarCupom1: TMenuItem;
     ImprimirCupom1: TMenuItem;
     ConsultaCupom: TAction;
+    cxGroupBox8: TcxGroupBox;
+    cx_frete: TcxCurrencyEdit;
+    ActConfigura: TAction;
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure cx_codbarrasExit(Sender: TObject);
@@ -196,10 +199,14 @@ type
     procedure CancelarCupom1Click(Sender: TObject);
     procedure ImprimirCupom1Click(Sender: TObject);
     procedure ConsultaCupomExecute(Sender: TObject);
+    procedure cx_freteExit(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ActConfiguraExecute(Sender: TObject);
   private
     { Private declarations }
     function SeparaCodBarras(aCodigo : String): boolean;
     procedure EnviarNFCe(aNFID : Integer);
+    function ValidarVenda:boolean;
   public
     { Public declarations }
   end;
@@ -233,6 +240,11 @@ uses UDmdPrincipal, untFuncoes_Advensys, UntPrincipal, UDMD_PRO00315,
   UFRM_OPCOES, UFRM_BUSCAPROD, UFRM_BUSCAPED, UFRM_FPGTOPEDCLI;
 
 
+procedure TFRM_PRINCIPAL.ActConfiguraExecute(Sender: TObject);
+begin
+  FRM_CONFIGURA.ShowModal;
+end;
+
 procedure TFRM_PRINCIPAL.ActFecharVendaExecute(Sender: TObject);
 begin
 
@@ -241,6 +253,9 @@ begin
   //if DmdPrincipal.QryParamsPEDIDO_PGTO.Value = 'S' then
   //begin
     // Verifica se o usuario tem caixa aberto
+  if ValidarVenda then
+  begin
+    VLR_FRETE := cx_frete.Value;
     with DMD_PRO00315 do
     begin
       QryCaixaAberto.Close;
@@ -278,7 +293,7 @@ begin
         abort;
       end;
     end;
-  //end;
+  end;
 
 
   //FRM_FECHAVENDA.cx_subtotal.Value := cx_subtotal.Value;
@@ -459,6 +474,11 @@ begin
     MsgInformacao('CPF inválido');
 end;
 
+procedure TFRM_PRINCIPAL.cx_freteExit(Sender: TObject);
+begin
+  RecalcularItens;
+end;
+
 procedure TFRM_PRINCIPAL.EnviarcupomClick(Sender: TObject);
 begin
   EnviarNFCe(cxGrid2DBTableView1NF_ID.EditValue);
@@ -486,7 +506,10 @@ begin
     FormatDateTime('yyyymm',QryFiltroNFNF_DT_EMISSAO.AsDateTime));
   end;
   FRM_CONFIGURA.ActLerConfIni.Execute;
-  FRM_CONFIGURA.PrepararImpressao;
+  try
+    FRM_CONFIGURA.PrepararImpressao;
+  except
+  end;
   FRM_CONFIGURA.ActGerarNFe.Execute;
   try
     FRM_CONFIGURA.ACBrNFe1.NotasFiscais.Assinar;
@@ -505,6 +528,12 @@ procedure TFRM_PRINCIPAL.ExcluirItemClick(Sender: TObject);
 begin
   if MsgConfirmacao('Confirma a exclusão') = mryes then
     DMD_PRO00315.MemItens.Delete;
+end;
+
+procedure TFRM_PRINCIPAL.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  SalvarLayoutDosGridsDoForm(FRM_PRINCIPAL);
+  SalvarLayoutDosGridsDoForm(FRM_BUSCAPED);
 end;
 
 procedure TFRM_PRINCIPAL.FormKeyPress(Sender: TObject; var Key: Char);
@@ -714,8 +743,42 @@ begin
   cx_tabpreco.SetFocus;
 end;
 
+function TFRM_PRINCIPAL.ValidarVenda: boolean;
+var
+  validou : boolean;
+  texto : string;
+begin
+  texto := '';
+  validou := false;
+  with DMD_PRO00315 do
+  begin
+    MemItens.First;
+    while not MemItens.Eof do
+    begin
+      if Length( RemoveChar(MemItensNCM.Value)) < 8 then
+        texto := texto + 'NCM, ';
+      if Length(MemItensCFOP.Value) < 3 then
+        texto := texto + 'CFOP, ';
+      if MemItensVLR_TOTAL.Value <= 0 then
+        texto := texto + 'Valor, ';
+      if Length(MemItensDESCRICAO.Value) < 1 then
+        texto := texto + 'Produto, ';
+      if Length(MemItensST.Value) < 3 then
+        texto := texto + 'ST, ';
+
+      MemItens.Next;
+    end;
+  end;
+  if texto = '' then
+    validou := true
+  else
+    MsgErro('Corrigir '+texto);
+  Result := validou;
+end;
+
 procedure TFRM_PRINCIPAL.FormShow(Sender: TObject);
 begin
+  ENVIARNF := true;
   PreencherCaption(Self);
   spacesso.Click;
   cxPageControl1.HideTabs := true;
@@ -880,6 +943,7 @@ begin
 
       MemItens.Next;
     end;
+    cx_subtotal.Value  := cx_subtotal.Value+cx_frete.Value;
   end;
 end;
 

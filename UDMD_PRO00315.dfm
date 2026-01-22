@@ -4388,6 +4388,7 @@ object DMD_PRO00315: TDMD_PRO00315
       end>
   end
   object QryCstNota: TFDQuery
+    Connection = DmdPrincipal.FDConexao
     SQL.Strings = (
       'SELECT NF_ID,NF_NUMERO,NFE_IDNOTA,NFE_PROTOCOLO,'
       '     NFE_STATUS,SITUACAO,NFE_CODSTATUS,NFE_RECIBO'
@@ -5623,6 +5624,7 @@ object DMD_PRO00315: TDMD_PRO00315
   end
   object QryFiltroIBS: TFDQuery
     MasterFields = 'NF_ITEM_ID'
+    Connection = DmdPrincipal.FDConexao
     SQL.Strings = (
       
         'SELECT  NF_ID, NF_ITEM_ID, CSTIS, cClassTribIS, vBCIS, pIS, pISE' +

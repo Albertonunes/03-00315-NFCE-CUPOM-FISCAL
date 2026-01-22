@@ -180,6 +180,18 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
       TabOrder = 5
       OnClick = btnLimparClick
     end
+    object cx_semcupom: TcxCheckBox
+      Left = 506
+      Top = 29
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Apenas n'#227'o emitidos'
+      State = cbsChecked
+      Style.TransparentBorder = False
+      TabOrder = 6
+    end
   end
   object Panel2: TPanel
     Left = 0
@@ -241,6 +253,7 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
         object cxGrid1DBTableView1TOTAL_PEDIDO: TcxGridDBColumn
           Caption = 'Vlr.Total Pedido'
           DataBinding.FieldName = 'TOTAL_PEDIDO'
+          PropertiesClassName = 'TcxCurrencyEditProperties'
           Width = 98
         end
         object cxGrid1DBTableView1VENDEDOR_ID: TcxGridDBColumn
@@ -364,18 +377,22 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
         object cxGrid1DBTableView1VLR_IPI: TcxGridDBColumn
           Caption = 'Vlr.Ipi'
           DataBinding.FieldName = 'VLR_IPI'
+          PropertiesClassName = 'TcxCurrencyEditProperties'
         end
         object cxGrid1DBTableView1VLR_ICMS: TcxGridDBColumn
           Caption = 'Vlr.Icms'
           DataBinding.FieldName = 'VLR_ICMS'
+          PropertiesClassName = 'TcxCurrencyEditProperties'
         end
         object cxGrid1DBTableView1VLR_ICMSSUB: TcxGridDBColumn
           Caption = 'Vlr.Icms Subst'
           DataBinding.FieldName = 'VLR_ICMSSUB'
+          PropertiesClassName = 'TcxCurrencyEditProperties'
         end
         object cxGrid1DBTableView1VLR_MERCADORIA: TcxGridDBColumn
           Caption = 'Vlr.Mercadoria'
           DataBinding.FieldName = 'VLR_MERCADORIA'
+          PropertiesClassName = 'TcxCurrencyEditProperties'
         end
         object cxGrid1DBTableView1CPF_CNPJ: TcxGridDBColumn
           Caption = 'Cpf'

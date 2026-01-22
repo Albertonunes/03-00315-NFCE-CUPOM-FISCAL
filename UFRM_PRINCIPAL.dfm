@@ -12,6 +12,7 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  OnClose = FormClose
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 120
@@ -431,8 +432,8 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
                 MinWidth = 25
               end
               object cxGrid1DBTableView1NF_ID: TcxGridDBColumn
+                Caption = 'Id.NF'
                 DataBinding.FieldName = 'NF_ID'
-                Visible = False
                 MinWidth = 25
               end
               object cxGrid1DBTableView1NF_ITEM_ID: TcxGridDBColumn
@@ -792,6 +793,30 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
               Font.Style = []
               ParentColor = False
               ParentFont = False
+            end
+          end
+          object cxGroupBox8: TcxGroupBox
+            Left = 411
+            Top = 83
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Caption = 'Taxa de frete'
+            PanelStyle.CaptionIndent = 3
+            TabOrder = 4
+            Height = 66
+            Width = 231
+            object cx_frete: TcxCurrencyEdit
+              Left = 30
+              Top = 29
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              TabOrder = 0
+              OnExit = cx_freteExit
+              Width = 151
             end
           end
         end
@@ -1231,6 +1256,8 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
           FilterRow.SeparatorWidth = 8
           FixedDataRows.SeparatorWidth = 8
           NewItemRow.SeparatorWidth = 8
+          OptionsData.Deleting = False
+          OptionsData.Editing = False
           OptionsView.NavigatorOffset = 63
           OptionsView.GroupByBox = False
           OptionsView.IndicatorWidth = 15
@@ -1387,6 +1414,11 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
       Caption = 'ConsultaCupom'
       ShortCut = 117
       OnExecute = ConsultaCupomExecute
+    end
+    object ActConfigura: TAction
+      Caption = 'ActConfigura'
+      ShortCut = 16504
+      OnExecute = ActConfiguraExecute
     end
   end
   object PopupMenu1: TPopupMenu

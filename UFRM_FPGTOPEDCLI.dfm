@@ -238,7 +238,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         'VALE ALIMENTACAO'
         'VALE REFEICAO'
         'VALE PRESENTE'
-        'VALE COMUSTIVEL')
+        'VALE COMBUSTIVEL')
       Style.Font.Charset = ANSI_CHARSET
       Style.Font.Color = clBlack
       Style.Font.Height = -14
@@ -274,7 +274,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Width = 111
     end
     object BT_IOK: TcxButton
-      Left = 338
+      Left = 332
       Top = 25
       Width = 31
       Height = 29
@@ -586,8 +586,9 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
     Align = alTop
     TabOrder = 3
     Visible = False
-    Properties.ActivePage = cxtab_cheque
+    Properties.ActivePage = cxtab_deb
     Properties.CustomButtons.Buttons = <>
+    OnChange = cxpagecontrol1Change
     ClientRectBottom = 93
     ClientRectLeft = 4
     ClientRectRight = 872
@@ -1506,8 +1507,8 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       '            CLIENTE, ID_CREDITO, ID_CONTROLE, DC'
       'FROM DETALHA_RECEBIMENTOS'
       'WHERE (CONTROLE = - 1)')
-    Left = 344
-    Top = 83
+    Left = 352
+    Top = 67
     object QryPgtoPEDAUTOID: TFDAutoIncField
       FieldName = 'AUTOID'
       ReadOnly = True
@@ -1595,8 +1596,8 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   end
   object DSPgtoOS: TDataSource
     DataSet = QryPgtoPED
-    Left = 376
-    Top = 83
+    Left = 384
+    Top = 67
   end
   object QryTroca: TFDQuery
     Connection = DmdPrincipal.FDConexao
