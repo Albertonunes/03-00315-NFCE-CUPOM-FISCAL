@@ -18,9 +18,14 @@ uses
   UFrmConsultaProc in '..\Comum\LIBS\Consultas\UFrmConsultaProc.pas' {FrmConsultaProc},
   UFrmConsultaProcFornecedor in '..\Comum\LIBS\Consultas\UFrmConsultaProcFornecedor.pas' {FrmConsultaProcFornecedor},
   UFRM_BUSCAPED in 'UFRM_BUSCAPED.pas' {FRM_BUSCAPED},
-  FRM_CONFIGURASERIAL in 'FRM_CONFIGURASERIAL.pas' {FRMCONFIGURASERIAL},
   UFRM_FPGTOPEDCLI in 'UFRM_FPGTOPEDCLI.pas' {FRM_PGTOPEDCLI},
-  URefTrib in '..\Comum\URefTrib.pas';
+  URefTrib in '..\Comum\URefTrib.pas',
+  UFRM_CLIENTE in 'UFRM_CLIENTE.pas' {FRM_CLIENTE},
+  UFRM_AUTORIZA in '..\Comum\UFRM_AUTORIZA.pas' {FRM_AUTORIZA},
+  UDMCONFIG in '..\Comum\UDMCONFIG.pas' {DMCONFIG: TDataModule},
+  udm4 in '..\Comum\udm4.pas' {DM4: TDataModule},
+  UDM_PEDIDOC in 'UDM_PEDIDOC.pas' {DM_PEDIDOC: TDataModule},
+  FRM_CONFIGURASERIAL in 'FRM_CONFIGURASERIAL.pas' {FRMCONFIGURASERIAL};
 
 {$R *.res}
 
@@ -41,5 +46,11 @@ begin
   Application.CreateForm(TFRM_BUSCAPED, FRM_BUSCAPED);
   Application.CreateForm(TFRMCONFIGURASERIAL, FRMCONFIGURASERIAL);
   Application.CreateForm(TFRM_PGTOPEDCLI, FRM_PGTOPEDCLI);
+  Application.CreateForm(TFRM_CLIENTE, FRM_CLIENTE);
+  Application.CreateForm(TFRM_AUTORIZA, FRM_AUTORIZA);
+  Application.CreateForm(TDMCONFIG, DMCONFIG);
+  Application.CreateForm(TDM4, DM4);
+  Application.CreateForm(TDM_PEDIDOC, DM_PEDIDOC);
+  Application.CreateForm(TFRMCONFIGURASERIAL, FRMCONFIGURASERIAL);
   Application.Run;
 end.

@@ -100,6 +100,7 @@ type
     procedure btnLimparClick(Sender: TObject);
     procedure cx_pedidoExit(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -114,7 +115,7 @@ implementation
 {$R *.dfm}
 
 uses UDMD_PRO00315, UDmdPrincipal, UFRM_PRINCIPAL, ULibrary,
-  untFuncoes_Advensys, UntPrincipal;
+  untFuncoes_Advensys, UntPrincipal, UFRM_FECHAVENDA;
 
 procedure TFRM_BUSCAPED.btnLimparClick(Sender: TObject);
 begin
@@ -141,7 +142,7 @@ begin
       SQL.Add('        A.VLR_IPI, A.VLR_ICMS, A.VLR_ICMSSUB, A.VLR_MERCADORIA, CPF_CNPJ, FJ                                ');
       SQL.Add('FROM    PEDIDO_MATERIAIS_CLIENTE A LEFT OUTER JOIN                                                          ');
       SQL.Add('        GESTOR_CLIENTE B ON A.COD_CLIENTE = B.COD_CLIENTE                                                   ');
-      SQL.Add('WHERE   (A.POSICAO <> ''X'')                                                                                ');
+      SQL.Add('WHERE   (A.POSICAO = ''APROVADO'')                                                                          ');
       SQL.Add('        AND (A.FILIAL = :FILIAL)                                                                            ');
 
       if DmdPrincipal.QryParamsPEDIDO_INDIVIDUAL.Value = 'S' then
@@ -161,7 +162,7 @@ begin
         SQL.Add('AND (A.COD_CLIENTE = :CLI)                                       ');
         ParamByName('CLI').AsInteger := cx_cliente.EditValue;
       end;
-      if cx_dtinin.Text <> '' then
+      if (cx_dtinin.Text <> '')  and not (cx_pedido.Value > 0) then
       Begin
         SQL.Add('AND ((A.DATA >= :DTI) AND (A.DATA <= :DTF))                      ');
         ParamByName('DTI').AsDateTime := cx_dtinin.Date;
@@ -220,7 +221,9 @@ begin
       FRM_PRINCIPAL.cx_nomecliente.Text := cxGrid1DBTableView1NOME.EditValue;
       CLIENTE                           := cxGrid1DBTableView1COD_CLIENTE.EditValue;
     end;
-    FRM_PRINCIPAL.cx_frete.Value := cxGrid1DBTableView1VLRFRETE.EditValue;
+    FRM_PRINCIPAL.cx_frete.Value    := cxGrid1DBTableView1VLRFRETE.EditValue;
+    FRM_PRINCIPAL.cx_desconto.Value := cxGrid1DBTableView1VLR_DESC.EditValue;
+    VLR_FRETE := FRM_PRINCIPAL.cx_frete.Value;
     // buscar os itens do pedido
     PEDID := cxGrid1DBTableView1PEDID.EditValue;
     QryItensPed.Close;
@@ -252,6 +255,7 @@ begin
       MemItensVLR_UNIT.Value       := QryItensPedVLR_UNIT.Value;
       MemItensVLR_MERCADORIA.Value := QryItensPedVLR_MERCADORIA.Value;
       MemItensVLR_TOTAL.Value      := QryItensPedVLR_TOTAL.Value;
+      MemItensVLR_DESC.Value       := QryItensPedVLR_DESC.Value;
       MemItensUNI_CODIGO.Value     := QryItensPedUNIDADE.Value;
       MemItensNCM.Value            := RemoveChar(QryLookMateriaisNCM.Value);
       MemItensGTIN.Value           := QryItensPedCODBARRAS.Value;
@@ -282,6 +286,25 @@ var
 begin
   with DMD_PRO00315 do
   begin
+    // verificar se o cliente é cpf
+    if cxGrid1DBTableView1FJ.EditValue = 'J' then
+    begin
+      MsgAtencao('Essa opção só é permitida para pessoa Física(consumidor), ficará sem identificação');
+      FRM_PRINCIPAL.cx_cpf.Text         := '';
+      FRM_PRINCIPAL.cx_nomecliente.Text := 'CONSUMIDOR';
+      // verificar o codigo do cliente CONSUMIDOR na tabela de clientes
+    end
+    else
+    begin
+      FRM_PRINCIPAL.cx_cpf.Text         := cxGrid1DBTableView1CPF_CNPJ.EditValue;
+      FRM_PRINCIPAL.cx_nomecliente.Text := cxGrid1DBTableView1NOME.EditValue;
+      CLIENTE                           := cxGrid1DBTableView1COD_CLIENTE.EditValue;
+    end;
+    FRM_PRINCIPAL.cx_frete.Value    := cxGrid1DBTableView1VLRFRETE.EditValue;
+    FRM_PRINCIPAL.cx_desconto.Value := cxGrid1DBTableView1VLR_DESC.EditValue;
+    VLR_FRETE := FRM_PRINCIPAL.cx_frete.Value;
+    // buscar os itens do pedido
+    PEDID := cxGrid1DBTableView1PEDID.EditValue;
     // abrir itens do pedido
     QryItensPed.Close;
     QryItensPed.ParamByName('PEDID').AsInteger := cxGrid1DBTableView1PEDID.EditValue;
@@ -311,6 +334,7 @@ begin
       MemItensVLR_UNIT.Value       := QryItensPedVLR_UNIT.Value;
       MemItensVLR_MERCADORIA.Value := QryItensPedVLR_MERCADORIA.Value;
       MemItensVLR_TOTAL.Value      := QryItensPedVLR_TOTAL.Value;
+      MemItensVLR_DESC.Value       := QryItensPedVLR_DESC.Value;
       MemItensUNI_CODIGO.Value     := QryItensPedUNIDADE.Value;
       MemItensNCM.Value            := RemoveChar(QryLookMateriaisNCM.Value);
       MemItensGTIN.Value           := QryItensPedCODBARRAS.Value;
@@ -340,6 +364,11 @@ begin
     btn_pesquisar.Click;
 end;
 
+procedure TFRM_BUSCAPED.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  SalvarLayoutDosGridsDoForm(FRM_BUSCAPED);
+end;
+
 procedure TFRM_BUSCAPED.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key = #13 then
@@ -360,6 +389,7 @@ end;
 
 procedure TFRM_BUSCAPED.FormShow(Sender: TObject);
 begin
+  RestaurarLayoutDosGridsDoForm(FRM_BUSCAPED);
   cx_dtinin.Date := date;
   cx_dtfim.Date  := date;
   with DMD_PRO00315.QryBuscaCliente do
@@ -367,6 +397,7 @@ begin
     Close;
     SQL.Clear ;
     SQL.Add('SELECT A.NOME,A.COD_CLIENTE,A.CPF_CNPJ,A.FANTASIA,A.CIDADE,A.UF ');
+    SQL.Add('      ,A.RESTRICAO,A.RESTRICAO_OBS                              ');
     SQL.Add('FROM GESTOR_CLIENTE A                                           ');
     SQL.Add('WHERE (A.FILIAL = :FILIAL)                                      ');
 

@@ -4,8 +4,8 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   ActiveControl = cxc_fpgto
   BorderIcons = [biMaximize]
   Caption = 'FORMA PAGAMENTO'
-  ClientHeight = 485
-  ClientWidth = 876
+  ClientHeight = 504
+  ClientWidth = 895
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,6 +16,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
+  OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnKeyUp = FormKeyUp
   OnShow = FormShow
@@ -24,7 +25,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   object cxTabControl1: TcxTabControl
     Left = 0
     Top = 0
-    Width = 876
+    Width = 895
     Height = 84
     Margins.Left = 4
     Margins.Top = 4
@@ -35,7 +36,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 80
     ClientRectLeft = 4
-    ClientRectRight = 872
+    ClientRectRight = 891
     ClientRectTop = 4
     object Label1: TLabel
       Left = 165
@@ -154,7 +155,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   object Panel1: TPanel
     Left = 0
     Top = 84
-    Width = 876
+    Width = 895
     Height = 70
     Margins.Left = 4
     Margins.Top = 4
@@ -383,9 +384,9 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   end
   object cxTabControl4: TcxTabControl
     Left = 0
-    Top = 434
-    Width = 876
-    Height = 51
+    Top = 424
+    Width = 895
+    Height = 80
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -393,25 +394,31 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
     Align = alBottom
     TabOrder = 2
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 47
+    ClientRectBottom = 76
     ClientRectLeft = 4
-    ClientRectRight = 872
+    ClientRectRight = 891
     ClientRectTop = 4
     object Label13: TLabel
-      Left = 424
-      Top = 19
-      Width = 42
-      Height = 16
+      Left = 420
+      Top = 22
+      Width = 72
+      Height = 26
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
       Caption = 'FALTA'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -23
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
       Transparent = True
     end
     object Label15: TLabel
-      Left = 20
-      Top = 14
+      Left = 15
+      Top = 30
       Width = 48
       Height = 17
       Margins.Left = 4
@@ -428,8 +435,8 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Transparent = True
     end
     object bt_grava: TcxButton
-      Left = 610
-      Top = 13
+      Left = 650
+      Top = 21
       Width = 114
       Height = 28
       Cursor = crHandPoint
@@ -467,8 +474,8 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       OnClick = bt_gravaClick
     end
     object bt_cancela: TcxButton
-      Left = 733
-      Top = 13
+      Left = 773
+      Top = 21
       Width = 110
       Height = 28
       Cursor = crHandPoint
@@ -518,22 +525,29 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       OnClick = bt_cancelaClick
     end
     object CX_FALTA: TcxCurrencyEdit
-      Left = 476
-      Top = 14
+      Left = 508
+      Top = 18
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
       TabStop = False
+      ParentFont = False
       Properties.DisplayFormat = '0.00'
       Properties.ReadOnly = True
       Style.BorderStyle = ebsNone
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -23
+      Style.Font.Name = 'MS Sans Serif'
+      Style.Font.Style = [fsBold]
+      Style.IsFontAssigned = True
       TabOrder = 2
-      Width = 112
+      Width = 124
     end
     object cx_caixa: TcxMaskEdit
-      Left = 80
-      Top = 10
+      Left = 75
+      Top = 26
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -544,8 +558,8 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Width = 185
     end
     object ID_CONTROLE: TcxMaskEdit
-      Left = 266
-      Top = 10
+      Left = 261
+      Top = 26
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -559,8 +573,8 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Width = 72
     end
     object ID_PEDID: TcxMaskEdit
-      Left = 336
-      Top = 10
+      Left = 331
+      Top = 26
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -577,7 +591,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   object cxpagecontrol1: TcxPageControl
     Left = 0
     Top = 154
-    Width = 876
+    Width = 895
     Height = 97
     Margins.Left = 4
     Margins.Top = 4
@@ -586,12 +600,12 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
     Align = alTop
     TabOrder = 3
     Visible = False
-    Properties.ActivePage = cxtab_deb
+    Properties.ActivePage = cxTab_troca
     Properties.CustomButtons.Buttons = <>
     OnChange = cxpagecontrol1Change
     ClientRectBottom = 93
     ClientRectLeft = 4
-    ClientRectRight = 872
+    ClientRectRight = 891
     ClientRectTop = 29
     object cxtab_cheque: TcxTabSheet
       Margins.Left = 4
@@ -600,6 +614,10 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Margins.Bottom = 4
       Caption = 'Cheques'
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label5: TLabel
         Left = 228
         Top = 6
@@ -790,6 +808,10 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Margins.Bottom = 4
       Caption = 'Cart'#227'o de D'#233'bito'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label9: TLabel
         Left = 15
         Top = 6
@@ -829,6 +851,8 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
           end>
         Properties.ListSource = DSCartao
         TabOrder = 0
+        OnClick = cxc_cartaodebClick
+        OnExit = cxc_cartaodebExit
         Width = 196
       end
       object cx_nrcartaodeb: TcxTextEdit
@@ -839,6 +863,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         Margins.Right = 4
         Margins.Bottom = 4
         TabOrder = 1
+        Text = '1234'
         Width = 201
       end
       object bt_confirmaDebito: TcxButton
@@ -936,6 +961,10 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Margins.Bottom = 4
       Caption = 'Cart'#227'o de cr'#233'dito'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label10: TLabel
         Left = 15
         Top = 6
@@ -976,6 +1005,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         Properties.ListSource = DSCartao
         TabOrder = 0
         OnClick = cxc_cartaocredClick
+        OnExit = cxc_cartaocredExit
         Width = 196
       end
       object cx_nrcartaocred: TcxTextEdit
@@ -986,6 +1016,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
         Margins.Right = 4
         Margins.Bottom = 4
         TabOrder = 1
+        Text = '1234'
         Width = 201
       end
       object bt_confirmaCredito: TcxButton
@@ -1210,8 +1241,8 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   object cxGrid1: TcxGrid
     Left = 0
     Top = 251
-    Width = 876
-    Height = 183
+    Width = 895
+    Height = 173
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -1344,6 +1375,151 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
     end
     object cxGrid1Level1: TcxGridLevel
       GridView = cxGrid1DBTableView1
+    end
+  end
+  object pnl_impressao: TPanel
+    Left = 209
+    Top = 183
+    Width = 413
+    Height = 172
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
+    TabOrder = 5
+    Visible = False
+    object ckg_impressao: TcxCheckGroup
+      Left = 15
+      Top = 20
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Impress'#227'o'
+      Properties.Columns = 4
+      Properties.Items = <>
+      TabOrder = 0
+      Height = 46
+      Width = 390
+    end
+    object bti_imprimir: TcxButton
+      Left = 55
+      Top = 100
+      Width = 94
+      Height = 31
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Imprimir'
+      LookAndFeel.NativeStyle = False
+      OptionsImage.Glyph.SourceDPI = 96
+      OptionsImage.Glyph.Data = {
+        89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+        610000001974455874536F6674776172650041646F626520496D616765526561
+        647971C9653C0000000E744558745469746C65005072696E7465723BE7BF61C5
+        0000026749444154785E7D93CB6B135114C6BF99C434A60F05698B1B57167525
+        82E84AAD2822B688B8101F50B45441210BEBC285150591A250A326462AA218F2
+        0FB810178A482CAD165AD0958216051F68D1966426F3B82FCFDCCC0C71512F7C
+        73EE3DDCEF77EEDC87A19442D40C6AB74A332F4CD3EC05745E7FA33982F1CAF0
+        E0D65D34E69127897F9B49EA3D7374A376AA901041F2E5D9ED0012A4A5019C0B
+        28092C5A5E58D9808244476B0B38135111C4005AB55E7D587D191712928C1475
+        790523089082725C03D2E4610064A0C0648E8E5776DF2EBF7D33385CB0BF7C7E
+        0F2915494288C028C0833E69EEE33B1C3E35FA67ECE1CCF4C5DCD33D0012C9E0
+        B33CD3513EB4776DD744E54930D4D5852008240CD55807A3B1EB3AB0EC1A8EF4
+        ADDF547A2C4B00D66880E0AAAB7B550675CB42329186904A5754A11900012501
+        5C38561DAB3B33604C75462B303D5F5042229D4AE0E78FEF3878EC4274046150
+        210C686F4BE8B99EC7D00460700832347000378B252C2C542145E0931AA1A4D2
+        3BBC72453B4E0F1D87C3380138026F03E032D409D2B3A107C5FC95C6A1C8F008
+        4D8A8D0C744602B6CB41459B003E47CDE1A8D7194E666FE07FED5EFE2C7C9102
+        F385E60600C3F704AA1643D576B0BFBF0FD981CD284CCDEBCD6402641038BFA3
+        1BC5F22C7E2FDAA03F81CF1A0013009BFFF5753277E719EE8E3F070FCFDD6324
+        4E002E29070DE3D4B976BD8C91CB0FF0E9C3E46B10C708EF762BA985D43632F6
+        722E7B628BDE794087F846161E4DE3EAB99DEB0054490EC94E2AA54490085FA3
+        655BD6ABDCFDA96DF1B6A9F8ADC2756B1300BE91C75EEA31F9B94BFDFB00A448
+        66EC44FCB23D92DB6CF80BF54A6944F3A08E160000000049454E44AE426082}
+      OptionsImage.Spacing = 5
+      TabOrder = 1
+    end
+    object bti_fechar: TcxButton
+      Left = 296
+      Top = 100
+      Width = 94
+      Height = 31
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Fechar'
+      LookAndFeel.NativeStyle = False
+      OptionsImage.Glyph.SourceDPI = 96
+      OptionsImage.Glyph.Data = {
+        89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+        610000001974455874536F6674776172650041646F626520496D616765526561
+        647971C9653C00000011744558745469746C65004D616E3B506572736F6E3BF3
+        ED14A4000001FC49444154785E9592CF6B135110C76D62938D124DDB5D9B6CB2
+        D9769B6C08D89482A0344D90FED256899890AA7137B51E3C9542E926D112F550
+        D188456CA246D1544FB90A9ECDC583274128881741CD3FE045106ACB381312ED
+        C1DDDA81EFE1BD79F379F36B0F003444C60DCC368466F2A71E6A7DE71E7C13C6
+        96343A6FF351CC1FE901CCDE89EB755929832B3C5FA7F36E0126B65FCD700397
+        EA6CBF92DD5506686D2833CA8AB2A12C74F73F805670BB5F7D72479E7DF1A3EF
+        C263F04CE45FB720C68056B0F2F47E205D0179660DE4F41A48D325F08C2EBD6C
+        418C00665FAA5C9031988F681B14EC572B0D0993CB04A9329DD23E82E8012CFE
+        74E597182B6C7506CEAA8D60E53948C912B0A1F41B61FC2682172993BD7A006B
+        CF9915E08F67E9E010632BE04B3D03CFF88D2D8B9D77E2545E71A1998F54A61E
+        A09D7E42D5184E66B9C1CB35EFE42D104E2E6FB2834A18FD4CB30F26C326A2F6
+        F323D7CA07032764DC81AA18BB07EEB1FC9703BE519E82771AA3D9199D1FEE89
+        AF6E761F9BAB59ECEE43CEF0C22731BE0AAE88F68E32D8698C4C6FA2F856385D
+        80AEC34A9116890D5DBC22264AE08C689FC96F38467EE4EAF9DEE423E83E3AF7
+        DDEE19F252C71DBEA92362BC08AE68EE2B018D0056E1D4ED75378EAB2B389D6B
+        F6A3CDC6063961EA2E9690F949FD3104E004DEA3D6AD1D52C7B6D5659AF71FFE
+        55C26F396984ADD0479FF30000000049454E44AE426082}
+      OptionsImage.Spacing = 5
+      TabOrder = 2
+    end
+    object bti_editar: TcxButton
+      Left = 180
+      Top = 100
+      Width = 94
+      Height = 31
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Editar'
+      LookAndFeel.NativeStyle = False
+      OptionsImage.Glyph.SourceDPI = 96
+      OptionsImage.Glyph.Data = {
+        89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+        610000001974455874536F6674776172650041646F626520496D616765526561
+        647971C9653C00000014744558745469746C6500456469744E616D653B456469
+        743B045B4813000002FB49444154785E7D917D4C536714C62F621C1F2DBA7FF6
+        C75063D4385D16E23A1288B6A5B43680B6855A09191F26836DD59234108A8015
+        C18298AEB4221F7E15053F2BD1C488B80121A16548618CC42028A960C19AA68D
+        8496B6690B6D39BE6F05138CE9499EE4DCF3DEE7F7DC735F62AD0281C07D9FCF
+        A7C5F2FBFD5A00E0ACACACF4AFCDD0793DF14501C0E766CFF2F2B25620547B0E
+        1E55C0B5DB7D066452E2198DAF806C518B0DF54ACA2129F14915EB0128317B78
+        ECCD1855A00046960AB24F34DB9696969E7A3C1E5DD2B1BF20BFB8D5E670389E
+        79BDDE2E3C475F53BD0E80E90DAD3DC6048E0C0A2437EDF40C99CFED76EBB018
+        990A389C23F764099B9C69792A9FA8FCC6070CC6A1188029643CF8AD586DC32F
+        5E69EF9E3EC0AD8627FFE8C751EA002DA316282C09D45DEC98159F699BA7F1AA
+        50AF312E2E2E36A0EC709C1E6F7A6F1D4ACE94E35D5DF2A6C77374BE0C2A6ADA
+        4C0B0B0B03B4F42AC82AB86047868119A3494FE54941559AEDEDAFA2C023F1BE
+        3A02ED55DAD5FBDFCB78B60428CC22A0A69F05A6A01678B93297C56219640A6A
+        20E7A4D28E6113AF0CC3957F0AC0D8C987C0CA0CBCD67080407B3E3875AEDD42
+        61896168E4C5FF56ABF5DFFCA2167B424A098C4F4C8DD0516212BF12CED7DF7D
+        D75C91EB9E79CC0B9A7D6F0BE1F9E9BD40B85CAE0787F8E51E2CA7D3897F9CAA
+        F1DAA3694AB208D4B73AA7280C111CCD95DA6B44197EC3C32341B367F277D049
+        76834E41057C851A64ECC0C23D1217ADA5C5302CB3D93C38DA21354DDD4B0D9A
+        1DA379D02FDE017D358920FE89D4806FE1AB42158614D129FD5939D9C60A9AE7
+        B599D027DA067F4B7F01E10F518DE89C140A109EC365D18714ECA0D9DCC5855E
+        612C3C298983825D11CDC84C46DA100A1011C72CB9F4F47A1DB84D7AE8F92316
+        1E16EE85E3DBBF6941C6186C9ED5B0895000F27E76D9F4B8BE1BEEC8CBA096B1
+        137EFD7ED36534DF8CCD06359D30A8692101315B625940FE2E712E72CB8F57B7
+        C6909878676CE690C208AC23D14448C0C6D5B46F91A2579FC3D2A20822359220
+        529030E4238DD84FA5DA3B29800000000049454E44AE426082}
+      OptionsImage.Spacing = 5
+      TabOrder = 3
     end
   end
   object QryCartao: TFDQuery
@@ -1492,6 +1668,78 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Caption = 'GravaRefTrib'
       OnExecute = GravaRefTribExecute
     end
+    object Imprimir: TAction
+      Caption = 'Imprimir'
+      ShortCut = 49232
+      OnExecute = ImprimirExecute
+    end
+    object Pedido01: TAction
+      Caption = 'Pedido01'
+      OnExecute = Pedido01Execute
+    end
+    object Pedido01a: TAction
+      Caption = 'Pedido01a'
+      OnExecute = Pedido01aExecute
+    end
+    object Pedido02: TAction
+      Caption = 'Pedido02'
+      OnExecute = Pedido02Execute
+    end
+    object Pedido03: TAction
+      Caption = 'Pedido03'
+      OnExecute = Pedido03Execute
+    end
+    object Pedido04: TAction
+      Caption = 'Pedido04'
+      OnExecute = Pedido04Execute
+    end
+    object CabPed01: TAction
+      Caption = 'CabPed01'
+      OnExecute = CabPed01Execute
+    end
+    object CabPed02: TAction
+      Caption = 'CabPed02'
+      OnExecute = CabPed02Execute
+    end
+    object CabPed03: TAction
+      Caption = 'CabPed03'
+      OnExecute = CabPed03Execute
+    end
+    object CabPed04: TAction
+      Caption = 'CabPed04'
+      OnExecute = CabPed04Execute
+    end
+    object PedidoTp1: TAction
+      Caption = 'PedidoTp1'
+      OnExecute = PedidoTp1Execute
+    end
+    object PedidoTp2: TAction
+      Caption = 'PedidoTp2'
+      OnExecute = PedidoTp2Execute
+    end
+    object PedidoTp3: TAction
+      Caption = 'PedidoTp3'
+      OnExecute = PedidoTp3Execute
+    end
+    object PedidoTp4: TAction
+      Caption = 'PedidoTp4'
+      OnExecute = PedidoTp4Execute
+    end
+    object PedidoTp5: TAction
+      Caption = 'PedidoTp5'
+    end
+    object RodPed01: TAction
+      Caption = 'RodPed01'
+      OnExecute = RodPed01Execute
+    end
+    object RodPed02: TAction
+      Caption = 'RodPed02'
+      OnExecute = RodPed02Execute
+    end
+    object RodPed03: TAction
+      Caption = 'RodPed03'
+      OnExecute = RodPed03Execute
+    end
   end
   object DsPgtoFinal: TDataSource
     DataSet = RxPgtoFinal
@@ -1501,14 +1749,127 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   object QryPgtoPED: TFDQuery
     Connection = DmdPrincipal.FDConexao
     SQL.Strings = (
-      'SELECT AUTOID, CONTROLE, TIPO, DOCUMENTO, DATA, CENTRO_CUSTO,'
-      '             FORMA, VALOR, BCO, CONTA, CHEQUE, VENCIMENTO,'
-      '            CARTAO_COD, CARTAO, NRCARTAO, AUTORIZACAO, PARCELAS,'
-      '            CLIENTE, ID_CREDITO, ID_CONTROLE, DC'
-      'FROM DETALHA_RECEBIMENTOS'
-      'WHERE (CONTROLE = - 1)')
+      'INSERT INTO DETALHA_RECEBIMENTOS('
+      '  CONTROLE'
+      ', TIPO'
+      ', DOCUMENTO'
+      ', DATA'
+      ', FORMA'
+      ', VALOR'
+      ', BCO'
+      ', CONTA'
+      ', CHEQUE'
+      ', VENCIMENTO'
+      ', CARTAO_COD'
+      ', CARTAO'
+      ', NRCARTAO'
+      ', AUTORIZACAO'
+      ', PARCELAS'
+      ', CLIENTE'
+      ', ID_CREDITO'
+      ', ID_CONTROLE'
+      ', DC'
+      ')'
+      'VALUES('
+      '  :CONTROLE'
+      ', :TIPO'
+      ', :DOCUMENTO'
+      ', :DATA'
+      ', :FORMA'
+      ', :VALOR'
+      ', :BCO'
+      ', :CONTA'
+      ', :CHEQUE'
+      ', :VENCIMENTO'
+      ', :CARTAO_COD'
+      ', :CARTAO'
+      ', :NRCARTAO'
+      ', :AUTORIZACAO'
+      ', :PARCELAS'
+      ', :CLIENTE'
+      ', :ID_CREDITO'
+      ', :ID_CONTROLE'
+      ', :DC'
+      ')')
     Left = 352
     Top = 67
+    ParamData = <
+      item
+        Name = 'CONTROLE'
+        ParamType = ptInput
+      end
+      item
+        Name = 'TIPO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'DOCUMENTO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'DATA'
+        ParamType = ptInput
+      end
+      item
+        Name = 'FORMA'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VALOR'
+        ParamType = ptInput
+      end
+      item
+        Name = 'BCO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CONTA'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CHEQUE'
+        ParamType = ptInput
+      end
+      item
+        Name = 'VENCIMENTO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CARTAO_COD'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CARTAO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'NRCARTAO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'AUTORIZACAO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PARCELAS'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CLIENTE'
+        ParamType = ptInput
+      end
+      item
+        Name = 'ID_CREDITO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'ID_CONTROLE'
+        ParamType = ptInput
+      end
+      item
+        Name = 'DC'
+        ParamType = ptInput
+      end>
     object QryPgtoPEDAUTOID: TFDAutoIncField
       FieldName = 'AUTOID'
       ReadOnly = True
@@ -1602,9 +1963,12 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   object QryTroca: TFDQuery
     Connection = DmdPrincipal.FDConexao
     SQL.Strings = (
-      'SELECT *'
-      'FROM TROCA'
-      'WHERE TROCA = :NUMTROCA')
+      'SELECT TROCA, DATA, COD_CLIENTE, PEDID, VALOR_TOTAL,'
+      '             VALOR_USADO, VALOR_SALDO, TIPO, STATUS, OBS, PA'
+      'FROM     TROCA'
+      
+        'WHERE  (TROCA = :NUMTROCA) AND (VALOR_SALDO > 0) AND (STATUS <> ' +
+        #39'C'#39')')
     Left = 74
     Top = 242
     ParamData = <

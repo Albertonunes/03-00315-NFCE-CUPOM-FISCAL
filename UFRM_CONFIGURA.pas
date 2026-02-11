@@ -531,21 +531,16 @@ begin
           Prod.uTrib   := QryFiltroItensUNI_CODIGO.Value;
           Prod.qTrib   := QryFiltroItensNF_ITEM_QTDE.Value;
           Prod.vUnTrib := QryFiltroItensNF_ITEM_VLR_UNITARIO.Value;
-          Prod.vOutro := QryFiltroItensNF_ITEM_VLR_OUTRO.Value;
+          Prod.vOutro  := QryFiltroItensNF_ITEM_VLR_OUTRO.Value;
           // Prod.nItemPed  := QryFiltroNFNF_ITEM_PEDIT.Value;// 1;
-
           // se tiver frete coloca todo o frete num item só
           //If (QryFiltroNFNF_VLR_FRETE.Value > 0) and (I = 1) then
           //  Prod.vFrete := QryFiltroNFNF_VLR_FRETE.Value;
           Prod.vFrete := QryFiltroItensNF_ITEM_VLR_FRETE.AsFloat;
-
           Prod.vSeg := 0;
           if QryFiltroItensNF_ITEM_VLR_DESC.Value > 0 then
           begin
             Prod.vDesc := QryFiltroItensNF_ITEM_VLR_DESC.Value;
-            if (RemoveChar(QryFiltroItensCFOP.Value) = '6109') and
-              (QryEmpresaCRT.Value = '3') then
-              icmsZF := icmsZF + QryFiltroItensNF_ITEM_VLR_DESC.Value;
           end;
           Prod.xPed     := QryFiltroItensNF_ITEM_PED.Value;
           Prod.nItemPed := IntToStr(QryFiltroItensNF_ITEM_PEDIT.Value);
@@ -1507,7 +1502,7 @@ begin
       Total.ICMSTot.vICMS  := QryFiltroNFNF_VLR_ICMS.Value;
       Total.ICMSTot.vBCST  := QryFiltroNFNF_VLR_BASE_ICMSUB.Value;
       Total.ICMSTot.vST    := QryFiltroNFNF_VLR_ICMSUB.Value;
-      Total.ICMSTot.vProd  := QryFiltroNFNF_VLR_TOTMERC.Value;
+      Total.ICMSTot.vProd  := QryFiltroNFNF_VLR_TOTMERC.Value-QryFiltroNFNF_VLR_FRETE.Value+QryFiltroNFNF_VLR_TOTDESC.Value;
       Total.ICMSTot.vFrete := QryFiltroNFNF_VLR_FRETE.Value;
       Total.ICMSTot.vSeg   := QryFiltroNFNF_VLR_SEGURO.Value;
       if QryFiltroNFNF_VLR_TOTDESC.Value > 0 then
@@ -2495,7 +2490,7 @@ begin
   //   exit;
   CNPJ      := RemoveChar(DmdPrincipal.qryEMPRESASEMPRESA_CNPJ.Value);
   Protocolo := Trim(OnlyNumber(aProtocolo));
-  Justificativa := 'Justificativa do Cancelamento';
+  Justificativa := 'cliente desistiu da compra';
   if not(InputQuery('WebServices Eventos: Cancelamento', 'Justificativa do Cancelamento', Justificativa)) then
      exit;
 
@@ -2503,8 +2498,8 @@ begin
 
   with ACBrNFe1.EventoNFe.Evento.New do
   begin
-    infEvento.chNFe := Chave;
-    infEvento.CNPJ   := CNPJ;
+    infEvento.chNFe    := Chave;
+    infEvento.CNPJ     := CNPJ;
     infEvento.dhEvento := now;
     infEvento.tpEvento := teCancelamento;
     infEvento.detEvento.xJust := Justificativa;
@@ -2513,7 +2508,7 @@ begin
 
   ACBrNFe1.EnviarEvento(StrToInt(idLote));
 
-  MemoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetWS;
+  MemoResp.Lines.Text   := ACBrNFe1.WebServices.EnvEvento.RetWS;
   memoRespWS.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetornoWS;
 
   LoadXML(ACBrNFe1.WebServices.EnvEvento.RetornoWS, WBResposta);

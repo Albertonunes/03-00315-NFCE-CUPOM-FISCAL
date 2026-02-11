@@ -29,7 +29,12 @@ uses
   cxGridTableView, cxGridDBTableView, cxGridLevel, cxClasses, cxGridCustomView,
   cxGrid, Vcl.StdCtrls, Vcl.Menus, cxButtons, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, dxBarBuiltInMenu, cxPC, Vcl.ComCtrls,
-  dxCore, cxDateUtils, cxImageComboBox, cxCalendar;
+  dxCore, cxDateUtils, cxImageComboBox, cxCalendar, cxLabel, ACBrCMC7, ACBrBase,
+  ACBrPosPrinter, Vcl.ExtDlgs, ACBrDevice, Vcl.Samples.Spin, dxGDIPlusClasses
+  {$IFDEF ELGIN_E1}
+  , ACBrPosPrinterElginE1Service
+  {$ENDIF}
+  ;
 
 type
   TFRM_PRINCIPAL = class(TForm)
@@ -59,7 +64,6 @@ type
     cxGrid1DBTableView1BAIXA_ESTOQUE: TcxGridDBColumn;
     cxGrid1DBTableView1CFOP_ID: TcxGridDBColumn;
     cxGrid1DBTableView1RecId: TcxGridDBColumn;
-    cxGrid1DBTableView1SEL: TcxGridDBColumn;
     cxGrid1DBTableView1ALIQ_IPI: TcxGridDBColumn;
     cxGrid1DBTableView1BASE_IPI: TcxGridDBColumn;
     cxGrid1DBTableView1VLR_IPI: TcxGridDBColumn;
@@ -179,6 +183,88 @@ type
     cxGroupBox8: TcxGroupBox;
     cx_frete: TcxCurrencyEdit;
     ActConfigura: TAction;
+    cxGroupBox9: TcxGroupBox;
+    cx_desconto: TcxCurrencyEdit;
+    tabParametros: TcxTabSheet;
+    cxLabel29: TcxLabel;
+    tpimp: TcxComboBox;
+    cxLabel30: TcxLabel;
+    cxporta: TcxComboBox;
+    ck_omitirdados: TCheckBox;
+    ActParametros: TAction;
+    Panel3: TPanel;
+    gbConfiguracao: TGroupBox;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    btSerial: TSpeedButton;
+    Label18: TLabel;
+    Label19: TLabel;
+    SbArqLog: TSpeedButton;
+    Label20: TLabel;
+    btSearchPorts: TSpeedButton;
+    cbTraduzirTags: TCheckBox;
+    cbIgnorarTags: TCheckBox;
+    cbxModelo: TComboBox;
+    cbxPorta: TComboBox;
+    seColunas: TSpinEdit;
+    cbControlePorta: TCheckBox;
+    seEspLinhas: TSpinEdit;
+    cbxPagCodigo: TComboBox;
+    seLinhasBuffer: TSpinEdit;
+    edLog: TEdit;
+    bAtivar: TBitBtn;
+    seLinhasPular: TSpinEdit;
+    cbCortarPapel: TCheckBox;
+    gbCodBarrasConfig: TGroupBox;
+    Label21: TLabel;
+    Label22: TLabel;
+    seBarrasLargura: TSpinEdit;
+    seBarrasAltura: TSpinEdit;
+    cbHRI: TCheckBox;
+    gbQRCodeConfig: TGroupBox;
+    Label23: TLabel;
+    Label24: TLabel;
+    Label25: TLabel;
+    seQRCodeTipo: TSpinEdit;
+    seQRCodeLarguraModulo: TSpinEdit;
+    seQRCodeErrorLevel: TSpinEdit;
+    gbGavetaConfig: TGroupBox;
+    Label26: TLabel;
+    Label27: TLabel;
+    Label28: TLabel;
+    seGavetaTempoON: TSpinEdit;
+    cbGavetaSinalInvertido: TCheckBox;
+    seGavetaTempoOFF: TSpinEdit;
+    seGavetaNum: TSpinEdit;
+    OpenPictureDialog1: TOpenPictureDialog;
+    ACBrPosPrinter1: TACBrPosPrinter;
+    ACBrCMC71: TACBrCMC7;
+    Panel4: TPanel;
+    Panel5: TPanel;
+    bCaregarImagem: TButton;
+    bImprimirImagem: TButton;
+    bTagBMP: TButton;
+    edImagem: TEdit;
+    rbArquivo: TRadioButton;
+    rbStream: TRadioButton;
+    bConverter: TButton;
+    gbCodBarrasConfig2: TGroupBox;
+    Label29: TLabel;
+    Label30: TLabel;
+    Label31: TLabel;
+    Label32: TLabel;
+    seLogoKC1: TSpinEdit;
+    seLogoKC2: TSpinEdit;
+    seLogoFatorX: TSpinEdit;
+    seLogoFatorY: TSpinEdit;
+    bGravarLogo: TButton;
+    bTagLogo: TButton;
+    bImprimirLogo: TButton;
+    bApagarLogo: TButton;
+    Image1: TImage;
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure cx_codbarrasExit(Sender: TObject);
@@ -202,8 +288,44 @@ type
     procedure cx_freteExit(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ActConfiguraExecute(Sender: TObject);
+    procedure cx_descontoExit(Sender: TObject);
+    procedure ActParametrosExecute(Sender: TObject);
+    procedure cbxModeloChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure cbxPortaChange(Sender: TObject);
+    procedure seColunasChange(Sender: TObject);
+    procedure seEspLinhasChange(Sender: TObject);
+    procedure seLinhasBufferChange(Sender: TObject);
+    procedure btSearchPortsClick(Sender: TObject);
+    procedure btSerialClick(Sender: TObject);
+    procedure bAtivarClick(Sender: TObject);
+    procedure SbArqLogClick(Sender: TObject);
+    procedure cbxPagCodigoChange(Sender: TObject);
+    procedure seBarrasLarguraChange(Sender: TObject);
+    procedure seBarrasAlturaChange(Sender: TObject);
+    procedure seQRCodeTipoChange(Sender: TObject);
+    procedure seQRCodeLarguraModuloChange(Sender: TObject);
+    procedure seQRCodeErrorLevelChange(Sender: TObject);
+    procedure seGavetaTempoONChange(Sender: TObject);
+    procedure seGavetaTempoOFFChange(Sender: TObject);
+    procedure seLogoKC1Change(Sender: TObject);
+    procedure seLogoKC2Change(Sender: TObject);
+    procedure seLogoFatorXChange(Sender: TObject);
+    procedure seLogoFatorYChange(Sender: TObject);
+    procedure bCaregarImagemClick(Sender: TObject);
+    procedure bImprimirImagemClick(Sender: TObject);
+    procedure bConverterClick(Sender: TObject);
+    procedure bImprimirLogoClick(Sender: TObject);
+    procedure bGravarLogoClick(Sender: TObject);
+    procedure bApagarLogoClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
-    { Private declarations }
+    { private declarations }
+    {$IFDEF ELGIN_E1}
+    fE1Printer: TACBrPosPrinterElginE1Service;
+    {$ENDIF}
+    Procedure GravarINI;
+    Procedure LerINI;
     function SeparaCodBarras(aCodigo : String): boolean;
     procedure EnviarNFCe(aNFID : Integer);
     function ValidarVenda:boolean;
@@ -237,8 +359,14 @@ implementation
 
 uses UDmdPrincipal, untFuncoes_Advensys, UntPrincipal, UDMD_PRO00315,
   UFRM_CONFIGURA, UFRM_TROCAFILIAL, ULibrary, UFRM_CAIXA, UFRM_FECHAVENDA,
-  UFRM_OPCOES, UFRM_BUSCAPROD, UFRM_BUSCAPED, UFRM_FPGTOPEDCLI;
+  UFRM_OPCOES, UFRM_BUSCAPROD, UFRM_BUSCAPED, UFRM_FPGTOPEDCLI, UFRM_CLIENTE,
+  ACBrImage, ACBrConsts, ACBrUtil, typinfo, IniFiles, Printers, math, synacode,
+  CONFIGURASERIAL;
+(*
+  typinfo, IniFiles, Printers, math, synacode,, ConfiguraSerial
+   ;
 
+*)
 
 procedure TFRM_PRINCIPAL.ActConfiguraExecute(Sender: TObject);
 begin
@@ -255,7 +383,8 @@ begin
     // Verifica se o usuario tem caixa aberto
   if ValidarVenda then
   begin
-    VLR_FRETE := cx_frete.Value;
+    VLR_FRETE    := cx_frete.Value;
+    VLR_DESCONTO := cx_desconto.Value;
     with DMD_PRO00315 do
     begin
       QryCaixaAberto.Close;
@@ -308,6 +437,230 @@ end;
 procedure TFRM_PRINCIPAL.ActOpcoesExecute(Sender: TObject);
 begin
   FRM_OPCOES.ShowModal;
+end;
+
+procedure TFRM_PRINCIPAL.ActParametrosExecute(Sender: TObject);
+begin
+  if cxPageControl1.ActivePage = tabParametros then
+    tabVenda.Show
+  else
+    tabParametros.Show;
+
+end;
+
+procedure TFRM_PRINCIPAL.bApagarLogoClick(Sender: TObject);
+begin
+  ACBrPosPrinter1.ApagarLogo(seLogoKC1.Value, seLogoKC2.Value);
+end;
+
+procedure TFRM_PRINCIPAL.bAtivarClick(Sender: TObject);
+begin
+  if not btSerial.Enabled then
+  begin
+     ACBrPosPrinter1.Desativar ;
+     bAtivar.Caption := 'Ativar' ;
+     btSerial.Enabled := True ;
+  end
+  else
+  begin
+    try
+       Self.Enabled := False;
+       ACBrPosPrinter1.Porta  := cbxPorta.Text;
+       ACBrPosPrinter1.Modelo := TACBrPosPrinterModelo( cbxModelo.ItemIndex );
+       ACBrPosPrinter1.ArqLOG := edLog.Text;
+       ACBrPosPrinter1.LinhasBuffer := seLinhasBuffer.Value;
+       ACBrPosPrinter1.LinhasEntreCupons := seLinhasPular.Value;
+       ACBrPosPrinter1.EspacoEntreLinhas := seEspLinhas.Value;
+       ACBrPosPrinter1.ColunasFonteNormal := seColunas.Value;
+       ACBrPosPrinter1.ControlePorta := cbControlePorta.Checked;
+       ACBrPosPrinter1.CortaPapel := cbCortarPapel.Checked;
+       ACBrPosPrinter1.TraduzirTags := cbTraduzirTags.Checked;
+       ACBrPosPrinter1.IgnorarTags := cbIgnorarTags.Checked;
+       ACBrPosPrinter1.PaginaDeCodigo := TACBrPosPaginaCodigo( cbxPagCodigo.ItemIndex );
+       ACBrPosPrinter1.ConfigBarras.MostrarCodigo := cbHRI.Checked;
+       ACBrPosPrinter1.ConfigBarras.LarguraLinha := seBarrasLargura.Value;
+       ACBrPosPrinter1.ConfigBarras.Altura := seBarrasAltura.Value;
+       ACBrPosPrinter1.ConfigQRCode.Tipo := seQRCodeTipo.Value;
+       ACBrPosPrinter1.ConfigQRCode.LarguraModulo := seQRCodeLarguraModulo.Value;
+       ACBrPosPrinter1.ConfigQRCode.ErrorLevel := seQRCodeErrorLevel.Value;
+       ACBrPosPrinter1.ConfigLogo.KeyCode1 := seLogoKC1.Value;
+       ACBrPosPrinter1.ConfigLogo.KeyCode2 := seLogoKC2.Value;
+       ACBrPosPrinter1.ConfigLogo.FatorX := seLogoFatorX.Value;
+       ACBrPosPrinter1.ConfigLogo.FatorY := seLogoFatorY.Value;
+       GravarINI ;
+       ACBrPosPrinter1.Ativar ;
+    finally
+       Self.Enabled := True;
+       cbxModelo.ItemIndex   := Integer(ACBrPosPrinter1.Modelo) ;
+       cbxPorta.Text         := ACBrPosPrinter1.Porta ;
+       if ACBrPosPrinter1.Ativo then
+       begin
+         btSerial.Enabled := False ;
+         bAtivar.Caption := 'Desativar';
+         //AjustarControlesDeCheque(ACBrPosPrinter1.TemCheque <> 0);
+       end;
+    end ;
+  end;
+
+end;
+
+procedure TFRM_PRINCIPAL.bCaregarImagemClick(Sender: TObject);
+begin
+  OpenPictureDialog1.Filter := 'BMP MonoCromático|*.bmp';
+
+  if OpenPictureDialog1.Execute then
+  begin
+    try
+      Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
+      edImagem.Text := OpenPictureDialog1.FileName;
+    except
+      Image1.Picture := nil;
+    end;
+  end;
+end;
+
+procedure TFRM_PRINCIPAL.bConverterClick(Sender: TObject);
+var
+  ARasterStr: AnsiString;
+  AWidth, AHeight: Integer;
+  MS: TMemoryStream;
+begin
+  BitmapToRasterStr(Image1.Picture.Bitmap, True, AWidth, AHeight, ARasterStr);
+  MS := TMemoryStream.Create;
+  try
+    RasterStrToBMPMono(ARasterStr, AWidth, True, MS);
+    Image1.Picture.Bitmap.LoadFromStream(MS);
+    ACBrPosPrinter1.ImprimirImagemStream(MS);
+  finally
+    MS.Free;
+  end;
+end;
+
+procedure TFRM_PRINCIPAL.bGravarLogoClick(Sender: TObject);
+var
+  MS: TMemoryStream;
+begin
+  if rbStream.Checked then
+  begin
+    MS := TMemoryStream.Create;
+    try
+      Image1.Picture.Bitmap.SaveToStream(MS);
+      MS.Position := 0;
+      ACBrPosPrinter1.GravarLogoStream(MS, seLogoKC1.Value, seLogoKC2.Value);
+    finally
+      MS.Free ;
+    end ;
+  end
+  else
+    ACBrPosPrinter1.GravarLogoArquivo(edImagem.Text, seLogoKC1.Value, seLogoKC2.Value);
+end;
+
+procedure TFRM_PRINCIPAL.bImprimirImagemClick(Sender: TObject);
+var
+  MS: TMemoryStream;
+begin
+  if rbStream.Checked then
+  begin
+    MS := TMemoryStream.Create;
+    try
+      Image1.Picture.Bitmap.SaveToStream(MS);
+      MS.Position := 0;
+      ACBrPosPrinter1.ImprimirImagemStream(MS);
+    finally
+      MS.Free ;
+    end ;
+  end
+  else
+    ACBrPosPrinter1.ImprimirImagemArquivo(edImagem.Text);
+end;
+
+procedure TFRM_PRINCIPAL.bImprimirLogoClick(Sender: TObject);
+begin
+  ACBrPosPrinter1.ImprimirLogo(seLogoKC1.Value, seLogoKC2.Value, seLogoFatorX.Value, seLogoFatorY.Value);
+end;
+
+procedure TFRM_PRINCIPAL.LerINI;
+Var
+  ArqINI : String ;
+  INI : TIniFile ;
+begin
+  ArqINI := ChangeFileExt( Application.ExeName,'.ini' ) ;
+
+  INI := TIniFile.Create(ArqINI);
+  try
+     cbxPorta.Text := INI.ReadString('PosPrinter','Porta',ACBrPosPrinter1.Porta);
+     cbxPortaChange(nil);
+     cbxModelo.ItemIndex := INI.ReadInteger('PosPrinter','Modelo', Integer(ACBrPosPrinter1.Modelo));
+     cbxModeloChange(nil);
+     ACBrPosPrinter1.Device.ParamsString := INI.ReadString('PosPrinter','DeviceParams',ACBrPosPrinter1.Device.ParamsString);
+     seColunas.Value := INI.ReadInteger('PosPrinter','Colunas',ACBrPosPrinter1.ColunasFonteNormal);
+     seEspLinhas.Value := INI.ReadInteger('PosPrinter','EspacoEntreLinhas',ACBrPosPrinter1.EspacoEntreLinhas);
+     seLinhasBuffer.Value := INI.ReadInteger('PosPrinter','LinhasBuffer',ACBrPosPrinter1.LinhasBuffer);
+     seLinhasPular.Value := INI.ReadInteger('PosPrinter','LinhasPular',ACBrPosPrinter1.LinhasEntreCupons);
+     cbCortarPapel.Checked := INI.ReadBool('PosPrinter','CortarPapel',ACBrPosPrinter1.CortaPapel);
+     cbControlePorta.Checked := INI.ReadBool('PosPrinter','ControlePorta',ACBrPosPrinter1.ControlePorta);
+     cbTraduzirTags.Checked := INI.ReadBool('PosPrinter','TraduzirTags',ACBrPosPrinter1.TraduzirTags);
+     cbIgnorarTags.Checked := INI.ReadBool('PosPrinter','IgnorarTags',ACBrPosPrinter1.IgnorarTags);
+     edLog.Text := INI.ReadString('PosPrinter','ArqLog',ACBrPosPrinter1.ArqLOG);
+     cbxPagCodigo.ItemIndex := INI.ReadInteger('PosPrinter','PaginaDeCodigo',Integer(ACBrPosPrinter1.PaginaDeCodigo));
+     seBarrasLargura.Value := INI.ReadInteger('Barras','Largura',ACBrPosPrinter1.ConfigBarras.LarguraLinha);
+     seBarrasAltura.Value := INI.ReadInteger('Barras','Altura',ACBrPosPrinter1.ConfigBarras.Altura);
+     cbHRI.Checked := INI.ReadBool('Barras','HRI',ACBrPosPrinter1.ConfigBarras.MostrarCodigo);
+     seQRCodeTipo.Value := INI.ReadInteger('QRCode','Tipo',ACBrPosPrinter1.ConfigQRCode.Tipo);
+     seQRCodeLarguraModulo.Value := INI.ReadInteger('QRCode','LarguraModulo',ACBrPosPrinter1.ConfigQRCode.LarguraModulo);
+     seQRCodeErrorLevel.Value := INI.ReadInteger('QRCode','ErrorLevel',ACBrPosPrinter1.ConfigQRCode.ErrorLevel);
+     seLogoKC1.Value := INI.ReadInteger('Logo','KC1',ACBrPosPrinter1.ConfigLogo.KeyCode1);
+     seLogoKC2.Value := INI.ReadInteger('Logo','KC2',ACBrPosPrinter1.ConfigLogo.KeyCode2);
+     seLogoFatorX.Value := INI.ReadInteger('Logo','FatorX',ACBrPosPrinter1.ConfigLogo.FatorX);
+     seLogoFatorY.Value := INI.ReadInteger('Logo','FatorY',ACBrPosPrinter1.ConfigLogo.FatorY);
+     seGavetaNum.Value := INI.ReadInteger('Gaveta','Numero',1);
+     seGavetaTempoON.Value := INI.ReadInteger('Gaveta','TempoOn',ACBrPosPrinter1.ConfigGaveta.TempoON);
+     seGavetaTempoOFF.Value := INI.ReadInteger('Gaveta','TempoOff',ACBrPosPrinter1.ConfigGaveta.TempoOFF);
+     cbGavetaSinalInvertido.Checked := INI.ReadBool('Gaveta','SinalInvertido',ACBrPosPrinter1.ConfigGaveta.SinalInvertido);
+  finally
+     INI.Free ;
+  end ;
+end;
+
+procedure TFRM_PRINCIPAL.GravarINI;
+Var
+  ArqINI : String ;
+  INI : TIniFile ;
+begin
+  ArqINI := ChangeFileExt( Application.ExeName,'.ini' ) ;
+
+  INI := TIniFile.Create(ArqINI);
+  try
+     INI.WriteInteger('PosPrinter','Modelo',cbxModelo.ItemIndex);
+     INI.WriteString('PosPrinter','Porta',cbxPorta.Text);
+     INI.WriteString('PosPrinter','DeviceParams',ACBrPosPrinter1.Device.ParamsString);
+     INI.WriteInteger('PosPrinter','Colunas',seColunas.Value);
+     INI.WriteInteger('PosPrinter','EspacoEntreLinhas',seEspLinhas.Value);
+     INI.WriteInteger('PosPrinter','LinhasBuffer',seLinhasBuffer.Value);
+     INI.WriteInteger('PosPrinter','LinhasPular',seLinhasPular.Value);
+     INI.WriteBool('PosPrinter','CortarPapel',cbCortarPapel.Checked);
+     INI.WriteBool('PosPrinter','ControlePorta',cbControlePorta.Checked);
+     INI.WriteBool('PosPrinter','TraduzirTags',cbTraduzirTags.Checked);
+     INI.WriteBool('PosPrinter','IgnorarTags',cbIgnorarTags.Checked);
+     INI.WriteString('PosPrinter','ArqLog',edLog.Text);
+     INI.WriteInteger('PosPrinter','PaginaDeCodigo',cbxPagCodigo.ItemIndex);
+     INI.WriteInteger('Barras','Largura',seBarrasLargura.Value);
+     INI.WriteInteger('Barras','Altura',seBarrasAltura.Value);
+     INI.WriteBool('Barras','HRI',cbHRI.Checked);
+     INI.WriteInteger('QRCode','Tipo',seQRCodeTipo.Value);
+     INI.WriteInteger('QRCode','LarguraModulo',seQRCodeLarguraModulo.Value);
+     INI.WriteInteger('QRCode','ErrorLevel',seQRCodeErrorLevel.Value);
+     INI.WriteInteger('Logo','KC1',seLogoKC1.Value);
+     INI.WriteInteger('Logo','KC2',seLogoKC2.Value);
+     INI.WriteInteger('Logo','FatorX',seLogoFatorX.Value);
+     INI.WriteInteger('Logo','FatorY',seLogoFatorY.Value);
+     INI.WriteInteger('Gaveta','Numero',seGavetaNum.Value);
+     INI.WriteInteger('Gaveta','TempoOn',seGavetaTempoON.Value);
+     INI.WriteInteger('Gaveta','TempoOff',seGavetaTempoOFF.Value);
+     INI.WriteBool('Gaveta','SinalInvertido',cbGavetaSinalInvertido.Checked);
+  finally
+     INI.Free ;
+  end ;
 end;
 
 procedure TFRM_PRINCIPAL.btconsultaClick(Sender: TObject);
@@ -386,6 +739,54 @@ begin
   cx_codbarras.SetFocus;
 end;
 
+procedure TFRM_PRINCIPAL.btSearchPortsClick(Sender: TObject);
+begin
+  cbxPorta.Items.Clear;
+  ACBrPosPrinter1.Device.AcharPortasSeriais( cbxPorta.Items );
+  {$IfDef MSWINDOWS}
+  ACBrPosPrinter1.Device.AcharPortasUSB( cbxPorta.Items );
+  {$EndIf}
+  ACBrPosPrinter1.Device.AcharPortasRAW( cbxPorta.Items );
+  {$IfDef HAS_BLUETOOTH}
+  try
+    ACBrPosPrinter1.Device.AcharPortasBlueTooth( cbxPorta.Items, True );
+  except
+  end;
+  {$EndIf}
+
+  cbxPorta.Items.Add('LPT1') ;
+  cbxPorta.Items.Add('\\localhost\Epson') ;
+  cbxPorta.Items.Add('c:\temp\ecf.txt') ;
+  cbxPorta.Items.Add('TCP:192.168.0.31:9100') ;
+
+  {$IfNDef MSWINDOWS}
+   cbxPorta.Items.Add('/dev/ttyS0') ;
+   cbxPorta.Items.Add('/dev/ttyUSB0') ;
+   cbxPorta.Items.Add('/tmp/ecf.txt') ;
+  {$EndIf}
+end;
+
+procedure TFRM_PRINCIPAL.btSerialClick(Sender: TObject);
+Var
+  frConfiguraSerial : TfrConfiguraSerial ;
+begin
+  frConfiguraSerial := TfrConfiguraSerial.Create(self);
+
+  try
+    frConfiguraSerial.Device.Porta        := ACBrPosPrinter1.Device.Porta ;
+    frConfiguraSerial.cmbPortaSerial.Text := cbxPorta.Text ;
+    frConfiguraSerial.Device.ParamsString := ACBrPosPrinter1.Device.ParamsString ;
+
+    if frConfiguraSerial.ShowModal = mrOk then
+    begin
+       cbxPorta.Text                       := frConfiguraSerial.Device.Porta ;
+       ACBrPosPrinter1.Device.ParamsString := frConfiguraSerial.Device.ParamsString ;
+    end ;
+  finally
+     FreeAndNil( frConfiguraSerial ) ;
+  end ;
+end;
+
 procedure TFRM_PRINCIPAL.BuscacpfExecute(Sender: TObject);
 begin
   cx_cpf.SetFocus;
@@ -400,6 +801,53 @@ end;
 procedure TFRM_PRINCIPAL.CancelarCupom1Click(Sender: TObject);
 begin
   FRM_CONFIGURA.CancelarNota(cxGrid2DBTableView1NFE_IDNOTA.EditValue,cxGrid2DBTableView1NFE_PROTOCOLO.EditValue);
+end;
+
+procedure TFRM_PRINCIPAL.cbxModeloChange(Sender: TObject);
+begin
+  try
+    {$IFDEF ELGIN_E1}
+    if cbxModelo.ItemIndex = Integer(ppExterno) then
+    begin
+      ACBrPosPrinter1.ModeloExterno := fE1Printer;
+      ACBrPosPrinter1.Modelo := ppExterno;
+      cbxPorta.Text := 'NULL';
+      cbxPorta.Enabled := False;
+    end
+    else
+    begin
+    {$ENDIF}
+      ACBrPosPrinter1.Modelo := TACBrPosPrinterModelo(cbxModelo.ItemIndex);
+    {$IFDEF ELGIN_E1}
+    if (cbxPorta.Text = 'NULL') then
+        cbxPorta.Text := '';
+
+      cbxPorta.Enabled := True;
+    end;
+    {$ENDIF}
+  except
+     cbxModelo.ItemIndex := Integer( ACBrPosPrinter1.Modelo ) ;
+     {$IFDEF ELGIN_E1}
+     cbxPorta.Enabled := True;
+     {$ENDIF}
+     raise ;
+  end ;
+end;
+
+procedure TFRM_PRINCIPAL.cbxPagCodigoChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.PaginaDeCodigo := TACBrPosPaginaCodigo(cbxPagCodigo.ItemIndex);
+end;
+
+procedure TFRM_PRINCIPAL.cbxPortaChange(Sender: TObject);
+begin
+  try
+    ACBrPosPrinter1.Porta := cbxPorta.Text ;
+  finally
+    cbxPorta.Text := ACBrPosPrinter1.Porta ;
+  end ;
+
+  btSerial.Visible := ACBrPosPrinter1.Device.IsSerialPort;
 end;
 
 procedure TFRM_PRINCIPAL.ConsultaCupomExecute(Sender: TObject);
@@ -466,12 +914,25 @@ begin
       end
       else
       begin
-        MsgInformacao('Cliente não encontrado, cadastre na 101');
+        if MsgConfirmacao('Cliente não encontrado, deseja cadastrar') = mryes then
+        begin
+          FRM_CLIENTE.ShowModal;
+        end
+        else
+        begin
+          cx_nomecliente.Clear;
+          cx_nomecliente.SetFocus;
+        end;
       end;
     end;
   end
   else
     MsgInformacao('CPF inválido');
+end;
+
+procedure TFRM_PRINCIPAL.cx_descontoExit(Sender: TObject);
+begin
+  RecalcularItens;
 end;
 
 procedure TFRM_PRINCIPAL.cx_freteExit(Sender: TObject);
@@ -521,7 +982,6 @@ begin
   FRM_CONFIGURA.Enviar;
 
   FRM_CONFIGURA.ACBrNFe1.NotasFiscais.Imprimir;
-
 end;
 
 procedure TFRM_PRINCIPAL.ExcluirItemClick(Sender: TObject);
@@ -533,7 +993,42 @@ end;
 procedure TFRM_PRINCIPAL.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   SalvarLayoutDosGridsDoForm(FRM_PRINCIPAL);
-  SalvarLayoutDosGridsDoForm(FRM_BUSCAPED);
+  GravarINI;
+end;
+
+procedure TFRM_PRINCIPAL.FormCreate(Sender: TObject);
+var
+  I: TACBrPosPrinterModelo;
+  J: TACBrPosPaginaCodigo;
+begin
+  cbxModelo.Items.Clear ;
+  For I := Low(TACBrPosPrinterModelo) to High(TACBrPosPrinterModelo) do
+     cbxModelo.Items.Add( GetEnumName(TypeInfo(TACBrPosPrinterModelo), integer(I) ) ) ;
+
+  cbxPagCodigo.Items.Clear ;
+  For J := Low(TACBrPosPaginaCodigo) to High(TACBrPosPaginaCodigo) do
+     cbxPagCodigo.Items.Add( GetEnumName(TypeInfo(TACBrPosPaginaCodigo), integer(J) ) ) ;
+
+  btSearchPortsClick(Sender);
+
+  {$IFDEF ELGIN_E1}
+  fE1Printer        := TACBrPosPrinterElginE1Service.Create(ACBrPosPrinter1);
+  fE1Printer.Modelo := prnI9;
+  // Usar por TXT
+  fE1Printer.PastaEntradaE1 := 'c:\E1\pathIN';
+  fE1Printer.PastaSaidaE1   := 'c:\E1\pathOUT';
+  // Usar por TCP
+  //fE1Printer.IPePortaE1 := '192.168.56.1:89';
+  {$ENDIF}
+
+  LerINI;
+end;
+
+procedure TFRM_PRINCIPAL.FormDestroy(Sender: TObject);
+begin
+  {$IFDEF ELGIN_E1}
+  fE1Printer.Free;
+  {$ENDIF}
 end;
 
 procedure TFRM_PRINCIPAL.FormKeyPress(Sender: TObject; var Key: Char);
@@ -631,9 +1126,9 @@ begin
       begin
         CODID := QryCodBarrasCODID.Value;
         if TABPRECO > 0 then
-          PRECO := QryCodBarrasVENDA.Value
+          PRECO := Arredondar(QryCodBarrasVENDA.Value,4)
         else
-          PRECO := QryCodBarrasVLR_VENDA.Value;
+          PRECO := Arredondar(QryCodBarrasVLR_VENDA.Value,4);
         cx_qtdeitens.Value := cx_qtdeitens.Value+1;
         IdentificarItem(1);
         InserirItem(1);
@@ -666,11 +1161,11 @@ begin
         begin
           CODID := QryCodBarrasCODID.Value;
           if TABPRECO > 0 then
-            PRECO := QryCodBarrasVENDA.Value
+            PRECO := Arredondar(QryCodBarrasVENDA.Value,4)
           else
-            PRECO := QryCodBarrasVLR_VENDA.Value;
+            PRECO := Arredondar(QryCodBarrasVLR_VENDA.Value,4);
 
-          PRECO := QryCodBarrasVLR_VENDA.Value;
+          PRECO := Arredondar(QryCodBarrasVLR_VENDA.Value,4);
           cx_qtdeitens.Value := cx_qtdeitens.Value+1;
           IdentificarItem(1);
           InserirItem(1);
@@ -711,6 +1206,21 @@ begin
     end;
     //Result  := false;
   end;
+end;
+
+procedure TFRM_PRINCIPAL.seQRCodeErrorLevelChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.ConfigQRCode.ErrorLevel := seQRCodeErrorLevel.Value;
+end;
+
+procedure TFRM_PRINCIPAL.seQRCodeLarguraModuloChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.ConfigQRCode.LarguraModulo := seQRCodeLarguraModulo.Value;
+end;
+
+procedure TFRM_PRINCIPAL.seQRCodeTipoChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.ConfigQRCode.Tipo := seQRCodeTipo.Value;
 end;
 
 procedure TFRM_PRINCIPAL.TabelaPrecoExecute(Sender: TObject);
@@ -779,7 +1289,7 @@ end;
 procedure TFRM_PRINCIPAL.FormShow(Sender: TObject);
 begin
   ENVIARNF := true;
-  PreencherCaption(Self);
+  PreencherCaption(FRM_PRINCIPAL);
   spacesso.Click;
   cxPageControl1.HideTabs := true;
   //ActLerConfIni.Execute;
@@ -911,8 +1421,8 @@ begin
       MemItensDESCRICAO.Value      := QryCodBarrasDESCRICAO.Value;
       MemItensQTDE.Value           := MULTIPLICADOR;
       MemItensVLR_UNIT.Value       := PRECO;
-      MemItensVLR_MERCADORIA.Value := MULTIPLICADOR*PRECO;
-      MemItensVLR_TOTAL.Value      := MULTIPLICADOR*PRECO;
+      MemItensVLR_MERCADORIA.Value := Arredondar(MULTIPLICADOR*PRECO,2);
+      MemItensVLR_TOTAL.Value      := Arredondar(MULTIPLICADOR*PRECO,2);
       MemItensUNI_CODIGO.Value     := QryCodBarrasUNIDADE.Value;
       MemItensNCM.Value            := RemoveChar(QryLookMateriaisNCM.Value);
       MemItensGTIN.Value           := QryLookMateriaisCOD_BARRAS.Value;
@@ -939,12 +1449,79 @@ begin
     while not MemItens.Eof do
     begin
       cx_qtdeitens.Value := cx_qtdeitens.Value+1;
-      cx_subtotal.Value  := cx_subtotal.Value+(MemItensQTDE.Value*MemItensVLR_UNIT.Value);
+      cx_subtotal.Value  := cx_subtotal.Value+(Arredondar((MemItensQTDE.Value*MemItensVLR_UNIT.Value),2));
 
       MemItens.Next;
     end;
-    cx_subtotal.Value  := cx_subtotal.Value+cx_frete.Value;
+    cx_subtotal.Value  := cx_subtotal.Value+cx_frete.Value-cx_desconto.Value;
   end;
+end;
+
+procedure TFRM_PRINCIPAL.SbArqLogClick(Sender: TObject);
+var
+  AFileLog: String;
+begin
+  if pos(PathDelim,edLog.Text) = 0 then
+    AFileLog := ExtractFilePath( Application.ExeName ) + edLog.Text
+  else
+    AFileLog := edLog.Text;
+
+  OpenURL( AFileLog );
+end;
+
+procedure TFRM_PRINCIPAL.seBarrasAlturaChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.ConfigBarras.Altura := seBarrasAltura.Value;
+end;
+
+procedure TFRM_PRINCIPAL.seBarrasLarguraChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.ConfigBarras.LarguraLinha := seBarrasLargura.Value;
+end;
+
+procedure TFRM_PRINCIPAL.seColunasChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.ColunasFonteNormal := seColunas.Value;
+end;
+
+procedure TFRM_PRINCIPAL.seEspLinhasChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.EspacoEntreLinhas := seEspLinhas.Value;
+end;
+
+procedure TFRM_PRINCIPAL.seGavetaTempoOFFChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.ConfigGaveta.TempoOFF := seGavetaTempoOFF.Value ;
+end;
+
+procedure TFRM_PRINCIPAL.seGavetaTempoONChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.ConfigGaveta.TempoON := seGavetaTempoON.Value ;
+end;
+
+procedure TFRM_PRINCIPAL.seLinhasBufferChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.LinhasBuffer := seLinhasBuffer.Value;
+end;
+
+procedure TFRM_PRINCIPAL.seLogoFatorXChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.ConfigLogo.FatorX := seLogoFatorX.Value;
+end;
+
+procedure TFRM_PRINCIPAL.seLogoFatorYChange(Sender: TObject);
+begin
+  ACBrPosPrinter1.ConfigLogo.FatorY := seLogoFatorY.Value;
+end;
+
+procedure TFRM_PRINCIPAL.seLogoKC1Change(Sender: TObject);
+begin
+  ACBrPosPrinter1.ConfigLogo.KeyCode1 := seLogoKC1.Value;
+end;
+
+procedure TFRM_PRINCIPAL.seLogoKC2Change(Sender: TObject);
+begin
+  ACBrPosPrinter1.ConfigLogo.KeyCode2 := seLogoKC2.Value;
 end;
 
 end.

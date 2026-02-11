@@ -1515,6 +1515,7 @@ object DMD_PRO00315: TDMD_PRO00315
       ',NF_VLR_TOTDESC= :NF_VLR_TOTDESC'
       ',VLR_RETENCAO= :VLR_RETENCAO'
       ',VLR_FCP= :VLR_FCP'
+      ',PEDIDO_ID= :PEDID'
       'WHERE     (NF_ID = :IDNF)'
       ' ')
     Left = 408
@@ -1682,6 +1683,10 @@ object DMD_PRO00315: TDMD_PRO00315
       end
       item
         Name = 'VLR_FCP'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PEDID'
         ParamType = ptInput
       end
       item
@@ -4394,8 +4399,8 @@ object DMD_PRO00315: TDMD_PRO00315
       '     NFE_STATUS,SITUACAO,NFE_CODSTATUS,NFE_RECIBO'
       'FROM   NOTA_FISCAL'
       'WHERE  (NF_NUMERO=1) AND (DIAG_EMPRESA=1)')
-    Left = 289
-    Top = 328
+    Left = 297
+    Top = 312
     object QryCstNotaNF_ID: TFDAutoIncField
       FieldName = 'NF_ID'
       ReadOnly = True
@@ -4454,8 +4459,8 @@ object DMD_PRO00315: TDMD_PRO00315
       'WHERE  (A.BLOQUEIO = '#39'N'#39') AND (A.FILIAL = :FILIAL)'
       '              AND (A.CODID = :CODID)'
       '')
-    Left = 288
-    Top = 424
+    Left = 296
+    Top = 368
     ParamData = <
       item
         Name = 'FILIAL'
@@ -4633,12 +4638,13 @@ object DMD_PRO00315: TDMD_PRO00315
   object DsrBuscaProd: TDataSource
     DataSet = QryBuscaProd
     Left = 296
-    Top = 480
+    Top = 432
   end
   object QryBuscaCliente: TFDQuery
     Connection = DmdPrincipal.FDConexao
     SQL.Strings = (
-      'SELECT A.NOME,A.COD_CLIENTE,A.CPF_CNPJ,A.FANTASIA,A.CIDADE,A.UF'
+      'SELECT A.NOME,A.COD_CLIENTE,A.CPF_CNPJ,A.FANTASIA,A.CIDADE,'
+      '            A.UF,A.RESTRICAO,A.RESTRICAO_OBS'
       'FROM GESTOR_CLIENTE A'
       'WHERE A.COD_CLIENTE <> -1'
       '')
@@ -4678,6 +4684,18 @@ object DMD_PRO00315: TDMD_PRO00315
       Origin = 'UF'
       FixedChar = True
       Size = 2
+    end
+    object QryBuscaClienteRESTRICAO: TStringField
+      FieldName = 'RESTRICAO'
+      Origin = 'RESTRICAO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryBuscaClienteRESTRICAO_OBS: TStringField
+      FieldName = 'RESTRICAO_OBS'
+      Origin = 'RESTRICAO_OBS'
+      FixedChar = True
+      Size = 100
     end
   end
   object DsrBuscaCliente: TDataSource
@@ -6516,5 +6534,1315 @@ object DMD_PRO00315: TDMD_PRO00315
         DataType = ftInteger
         ParamType = ptInputOutput
       end>
+  end
+  object QryPosicaoPed: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      'UPDATE PEDIDO_MATERIAIS_CLIENTE'
+      'SET POSICAO = :POS, DT_FECHAMENTO = :DTF'
+      'WHERE PEDID = :PEDIDO')
+    Left = 296
+    Top = 490
+    ParamData = <
+      item
+        Name = 'POS'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'DTF'
+        DataType = ftDateTime
+        FDDataType = dtDateTime
+        ParamType = ptInput
+      end
+      item
+        Name = 'PEDIDO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object QryPedPecas: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      
+        'SELECT D.SERASA, A.AUTOID, C.PEDIDO, A.MAQ, A.CODID, A.COD_INTER' +
+        'NO, A.DESCRICAOPROD, A.MARCA, A.EMBALAGEM, A.UNIDADE, A.ESTOQUE_' +
+        'ID, A.QUANT, A.ALIQ_IPI, A.VLR_IPI, A.ALIQ_ICMS, A.VLR_ICMS, A.V' +
+        'LR_CUSTO,'
+      
+        '  A.VLR_UNIT, A.VLR_DOLAR, A.VLR_TOTAL, A.MOVIMENTOU_ESTOQUE, A.' +
+        'USRLIB, A.QTDEMB, A.IDEMB, A.COMISSAO, A.FAT, A.MOEDA_ID, A.PESO' +
+        ', A.QTDE_FAT, A.QTDE_LIB, A.SEUITEM, A.ENTREGA, A.COMPLEMENTO,  ' +
+        '         '
+      
+        '  A.ORDEM, A.CODBARRAS, A.QTDE_TEMP, A.COR, A.PORTA_TIPO, A.GRAV' +
+        'ACAO, A.LADOS, A.CFOP_ID, A.QTDE_ENTREGUE, B.DESCRICAO, D.NOME, ' +
+        'D.TEL1, D.TEL2, D.EMAIL, C.PEDID, C.FILIAL, C.DATA, C.SEUPEDIDO,' +
+        '         '
+      
+        '  C.COD_CLIENTE, C.TIPO, C.FPGTO_COD, C.FPGTO, C.DT_ENTREGA, C.P' +
+        'RAZO_ENTREGA, C.VENDEDOR_ID, C.VENDEDOR, C.QUANT_ITENS, C.FRETE_' +
+        'CONTA, C.VLRFRETE, C.TOTAL_PEDIDO, C.OBS, C.COMPRADOR,          ' +
+        '         '
+      
+        '  C.TRANSPORTADORA, C.VOLUMES, C.POSICAO, C.PROD_IMPRESSO, C.NF,' +
+        ' C.STATUS, C.PEDIDOCLI, C.FOBCIF, C.DT_FECHAMENTO, C.COTACAO, C.' +
+        'REQCOMPRA, C.PA, C.ASS1, C.ASS2, C.ASS3, C.ASS4, C.TIPOCOBR,    ' +
+        '         '
+      
+        '  C.MINUTA, C.SEL, C.COD_TABELA, C.ORIGEM, C.PERC_DESC, C.VLR_DE' +
+        'SC, C.VIA, C.DATA_FATURAMENTO, C.VENDEDOR2, C.OPERACAO, C.FILIAL' +
+        '_FATUR, C.COD_CLIENTE_FATUR, C.ESPECIAL, C.PERC_ESPECIAL,       ' +
+        '         '
+      
+        '  C.COD_TABELA_ESPECIAL, C.FILIAL_PEDIDO, D.CIDADE, D.CEP, D.FAN' +
+        'TASIA, RTRIM(D.ENDERECO) + '#39' '#39' + LTRIM(STR(D.ENDERECO_NUM)) + '#39' ' +
+        #39' + D.ENDERECO_COMPL AS ENDERECO, D.BAIRRO, D.UF, D.UF_ENT, D.UF' +
+        '_COB,'
+      
+        '  D.CIDADE_ENT, D.CIDADE_COB, D.CEP_ENT, D.CEP_COB, G.Desc_TpCob' +
+        'r, RTRIM(D.ENDERECO_ENT) + '#39', '#39' + LTRIM(STR(D.ENDERECO_ENT_NUM))' +
+        ' AS ENDERECO_ENT, D.BAIRRO_ENT, RTRIM(D.ENDERECO_COB)           ' +
+        '       '
+      
+        '  + '#39', '#39' + LTRIM(STR(D.ENDERECO_COB_NUM)) AS ENDERECO_COB, D.BAI' +
+        'RRO_COB, F.ESTOQUE_DESCR, D.CPF_CNPJ, D.RG_INSC, B.QTDE_VOL, E.T' +
+        'RANSP_NOME, E.TEL1 AS TELTRANS, D.CONTATO1,                     ' +
+        '       '
+      
+        '  E.TRANSP_UF AS UFTRANS, D.CONTATO3, F.ESTOQUE_DESCR AS DEPOSIT' +
+        'O, E.TRANSP_FANTASIA, D.DATA AS CLIENTE_DESDE, RTRIM(E.TRANSP_EN' +
+        'DERECO) + '#39' - '#39' + LTRIM(E.TRANSP_BAIRRO)                        ' +
+        '       '
+      
+        '  + '#39' - '#39' + LTRIM(E.TRANSP_CIDADE) AS ENDTRANS, A.VLR_ICMSSUB, A' +
+        '.ST, A.IVA, A.VLR_BASE_ICMSST, A.VLR_BASE_ICMS, C.VLR_BASE_ICMSS' +
+        'T AS TOT_BASE_ICMSST, C.VLR_BASE_ICMS AS TOT_BASE_ICMS,         ' +
+        '       '
+      
+        '  C.VLR_ICMSSUB AS TOT_ICMSST, C.VLR_ICMS AS TOT_ICMS, C.VLR_IPI' +
+        ' AS TOT_IPI                                                     ' +
+        '                                                                ' +
+        '         '
+      
+        'FROM PEDIDO_MATERIAIS_ITENS_CLIENTE A                           ' +
+        '                                   '
+      
+        '   LEFT JOIN MATERIAIS B ON A.CODID = B.CODID                   ' +
+        '                                      '
+      
+        '   LEFT JOIN PEDIDO_MATERIAIS_CLIENTE C ON A.PEDID = C.PEDID    ' +
+        '                                      '
+      
+        '   LEFT JOIN GESTOR_CLIENTE D ON C.COD_CLIENTE = D.COD_CLIENTE  ' +
+        '                                      '
+      
+        '   LEFT JOIN TRANSPORTADOR E ON E.TRANSP_ID = C.TRANSPORTADORA  ' +
+        '                                      '
+      '   LEFT JOIN ESTOQUE F ON A.ESTOQUE_ID = F.ESTOQUE_ID '
+      '   LEFT JOIN GESTOR_TIPOCOBR G ON G.COD_TPCOBR=C.TIPOCOBR ')
+    Left = 406
+    Top = 559
+    object QryPedPecasSERASA: TStringField
+      FieldName = 'SERASA'
+      Origin = 'SERASA'
+      FixedChar = True
+    end
+    object QryPedPecasAUTOID: TFDAutoIncField
+      FieldName = 'AUTOID'
+      Origin = 'AUTOID'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object QryPedPecasPEDIDO: TIntegerField
+      FieldName = 'PEDIDO'
+      Origin = 'PEDIDO'
+    end
+    object QryPedPecasMAQ: TStringField
+      FieldName = 'MAQ'
+      Origin = 'MAQ'
+      FixedChar = True
+      Size = 30
+    end
+    object QryPedPecasCODID: TIntegerField
+      FieldName = 'CODID'
+      Origin = 'CODID'
+    end
+    object QryPedPecasCOD_INTERNO: TStringField
+      FieldName = 'COD_INTERNO'
+      Origin = 'COD_INTERNO'
+      FixedChar = True
+      Size = 30
+    end
+    object QryPedPecasDESCRICAOPROD: TStringField
+      FieldName = 'DESCRICAOPROD'
+      Origin = 'DESCRICAOPROD'
+      FixedChar = True
+      Size = 70
+    end
+    object QryPedPecasMARCA: TStringField
+      FieldName = 'MARCA'
+      Origin = 'MARCA'
+      FixedChar = True
+      Size = 30
+    end
+    object QryPedPecasEMBALAGEM: TStringField
+      FieldName = 'EMBALAGEM'
+      Origin = 'EMBALAGEM'
+      FixedChar = True
+      Size = 40
+    end
+    object QryPedPecasUNIDADE: TStringField
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      FixedChar = True
+      Size = 3
+    end
+    object QryPedPecasESTOQUE_ID: TIntegerField
+      FieldName = 'ESTOQUE_ID'
+      Origin = 'ESTOQUE_ID'
+    end
+    object QryPedPecasQUANT: TFloatField
+      FieldName = 'QUANT'
+      Origin = 'QUANT'
+    end
+    object QryPedPecasALIQ_IPI: TFloatField
+      FieldName = 'ALIQ_IPI'
+      Origin = 'ALIQ_IPI'
+    end
+    object QryPedPecasVLR_IPI: TFloatField
+      FieldName = 'VLR_IPI'
+      Origin = 'VLR_IPI'
+    end
+    object QryPedPecasALIQ_ICMS: TFloatField
+      FieldName = 'ALIQ_ICMS'
+      Origin = 'ALIQ_ICMS'
+    end
+    object QryPedPecasVLR_ICMS: TFloatField
+      FieldName = 'VLR_ICMS'
+      Origin = 'VLR_ICMS'
+    end
+    object QryPedPecasVLR_CUSTO: TFloatField
+      FieldName = 'VLR_CUSTO'
+      Origin = 'VLR_CUSTO'
+    end
+    object QryPedPecasVLR_UNIT: TFloatField
+      FieldName = 'VLR_UNIT'
+      Origin = 'VLR_UNIT'
+    end
+    object QryPedPecasVLR_DOLAR: TFloatField
+      FieldName = 'VLR_DOLAR'
+      Origin = 'VLR_DOLAR'
+    end
+    object QryPedPecasVLR_TOTAL: TFloatField
+      FieldName = 'VLR_TOTAL'
+      Origin = 'VLR_TOTAL'
+    end
+    object QryPedPecasMOVIMENTOU_ESTOQUE: TStringField
+      FieldName = 'MOVIMENTOU_ESTOQUE'
+      Origin = 'MOVIMENTOU_ESTOQUE'
+      FixedChar = True
+      Size = 1
+    end
+    object QryPedPecasUSRLIB: TIntegerField
+      FieldName = 'USRLIB'
+      Origin = 'USRLIB'
+    end
+    object QryPedPecasQTDEMB: TIntegerField
+      FieldName = 'QTDEMB'
+      Origin = 'QTDEMB'
+    end
+    object QryPedPecasIDEMB: TIntegerField
+      FieldName = 'IDEMB'
+      Origin = 'IDEMB'
+    end
+    object QryPedPecasCOMISSAO: TFloatField
+      FieldName = 'COMISSAO'
+      Origin = 'COMISSAO'
+    end
+    object QryPedPecasFAT: TStringField
+      FieldName = 'FAT'
+      Origin = 'FAT'
+      FixedChar = True
+      Size = 1
+    end
+    object QryPedPecasMOEDA_ID: TIntegerField
+      FieldName = 'MOEDA_ID'
+      Origin = 'MOEDA_ID'
+    end
+    object QryPedPecasPESO: TFloatField
+      FieldName = 'PESO'
+      Origin = 'PESO'
+    end
+    object QryPedPecasQTDE_FAT: TFloatField
+      FieldName = 'QTDE_FAT'
+      Origin = 'QTDE_FAT'
+    end
+    object QryPedPecasQTDE_LIB: TFloatField
+      FieldName = 'QTDE_LIB'
+      Origin = 'QTDE_LIB'
+    end
+    object QryPedPecasSEUITEM: TIntegerField
+      FieldName = 'SEUITEM'
+      Origin = 'SEUITEM'
+    end
+    object QryPedPecasENTREGA: TStringField
+      FieldName = 'ENTREGA'
+      Origin = 'ENTREGA'
+      FixedChar = True
+      Size = 1
+    end
+    object QryPedPecasCOMPLEMENTO: TStringField
+      FieldName = 'COMPLEMENTO'
+      Origin = 'COMPLEMENTO'
+      FixedChar = True
+      Size = 50
+    end
+    object QryPedPecasORDEM: TIntegerField
+      FieldName = 'ORDEM'
+      Origin = 'ORDEM'
+    end
+    object QryPedPecasCODBARRAS: TStringField
+      FieldName = 'CODBARRAS'
+      Origin = 'CODBARRAS'
+      FixedChar = True
+    end
+    object QryPedPecasQTDE_TEMP: TFloatField
+      FieldName = 'QTDE_TEMP'
+      Origin = 'QTDE_TEMP'
+    end
+    object QryPedPecasCOR: TStringField
+      FieldName = 'COR'
+      Origin = 'COR'
+      FixedChar = True
+    end
+    object QryPedPecasPORTA_TIPO: TStringField
+      FieldName = 'PORTA_TIPO'
+      Origin = 'PORTA_TIPO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryPedPecasGRAVACAO: TStringField
+      FieldName = 'GRAVACAO'
+      Origin = 'GRAVACAO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryPedPecasLADOS: TStringField
+      FieldName = 'LADOS'
+      Origin = 'LADOS'
+      FixedChar = True
+      Size = 10
+    end
+    object QryPedPecasCFOP_ID: TIntegerField
+      FieldName = 'CFOP_ID'
+      Origin = 'CFOP_ID'
+    end
+    object QryPedPecasQTDE_ENTREGUE: TFloatField
+      FieldName = 'QTDE_ENTREGUE'
+      Origin = 'QTDE_ENTREGUE'
+    end
+    object QryPedPecasDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
+      Size = 100
+    end
+    object QryPedPecasNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Size = 100
+    end
+    object QryPedPecasTEL1: TStringField
+      FieldName = 'TEL1'
+      Origin = 'TEL1'
+      FixedChar = True
+      Size = 18
+    end
+    object QryPedPecasTEL2: TStringField
+      FieldName = 'TEL2'
+      Origin = 'TEL2'
+      FixedChar = True
+      Size = 18
+    end
+    object QryPedPecasEMAIL: TStringField
+      FieldName = 'EMAIL'
+      Origin = 'EMAIL'
+      Size = 40
+    end
+    object QryPedPecasPEDID: TFDAutoIncField
+      FieldName = 'PEDID'
+      Origin = 'PEDID'
+      ReadOnly = True
+    end
+    object QryPedPecasFILIAL: TIntegerField
+      FieldName = 'FILIAL'
+      Origin = 'FILIAL'
+    end
+    object QryPedPecasDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = 'DATA'
+    end
+    object QryPedPecasSEUPEDIDO: TIntegerField
+      FieldName = 'SEUPEDIDO'
+      Origin = 'SEUPEDIDO'
+    end
+    object QryPedPecasCOD_CLIENTE: TIntegerField
+      FieldName = 'COD_CLIENTE'
+      Origin = 'COD_CLIENTE'
+    end
+    object QryPedPecasTIPO: TIntegerField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+    end
+    object QryPedPecasFPGTO_COD: TIntegerField
+      FieldName = 'FPGTO_COD'
+      Origin = 'FPGTO_COD'
+    end
+    object QryPedPecasFPGTO: TStringField
+      FieldName = 'FPGTO'
+      Origin = 'FPGTO'
+      FixedChar = True
+      Size = 40
+    end
+    object QryPedPecasDT_ENTREGA: TSQLTimeStampField
+      FieldName = 'DT_ENTREGA'
+      Origin = 'DT_ENTREGA'
+    end
+    object QryPedPecasPRAZO_ENTREGA: TStringField
+      FieldName = 'PRAZO_ENTREGA'
+      Origin = 'PRAZO_ENTREGA'
+      FixedChar = True
+      Size = 30
+    end
+    object QryPedPecasVENDEDOR_ID: TIntegerField
+      FieldName = 'VENDEDOR_ID'
+      Origin = 'VENDEDOR_ID'
+    end
+    object QryPedPecasVENDEDOR: TStringField
+      FieldName = 'VENDEDOR'
+      Origin = 'VENDEDOR'
+      FixedChar = True
+      Size = 30
+    end
+    object QryPedPecasQUANT_ITENS: TFloatField
+      FieldName = 'QUANT_ITENS'
+      Origin = 'QUANT_ITENS'
+    end
+    object QryPedPecasFRETE_CONTA: TIntegerField
+      FieldName = 'FRETE_CONTA'
+      Origin = 'FRETE_CONTA'
+    end
+    object QryPedPecasVLRFRETE: TFloatField
+      FieldName = 'VLRFRETE'
+      Origin = 'VLRFRETE'
+    end
+    object QryPedPecasTOTAL_PEDIDO: TFloatField
+      FieldName = 'TOTAL_PEDIDO'
+      Origin = 'TOTAL_PEDIDO'
+    end
+    object QryPedPecasOBS: TMemoField
+      FieldName = 'OBS'
+      Origin = 'OBS'
+      BlobType = ftMemo
+    end
+    object QryPedPecasCOMPRADOR: TStringField
+      FieldName = 'COMPRADOR'
+      Origin = 'COMPRADOR'
+      FixedChar = True
+    end
+    object QryPedPecasTRANSPORTADORA: TIntegerField
+      FieldName = 'TRANSPORTADORA'
+      Origin = 'TRANSPORTADORA'
+    end
+    object QryPedPecasVOLUMES: TStringField
+      FieldName = 'VOLUMES'
+      Origin = 'VOLUMES'
+      FixedChar = True
+      Size = 10
+    end
+    object QryPedPecasPOSICAO: TStringField
+      FieldName = 'POSICAO'
+      Origin = 'POSICAO'
+      FixedChar = True
+      Size = 15
+    end
+    object QryPedPecasPROD_IMPRESSO: TStringField
+      FieldName = 'PROD_IMPRESSO'
+      Origin = 'PROD_IMPRESSO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryPedPecasNF: TIntegerField
+      FieldName = 'NF'
+      Origin = 'NF'
+    end
+    object QryPedPecasSTATUS: TStringField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      FixedChar = True
+      Size = 30
+    end
+    object QryPedPecasPEDIDOCLI: TStringField
+      FieldName = 'PEDIDOCLI'
+      Origin = 'PEDIDOCLI'
+      FixedChar = True
+    end
+    object QryPedPecasFOBCIF: TIntegerField
+      FieldName = 'FOBCIF'
+      Origin = 'FOBCIF'
+    end
+    object QryPedPecasDT_FECHAMENTO: TSQLTimeStampField
+      FieldName = 'DT_FECHAMENTO'
+      Origin = 'DT_FECHAMENTO'
+    end
+    object QryPedPecasCOTACAO: TIntegerField
+      FieldName = 'COTACAO'
+      Origin = 'COTACAO'
+    end
+    object QryPedPecasREQCOMPRA: TIntegerField
+      FieldName = 'REQCOMPRA'
+      Origin = 'REQCOMPRA'
+    end
+    object QryPedPecasPA: TIntegerField
+      FieldName = 'PA'
+      Origin = 'PA'
+    end
+    object QryPedPecasASS1: TIntegerField
+      FieldName = 'ASS1'
+      Origin = 'ASS1'
+    end
+    object QryPedPecasASS2: TIntegerField
+      FieldName = 'ASS2'
+      Origin = 'ASS2'
+    end
+    object QryPedPecasASS3: TIntegerField
+      FieldName = 'ASS3'
+      Origin = 'ASS3'
+    end
+    object QryPedPecasASS4: TIntegerField
+      FieldName = 'ASS4'
+      Origin = 'ASS4'
+    end
+    object QryPedPecasTIPOCOBR: TStringField
+      FieldName = 'TIPOCOBR'
+      Origin = 'TIPOCOBR'
+      FixedChar = True
+      Size = 5
+    end
+    object QryPedPecasMINUTA: TIntegerField
+      FieldName = 'MINUTA'
+      Origin = 'MINUTA'
+    end
+    object QryPedPecasSEL: TStringField
+      FieldName = 'SEL'
+      Origin = 'SEL'
+      FixedChar = True
+      Size = 1
+    end
+    object QryPedPecasCOD_TABELA: TIntegerField
+      FieldName = 'COD_TABELA'
+      Origin = 'COD_TABELA'
+    end
+    object QryPedPecasORIGEM: TIntegerField
+      FieldName = 'ORIGEM'
+      Origin = 'ORIGEM'
+    end
+    object QryPedPecasPERC_DESC: TFloatField
+      FieldName = 'PERC_DESC'
+      Origin = 'PERC_DESC'
+    end
+    object QryPedPecasVLR_DESC: TFloatField
+      FieldName = 'VLR_DESC'
+      Origin = 'VLR_DESC'
+    end
+    object QryPedPecasVIA: TIntegerField
+      FieldName = 'VIA'
+      Origin = 'VIA'
+    end
+    object QryPedPecasDATA_FATURAMENTO: TSQLTimeStampField
+      FieldName = 'DATA_FATURAMENTO'
+      Origin = 'DATA_FATURAMENTO'
+    end
+    object QryPedPecasVENDEDOR2: TIntegerField
+      FieldName = 'VENDEDOR2'
+      Origin = 'VENDEDOR2'
+    end
+    object QryPedPecasOPERACAO: TStringField
+      FieldName = 'OPERACAO'
+      Origin = 'OPERACAO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryPedPecasFILIAL_FATUR: TIntegerField
+      FieldName = 'FILIAL_FATUR'
+      Origin = 'FILIAL_FATUR'
+    end
+    object QryPedPecasCOD_CLIENTE_FATUR: TIntegerField
+      FieldName = 'COD_CLIENTE_FATUR'
+      Origin = 'COD_CLIENTE_FATUR'
+    end
+    object QryPedPecasESPECIAL: TStringField
+      FieldName = 'ESPECIAL'
+      Origin = 'ESPECIAL'
+      FixedChar = True
+      Size = 1
+    end
+    object QryPedPecasPERC_ESPECIAL: TFloatField
+      FieldName = 'PERC_ESPECIAL'
+      Origin = 'PERC_ESPECIAL'
+    end
+    object QryPedPecasCOD_TABELA_ESPECIAL: TIntegerField
+      FieldName = 'COD_TABELA_ESPECIAL'
+      Origin = 'COD_TABELA_ESPECIAL'
+    end
+    object QryPedPecasFILIAL_PEDIDO: TIntegerField
+      FieldName = 'FILIAL_PEDIDO'
+      Origin = 'FILIAL_PEDIDO'
+    end
+    object QryPedPecasCIDADE: TStringField
+      FieldName = 'CIDADE'
+      Origin = 'CIDADE'
+      Size = 40
+    end
+    object QryPedPecasCEP: TStringField
+      FieldName = 'CEP'
+      Origin = 'CEP'
+      FixedChar = True
+      Size = 9
+    end
+    object QryPedPecasFANTASIA: TStringField
+      FieldName = 'FANTASIA'
+      Origin = 'FANTASIA'
+      Size = 50
+    end
+    object QryPedPecasENDERECO: TStringField
+      FieldName = 'ENDERECO'
+      Origin = 'ENDERECO'
+      ReadOnly = True
+      Size = 122
+    end
+    object QryPedPecasBAIRRO: TStringField
+      FieldName = 'BAIRRO'
+      Origin = 'BAIRRO'
+      Size = 40
+    end
+    object QryPedPecasUF: TStringField
+      FieldName = 'UF'
+      Origin = 'UF'
+      FixedChar = True
+      Size = 2
+    end
+    object QryPedPecasUF_ENT: TStringField
+      FieldName = 'UF_ENT'
+      Origin = 'UF_ENT'
+      FixedChar = True
+      Size = 2
+    end
+    object QryPedPecasUF_COB: TStringField
+      FieldName = 'UF_COB'
+      Origin = 'UF_COB'
+      FixedChar = True
+      Size = 2
+    end
+    object QryPedPecasCIDADE_ENT: TStringField
+      FieldName = 'CIDADE_ENT'
+      Origin = 'CIDADE_ENT'
+      FixedChar = True
+      Size = 40
+    end
+    object QryPedPecasCIDADE_COB: TStringField
+      FieldName = 'CIDADE_COB'
+      Origin = 'CIDADE_COB'
+      FixedChar = True
+      Size = 40
+    end
+    object QryPedPecasCEP_ENT: TStringField
+      FieldName = 'CEP_ENT'
+      Origin = 'CEP_ENT'
+      FixedChar = True
+      Size = 9
+    end
+    object QryPedPecasCEP_COB: TStringField
+      FieldName = 'CEP_COB'
+      Origin = 'CEP_COB'
+      FixedChar = True
+      Size = 9
+    end
+    object QryPedPecasDesc_TpCobr: TStringField
+      FieldName = 'Desc_TpCobr'
+      Origin = 'Desc_TpCobr'
+      FixedChar = True
+      Size = 40
+    end
+    object QryPedPecasENDERECO_ENT: TStringField
+      FieldName = 'ENDERECO_ENT'
+      Origin = 'ENDERECO_ENT'
+      ReadOnly = True
+      Size = 82
+    end
+    object QryPedPecasBAIRRO_ENT: TStringField
+      FieldName = 'BAIRRO_ENT'
+      Origin = 'BAIRRO_ENT'
+      FixedChar = True
+      Size = 40
+    end
+    object QryPedPecasENDERECO_COB: TStringField
+      FieldName = 'ENDERECO_COB'
+      Origin = 'ENDERECO_COB'
+      ReadOnly = True
+      Size = 82
+    end
+    object QryPedPecasBAIRRO_COB: TStringField
+      FieldName = 'BAIRRO_COB'
+      Origin = 'BAIRRO_COB'
+      FixedChar = True
+      Size = 40
+    end
+    object QryPedPecasESTOQUE_DESCR: TStringField
+      FieldName = 'ESTOQUE_DESCR'
+      Origin = 'ESTOQUE_DESCR'
+      FixedChar = True
+      Size = 50
+    end
+    object QryPedPecasCPF_CNPJ: TStringField
+      FieldName = 'CPF_CNPJ'
+      Origin = 'CPF_CNPJ'
+      FixedChar = True
+      Size = 18
+    end
+    object QryPedPecasRG_INSC: TStringField
+      FieldName = 'RG_INSC'
+      Origin = 'RG_INSC'
+      FixedChar = True
+      Size = 25
+    end
+    object QryPedPecasQTDE_VOL: TFloatField
+      FieldName = 'QTDE_VOL'
+      Origin = 'QTDE_VOL'
+    end
+    object QryPedPecasTRANSP_NOME: TStringField
+      FieldName = 'TRANSP_NOME'
+      Origin = 'TRANSP_NOME'
+      FixedChar = True
+      Size = 50
+    end
+    object QryPedPecasTELTRANS: TStringField
+      FieldName = 'TELTRANS'
+      Origin = 'TELTRANS'
+      FixedChar = True
+      Size = 18
+    end
+    object QryPedPecasCONTATO1: TStringField
+      FieldName = 'CONTATO1'
+      Origin = 'CONTATO1'
+      FixedChar = True
+    end
+    object QryPedPecasUFTRANS: TStringField
+      FieldName = 'UFTRANS'
+      Origin = 'UFTRANS'
+      FixedChar = True
+      Size = 2
+    end
+    object QryPedPecasCONTATO3: TStringField
+      FieldName = 'CONTATO3'
+      Origin = 'CONTATO3'
+      FixedChar = True
+    end
+    object QryPedPecasDEPOSITO: TStringField
+      FieldName = 'DEPOSITO'
+      Origin = 'DEPOSITO'
+      FixedChar = True
+      Size = 50
+    end
+    object QryPedPecasTRANSP_FANTASIA: TStringField
+      FieldName = 'TRANSP_FANTASIA'
+      Origin = 'TRANSP_FANTASIA'
+      FixedChar = True
+      Size = 30
+    end
+    object QryPedPecasCLIENTE_DESDE: TSQLTimeStampField
+      FieldName = 'CLIENTE_DESDE'
+      Origin = 'CLIENTE_DESDE'
+    end
+    object QryPedPecasENDTRANS: TStringField
+      FieldName = 'ENDTRANS'
+      Origin = 'ENDTRANS'
+      ReadOnly = True
+      Size = 131
+    end
+    object QryPedPecasVLR_ICMSSUB: TFloatField
+      FieldName = 'VLR_ICMSSUB'
+      Origin = 'VLR_ICMSSUB'
+    end
+    object QryPedPecasST: TStringField
+      FieldName = 'ST'
+      Origin = 'ST'
+      FixedChar = True
+      Size = 3
+    end
+    object QryPedPecasIVA: TFloatField
+      FieldName = 'IVA'
+      Origin = 'IVA'
+    end
+    object QryPedPecasVLR_BASE_ICMSST: TFloatField
+      FieldName = 'VLR_BASE_ICMSST'
+      Origin = 'VLR_BASE_ICMSST'
+    end
+    object QryPedPecasVLR_BASE_ICMS: TFloatField
+      FieldName = 'VLR_BASE_ICMS'
+      Origin = 'VLR_BASE_ICMS'
+    end
+    object QryPedPecasTOT_BASE_ICMSST: TFloatField
+      FieldName = 'TOT_BASE_ICMSST'
+      Origin = 'TOT_BASE_ICMSST'
+    end
+    object QryPedPecasTOT_BASE_ICMS: TFloatField
+      FieldName = 'TOT_BASE_ICMS'
+      Origin = 'TOT_BASE_ICMS'
+    end
+    object QryPedPecasTOT_ICMSST: TFloatField
+      FieldName = 'TOT_ICMSST'
+      Origin = 'TOT_ICMSST'
+    end
+    object QryPedPecasTOT_ICMS: TFloatField
+      FieldName = 'TOT_ICMS'
+      Origin = 'TOT_ICMS'
+    end
+    object QryPedPecasTOT_IPI: TFloatField
+      FieldName = 'TOT_IPI'
+      Origin = 'TOT_IPI'
+    end
+  end
+  object DSPedPecas: TDataSource
+    DataSet = QryPedPecas
+    Left = 405
+    Top = 616
+  end
+  object Qryunid: TFDQuery
+    MasterSource = DSPedPecas
+    MasterFields = 'UNIDADE;CODID'
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      'SELECT        CODID, UNI_CODIGO, FATOR, FATOR_KG, PADRAO'
+      'FROM MATERIAIS_UNIDADE_MEDIDA'
+      'WHERE UNI_CODIGO= :UNIDADE AND CODID= :CODID'
+      ''
+      '')
+    Left = 486
+    Top = 559
+    ParamData = <
+      item
+        Name = 'UNIDADE'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Name = 'CODID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Size = 4
+      end>
+    object QryunidCODID: TIntegerField
+      FieldName = 'CODID'
+    end
+    object QryunidUNI_CODIGO: TStringField
+      FieldName = 'UNI_CODIGO'
+      FixedChar = True
+      Size = 3
+    end
+    object QryunidFATOR: TFloatField
+      FieldName = 'FATOR'
+    end
+    object QryunidFATOR_KG: TFloatField
+      FieldName = 'FATOR_KG'
+    end
+    object QryunidPADRAO: TStringField
+      FieldName = 'PADRAO'
+      Origin = 'PADRAO'
+      FixedChar = True
+      Size = 1
+    end
+  end
+  object dsunid: TDataSource
+    DataSet = Qryunid
+    Left = 493
+    Top = 616
+  end
+  object Qryemb: TFDQuery
+    MasterSource = DSPedPecas
+    MasterFields = 'IDEMB'
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      'SELECT DESCRICAO,PESO'
+      'FROM MATERIAIS'
+      'WHERE CODID= :IDEMB AND BLOQUEIO='#39'N'#39)
+    Left = 574
+    Top = 559
+    ParamData = <
+      item
+        Name = 'IDEMB'
+        DataType = ftInteger
+        ParamType = ptInput
+        Size = 4
+      end>
+    object QryembDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      FixedChar = True
+    end
+    object QryembPESO: TFloatField
+      FieldName = 'PESO'
+    end
+  end
+  object dsemb: TDataSource
+    DataSet = Qryemb
+    Left = 573
+    Top = 616
+  end
+  object DSCstPed: TDataSource
+    DataSet = QryCstPed
+    Left = 648
+    Top = 618
+  end
+  object QryCstPed: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    FetchOptions.AssignedValues = [evRowsetSize]
+    SQL.Strings = (
+      
+        'SELECT   A.PEDIDO, A.DATA, A.COD_CLIENTE, A.POSICAO, A.FPGTO, A.' +
+        'PRAZO_ENTREGA, A.STATUS, A.TOTAL_PEDIDO, A.VENDEDOR_ID, B.NOME, '
+      
+        '                A.VENDEDOR, A.DT_ENTREGA, B.EMAIL, A.PROD_IMPRES' +
+        'SO, A.COMISSAO, A.FRETE_CONTA, A.FPGTO_COD, B.PORTADOR, B.ESPDOC' +
+        ', A.TIPOCOBR,'
+      
+        '                B.CATEG, B.CLASS, B.CONTABIL, B.CENTROCUSTO, A.T' +
+        'RANSPORTADORA, A.ORIGEM,A.ASS1,A.ASS2,A.ASS3,A.ASS4,A.PEDID,A.CO' +
+        'D_TABELA,'
+      
+        '                A.SEUPEDIDO, A.TIPO, A.QUANT_ITENS, A.VLRFRETE, ' +
+        'A.COMPRADOR, A.PERC_DESC, A.VLR_DESC, A.PEDIDOCLI, A.FOBCIF,'
+      
+        '                A.DT_FECHAMENTO, A.DATA_FATURAMENTO, A.FILIAL,A.' +
+        'PA, A.FILIAL_PEDIDO,A.VLR_IPI, A.VLR_ICMS, A.VLR_ICMSSUB, A.VLR_' +
+        'MERCADORIA'
+      'FROM         PEDIDO_MATERIAIS_CLIENTE A LEFT OUTER JOIN'
+      
+        '                      GESTOR_CLIENTE B ON A.COD_CLIENTE = B.COD_' +
+        'CLIENTE'
+      'WHERE     (A.POSICAO <> '#39'.X'#39') AND (A.PEDID = :PEDID)')
+    Left = 648
+    Top = 562
+    ParamData = <
+      item
+        Name = 'PEDID'
+        ParamType = ptInput
+      end>
+    object QryCstPedPEDIDO: TIntegerField
+      FieldName = 'PEDIDO'
+    end
+    object QryCstPedCOD_CLIENTE: TIntegerField
+      FieldName = 'COD_CLIENTE'
+    end
+    object QryCstPedPOSICAO: TStringField
+      FieldName = 'POSICAO'
+      FixedChar = True
+      Size = 15
+    end
+    object QryCstPedFPGTO: TStringField
+      FieldName = 'FPGTO'
+      FixedChar = True
+      Size = 40
+    end
+    object QryCstPedSTATUS: TStringField
+      FieldName = 'STATUS'
+      FixedChar = True
+      Size = 30
+    end
+    object QryCstPedTOTAL_PEDIDO: TFloatField
+      FieldName = 'TOTAL_PEDIDO'
+    end
+    object QryCstPedVENDEDOR_ID: TIntegerField
+      FieldName = 'VENDEDOR_ID'
+    end
+    object QryCstPedNOME: TStringField
+      FieldName = 'NOME'
+      FixedChar = True
+      Size = 100
+    end
+    object QryCstPedVENDEDOR: TStringField
+      FieldName = 'VENDEDOR'
+      FixedChar = True
+      Size = 30
+    end
+    object QryCstPedEMAIL: TStringField
+      FieldName = 'EMAIL'
+      FixedChar = True
+      Size = 40
+    end
+    object QryCstPedPROD_IMPRESSO: TStringField
+      FieldName = 'PROD_IMPRESSO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryCstPedCOMISSAO: TFloatField
+      FieldName = 'COMISSAO'
+    end
+    object QryCstPedFRETE_CONTA: TIntegerField
+      FieldName = 'FRETE_CONTA'
+    end
+    object QryCstPedFPGTO_COD: TIntegerField
+      FieldName = 'FPGTO_COD'
+    end
+    object QryCstPedPORTADOR: TStringField
+      FieldName = 'PORTADOR'
+      FixedChar = True
+      Size = 5
+    end
+    object QryCstPedESPDOC: TStringField
+      FieldName = 'ESPDOC'
+      FixedChar = True
+      Size = 5
+    end
+    object QryCstPedTIPOCOBR: TStringField
+      FieldName = 'TIPOCOBR'
+      FixedChar = True
+      Size = 5
+    end
+    object QryCstPedCATEG: TStringField
+      FieldName = 'CATEG'
+      FixedChar = True
+      Size = 5
+    end
+    object QryCstPedCLASS: TStringField
+      FieldName = 'CLASS'
+      FixedChar = True
+      Size = 5
+    end
+    object QryCstPedCONTABIL: TIntegerField
+      FieldName = 'CONTABIL'
+    end
+    object QryCstPedCENTROCUSTO: TIntegerField
+      FieldName = 'CENTROCUSTO'
+    end
+    object QryCstPedTRANSPORTADORA: TIntegerField
+      FieldName = 'TRANSPORTADORA'
+    end
+    object QryCstPedORIGEM: TIntegerField
+      FieldName = 'ORIGEM'
+    end
+    object QryCstPedASS1: TIntegerField
+      FieldName = 'ASS1'
+    end
+    object QryCstPedASS2: TIntegerField
+      FieldName = 'ASS2'
+    end
+    object QryCstPedASS3: TIntegerField
+      FieldName = 'ASS3'
+    end
+    object QryCstPedASS4: TIntegerField
+      FieldName = 'ASS4'
+    end
+    object QryCstPedCOD_TABELA: TIntegerField
+      FieldName = 'COD_TABELA'
+    end
+    object QryCstPedSEUPEDIDO: TIntegerField
+      FieldName = 'SEUPEDIDO'
+    end
+    object QryCstPedTIPO: TIntegerField
+      FieldName = 'TIPO'
+    end
+    object QryCstPedQUANT_ITENS: TFloatField
+      FieldName = 'QUANT_ITENS'
+    end
+    object QryCstPedVLRFRETE: TFloatField
+      FieldName = 'VLRFRETE'
+    end
+    object QryCstPedCOMPRADOR: TStringField
+      FieldName = 'COMPRADOR'
+      FixedChar = True
+    end
+    object QryCstPedPERC_DESC: TFloatField
+      FieldName = 'PERC_DESC'
+    end
+    object QryCstPedVLR_DESC: TFloatField
+      FieldName = 'VLR_DESC'
+    end
+    object QryCstPedPEDIDOCLI: TStringField
+      FieldName = 'PEDIDOCLI'
+      FixedChar = True
+    end
+    object QryCstPedFOBCIF: TIntegerField
+      FieldName = 'FOBCIF'
+    end
+    object QryCstPedFILIAL: TIntegerField
+      FieldName = 'FILIAL'
+    end
+    object QryCstPedPA: TIntegerField
+      FieldName = 'PA'
+    end
+    object QryCstPedDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = 'DATA'
+    end
+    object QryCstPedPRAZO_ENTREGA: TStringField
+      FieldName = 'PRAZO_ENTREGA'
+      Origin = 'PRAZO_ENTREGA'
+      FixedChar = True
+      Size = 30
+    end
+    object QryCstPedDT_ENTREGA: TSQLTimeStampField
+      FieldName = 'DT_ENTREGA'
+      Origin = 'DT_ENTREGA'
+    end
+    object QryCstPedDT_FECHAMENTO: TSQLTimeStampField
+      FieldName = 'DT_FECHAMENTO'
+      Origin = 'DT_FECHAMENTO'
+    end
+    object QryCstPedDATA_FATURAMENTO: TSQLTimeStampField
+      FieldName = 'DATA_FATURAMENTO'
+      Origin = 'DATA_FATURAMENTO'
+    end
+    object QryCstPedFILIAL_PEDIDO: TIntegerField
+      FieldName = 'FILIAL_PEDIDO'
+      Origin = 'FILIAL_PEDIDO'
+    end
+    object QryCstPedPEDID: TFDAutoIncField
+      FieldName = 'PEDID'
+      Origin = 'PEDID'
+      ReadOnly = True
+    end
+    object QryCstPedVLR_IPI: TFloatField
+      FieldName = 'VLR_IPI'
+      Origin = 'VLR_IPI'
+    end
+    object QryCstPedVLR_ICMS: TFloatField
+      FieldName = 'VLR_ICMS'
+      Origin = 'VLR_ICMS'
+    end
+    object QryCstPedVLR_ICMSSUB: TFloatField
+      FieldName = 'VLR_ICMSSUB'
+      Origin = 'VLR_ICMSSUB'
+    end
+    object QryCstPedVLR_MERCADORIA: TFloatField
+      FieldName = 'VLR_MERCADORIA'
+      Origin = 'VLR_MERCADORIA'
+    end
+  end
+  object DsTipoImp: TDataSource
+    DataSet = QryTipoImp
+    Left = 729
+    Top = 614
+  end
+  object QryTipoImp: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      'SELECT     TIPOID, TIPOTIPO, TIPONOME'
+      'FROM         TIPO_STATUS'
+      'WHERE     (TIPOTIPO = '#39'IMPPEDIDO'#39')'
+      'ORDER BY TIPOID')
+    Left = 729
+    Top = 558
+    object QryTipoImpTIPOID: TIntegerField
+      FieldName = 'TIPOID'
+    end
+    object QryTipoImpTIPOTIPO: TStringField
+      FieldName = 'TIPOTIPO'
+      FixedChar = True
+    end
+    object QryTipoImpTIPONOME: TStringField
+      FieldName = 'TIPONOME'
+      FixedChar = True
+      Size = 30
+    end
+  end
+  object QryEstoque_id: TFDQuery
+    MasterFields = 'CODID'
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      'SELECT  * '
+      'FROM ESTOQUE_MATERIAIS A LEFT JOIN ESTOQUE B '
+      'ON A.ESTOQUE_ID = B.ESTOQUE_ID'
+      'WHERE MATERIAL_ID = :CODID')
+    Left = 722
+    Top = 423
+    ParamData = <
+      item
+        Name = 'CODID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Size = 4
+      end>
+    object QryEstoque_idESTOQUE_ID: TIntegerField
+      FieldName = 'ESTOQUE_ID'
+    end
+    object QryEstoque_idMATERIAL_ID: TIntegerField
+      FieldName = 'MATERIAL_ID'
+    end
+    object QryEstoque_idESTOQUE: TFloatField
+      FieldName = 'ESTOQUE'
+    end
+    object QryEstoque_idRESERVA: TFloatField
+      FieldName = 'RESERVA'
+    end
+    object QryEstoque_idESTOQUE_MIN: TFloatField
+      FieldName = 'ESTOQUE_MIN'
+    end
+    object QryEstoque_idESTOQUE_MAX: TFloatField
+      FieldName = 'ESTOQUE_MAX'
+    end
+    object QryEstoque_idESTOQUE_ID_1: TIntegerField
+      FieldName = 'ESTOQUE_ID_1'
+    end
+    object QryEstoque_idESTOQUE_DESCR: TStringField
+      FieldName = 'ESTOQUE_DESCR'
+      FixedChar = True
+      Size = 50
+    end
+    object QryEstoque_idESTOQUE_1: TFloatField
+      FieldName = 'ESTOQUE_1'
+    end
+  end
+  object dsestoque_id: TDataSource
+    DataSet = QryEstoque_id
+    Left = 722
+    Top = 478
+  end
+  object DsRecebimentos: TDataSource
+    DataSet = QryRecebimentos
+    Left = 296
+    Top = 608
+  end
+  object QryRecebimentos: TFDQuery
+    MasterSource = DSPedPecas
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      
+        'SELECT     CONTROLE, TIPO, DOCUMENTO, DATA, FORMA, VALOR, BCO, C' +
+        'ONTA, CHEQUE, VENCIMENTO, CARTAO_COD, CARTAO, NRCARTAO, AUTORIZA' +
+        'CAO, '
+      '                      PARCELAS, CLIENTE, ID_CREDITO'
+      'FROM         DETALHA_RECEBIMENTOS'
+      'WHERE     (CONTROLE = :PED) AND (DC='#39'C'#39')')
+    Left = 296
+    Top = 560
+    ParamData = <
+      item
+        Name = 'PED'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = '1'
+      end>
+    object QryRecebimentosCONTROLE: TIntegerField
+      FieldName = 'CONTROLE'
+    end
+    object QryRecebimentosTIPO: TStringField
+      FieldName = 'TIPO'
+      FixedChar = True
+      Size = 10
+    end
+    object QryRecebimentosDOCUMENTO: TStringField
+      FieldName = 'DOCUMENTO'
+      FixedChar = True
+      Size = 30
+    end
+    object QryRecebimentosFORMA: TStringField
+      FieldName = 'FORMA'
+      FixedChar = True
+    end
+    object QryRecebimentosVALOR: TFloatField
+      FieldName = 'VALOR'
+    end
+    object QryRecebimentosBCO: TStringField
+      FieldName = 'BCO'
+      FixedChar = True
+    end
+    object QryRecebimentosCONTA: TStringField
+      FieldName = 'CONTA'
+      FixedChar = True
+    end
+    object QryRecebimentosCHEQUE: TStringField
+      FieldName = 'CHEQUE'
+      FixedChar = True
+    end
+    object QryRecebimentosCARTAO_COD: TIntegerField
+      FieldName = 'CARTAO_COD'
+    end
+    object QryRecebimentosCARTAO: TStringField
+      FieldName = 'CARTAO'
+      FixedChar = True
+    end
+    object QryRecebimentosNRCARTAO: TStringField
+      FieldName = 'NRCARTAO'
+      FixedChar = True
+      Size = 50
+    end
+    object QryRecebimentosAUTORIZACAO: TStringField
+      FieldName = 'AUTORIZACAO'
+      FixedChar = True
+      Size = 30
+    end
+    object QryRecebimentosPARCELAS: TIntegerField
+      FieldName = 'PARCELAS'
+    end
+    object QryRecebimentosCLIENTE: TStringField
+      FieldName = 'CLIENTE'
+      FixedChar = True
+      Size = 100
+    end
+    object QryRecebimentosID_CREDITO: TIntegerField
+      FieldName = 'ID_CREDITO'
+    end
+    object QryRecebimentosDATA: TSQLTimeStampField
+      FieldName = 'DATA'
+      Origin = 'DATA'
+    end
+    object QryRecebimentosVENCIMENTO: TSQLTimeStampField
+      FieldName = 'VENCIMENTO'
+      Origin = 'VENCIMENTO'
+    end
+  end
+  object QryParcelas: TFDQuery
+    MasterSource = DSPedPecas
+    MasterFields = 'PEDID'
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      'SELECT     PEDID, NUMERO, PARCELA, VALOR, VENCTO'
+      'FROM         PEDIDO_MATERIAIS_CLIENTE_PARCELA'
+      'WHERE     (PEDID = :PEDID)')
+    Left = 704
+    Top = 40
+    ParamData = <
+      item
+        Name = 'PEDID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Size = 4
+      end>
+    object QryParcelasPEDID: TIntegerField
+      FieldName = 'PEDID'
+    end
+    object QryParcelasNUMERO: TStringField
+      FieldName = 'NUMERO'
+      FixedChar = True
+      Size = 10
+    end
+    object QryParcelasPARCELA: TStringField
+      FieldName = 'PARCELA'
+      FixedChar = True
+      Size = 5
+    end
+    object QryParcelasVALOR: TFloatField
+      FieldName = 'VALOR'
+    end
+    object QryParcelasVENCTO: TSQLTimeStampField
+      FieldName = 'VENCTO'
+      Origin = 'VENCTO'
+    end
+  end
+  object DsParcelas: TDataSource
+    DataSet = QryParcelas
+    Left = 712
+    Top = 96
   end
 end

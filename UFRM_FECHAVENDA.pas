@@ -141,6 +141,7 @@ var
   VLR_IPI         : real;
   VLR_ICMSUB      : real;
   VLR_FRETE       : real;
+  VLR_DESCONTO    : real;
 
 implementation
 

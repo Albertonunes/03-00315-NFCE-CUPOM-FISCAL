@@ -2,8 +2,8 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
   Left = 0
   Top = 0
   Caption = 'Busca Pedido'
-  ClientHeight = 438
-  ClientWidth = 878
+  ClientHeight = 493
+  ClientWidth = 903
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,6 +13,7 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
   KeyPreview = True
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnClose = FormClose
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 120
@@ -20,7 +21,7 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 878
+    Width = 903
     Height = 98
     Align = alTop
     TabOrder = 0
@@ -196,19 +197,26 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
   object Panel2: TPanel
     Left = 0
     Top = 98
-    Width = 878
-    Height = 340
+    Width = 903
+    Height = 395
     Align = alClient
     TabOrder = 1
     object cxGrid1: TcxGrid
       Left = 1
       Top = 1
-      Width = 875
-      Height = 287
+      Width = 901
+      Height = 342
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
+      Align = alClient
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 0
       object cxGrid1DBTableView1: TcxGridDBTableView
         PopupMenu = PopupMenu1
@@ -237,14 +245,15 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
           Caption = 'N'#250'm.Pedido'
           DataBinding.FieldName = 'PEDIDO'
         end
+        object cxGrid1DBTableView1NOME: TcxGridDBColumn
+          Caption = 'Cliente'
+          DataBinding.FieldName = 'NOME'
+          Width = 333
+        end
         object cxGrid1DBTableView1DATA: TcxGridDBColumn
           Caption = 'Dt.Emiss'#227'o'
           DataBinding.FieldName = 'DATA'
           Width = 118
-        end
-        object cxGrid1DBTableView1COD_CLIENTE: TcxGridDBColumn
-          Caption = 'C'#243'd.Cliente'
-          DataBinding.FieldName = 'COD_CLIENTE'
         end
         object cxGrid1DBTableView1POSICAO: TcxGridDBColumn
           Caption = 'Posi'#231#227'o'
@@ -256,14 +265,17 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
           PropertiesClassName = 'TcxCurrencyEditProperties'
           Width = 98
         end
+        object cxGrid1DBTableView1VLRFRETE: TcxGridDBColumn
+          Caption = 'Vlr.Frete'
+          DataBinding.FieldName = 'VLRFRETE'
+        end
+        object cxGrid1DBTableView1VLR_DESC: TcxGridDBColumn
+          Caption = 'Vlr.Desconto'
+          DataBinding.FieldName = 'VLR_DESC'
+        end
         object cxGrid1DBTableView1VENDEDOR_ID: TcxGridDBColumn
           Caption = 'Vendedor Id'
           DataBinding.FieldName = 'VENDEDOR_ID'
-        end
-        object cxGrid1DBTableView1NOME: TcxGridDBColumn
-          Caption = 'Cliente'
-          DataBinding.FieldName = 'NOME'
-          Width = 333
         end
         object cxGrid1DBTableView1FPGTO: TcxGridDBColumn
           Caption = 'Forma Pagto'
@@ -273,6 +285,10 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
         object cxGrid1DBTableView1PEDID: TcxGridDBColumn
           Caption = 'Id.Pedido'
           DataBinding.FieldName = 'PEDID'
+        end
+        object cxGrid1DBTableView1COD_CLIENTE: TcxGridDBColumn
+          Caption = 'C'#243'd.Cliente'
+          DataBinding.FieldName = 'COD_CLIENTE'
         end
         object cxGrid1DBTableView1PRAZO_ENTREGA: TcxGridDBColumn
           Caption = 'Prazo Entrega'
@@ -330,10 +346,6 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
           Caption = 'Qtde Itens'
           DataBinding.FieldName = 'QUANT_ITENS'
         end
-        object cxGrid1DBTableView1VLRFRETE: TcxGridDBColumn
-          Caption = 'Vlr.Frete'
-          DataBinding.FieldName = 'VLRFRETE'
-        end
         object cxGrid1DBTableView1COMPRADOR: TcxGridDBColumn
           Caption = 'Comprador'
           DataBinding.FieldName = 'COMPRADOR'
@@ -341,10 +353,6 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
         object cxGrid1DBTableView1PERC_DESC: TcxGridDBColumn
           Caption = 'Perc.Desconto'
           DataBinding.FieldName = 'PERC_DESC'
-        end
-        object cxGrid1DBTableView1VLR_DESC: TcxGridDBColumn
-          Caption = 'Vlr.Desconto'
-          DataBinding.FieldName = 'VLR_DESC'
         end
         object cxGrid1DBTableView1PEDIDOCLI: TcxGridDBColumn
           Caption = 'Pedido Cliente'
@@ -411,8 +419,8 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
     end
     object Panel3: TPanel
       Left = 1
-      Top = 288
-      Width = 876
+      Top = 343
+      Width = 901
       Height = 51
       Margins.Left = 4
       Margins.Top = 4
