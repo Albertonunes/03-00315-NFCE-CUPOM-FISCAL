@@ -1092,15 +1092,15 @@ procedure TFRM_PGTOPEDCLI.SaltaLinhas(aqtlinha: integer);
 var
   i,npag,qtsaltos:integer;
 begin
-  if aqtlinha < 29 then
+  if aqtlinha < 28 then
   begin
     npag     := 1;
-    qtsaltos := 29-aqtlinha;
+    qtsaltos := 28-aqtlinha;
   end
   else
   begin
-    npag := Trunc(aqtlinha/29)+1;
-    qtsaltos := (npag*29)-aqtlinha;
+    npag := Trunc(aqtlinha/28)+1;
+    qtsaltos := (npag*28)-aqtlinha;
   end;
   for I := 1 to qtsaltos do
   begin
@@ -1234,7 +1234,7 @@ begin
     Mprint( #27#64+'','S',0,0,0);
     if QryPedPecasVLRFRETE.Value > 0 then
     begin
-      Mprint( #27#64+' FRETE: ','S',13,0,0);
+      Mprint( ' FRETE: ','S',13,0,0);
       Mprint( QryPedPecasVLRFRETE.Value ,'F',10,0,0);
     end;
     if QryPedPecasVLR_DESC.Value > 0 then
@@ -1248,7 +1248,7 @@ begin
     alinha := alinha + 1;
     Mprint(replchar('=',80),'S',80,1,0);
     Mprint('','S',0,1,0);
-    QryRecebimentos.Close;
+    (*QryRecebimentos.Close;
     QryRecebimentos.ParamByName('PED').AsInteger := QryCstPedPEDID.Value;
     QryRecebimentos.Open;
     QryRecebimentos.First;
@@ -1258,7 +1258,7 @@ begin
       Mprint( QryRecebimentosVALOR.Value ,'F',9,1,1);
       alinha := alinha + 1;
       QryRecebimentos.Next;
-    end;
+    end;*)
     Mprint('','S',0,1,0);
     if not QryPedPecas.Eof then
       CabPed01.Execute;
@@ -1274,7 +1274,7 @@ begin
     Mprint( #27#64+'','S',0,0,0);
     if QryPedPecasVLRFRETE.Value > 0 then
     begin
-      Mprint( #27#64+' FRETE: ','S',13,0,0);
+      Mprint( ' FRETE: ','S',13,0,0);
       Mprint( QryPedPecasVLRFRETE.Value ,'F',10,0,0);
     end;
     if QryPedPecasVLR_DESC.Value > 0 then
@@ -1288,7 +1288,7 @@ begin
     alinha := alinha + 1;
     Mprint(replchar('=',80),'S',80,1,0);
     Mprint('','S',0,1,0);
-    QryRecebimentos.Close;
+    (*QryRecebimentos.Close;
     QryRecebimentos.ParamByName('PED').AsInteger := QryCstPedPEDID.Value;
     QryRecebimentos.Open;
     QryRecebimentos.First;
@@ -1298,7 +1298,7 @@ begin
       Mprint( QryRecebimentosVALOR.Value ,'F',9,1,1);
       alinha := alinha + 1;
       QryRecebimentos.Next;
-    end;
+    end;  *)
     Mprint('','S',0,1,0);
     if not QryPedPecas.Eof then
       CabPed02.Execute;
@@ -1313,7 +1313,7 @@ begin
     Mprint( #27#64+'','S',0,0,0);
     if QryPedPecasVLRFRETE.Value > 0 then
     begin
-      Mprint( #27#64+' FRETE: ','S',13,0,0);
+      Mprint( ' FRETE: ','S',13,0,0);
       Mprint( QryPedPecasVLRFRETE.Value ,'F',10,0,0);
     end;
     if QryPedPecasVLR_DESC.Value > 0 then
@@ -1327,7 +1327,7 @@ begin
     alinha := alinha + 1;
     Mprint(replchar('=',80),'S',80,1,0);
     Mprint('','S',0,1,0);
-    QryRecebimentos.Close;
+    (*QryRecebimentos.Close;
     QryRecebimentos.ParamByName('PED').AsInteger := QryCstPedPEDID.Value;
     QryRecebimentos.Open;
     QryRecebimentos.First;
@@ -1337,7 +1337,7 @@ begin
       Mprint( QryRecebimentosVALOR.Value ,'F',9,1,1);
       alinha := alinha + 1;
       QryRecebimentos.Next;
-    end;
+    end;*)
     Mprint('','S',0,1,0);
     if not QryPedPecas.Eof then
       CabPed03.Execute;
@@ -2903,13 +2903,13 @@ begin
       TotPed  := TotPed + QryPedPecasVLR_TOTAL.Value + QryPedPecasVLR_IPI.Value;
       alinha := alinha + 1;
       QryPedPecas.Next;
-      if alinha = 29 then
+      if alinha = 28 then
         RodPed01.Execute;
     end;
-    if alinha < 29 then
+    if alinha < 28 then
       SaltaLinhas(alinha);
     //Mprint(replchar('=',80),'S',80,1,0);
-    QryRecebimentos.Close;
+    (*QryRecebimentos.Close;
     QryRecebimentos.ParamByName('PED').AsInteger := QryCstPedPEDID.Value;
     QryRecebimentos.Open;
     QryRecebimentos.First;
@@ -2919,10 +2919,10 @@ begin
       Mprint( QryRecebimentosVALOR.Value ,'F',9,1,1);
       alinha := alinha + 1;
       QryRecebimentos.Next;
-      if alinha = 29 then
+      if alinha = 28 then
         RodPed01.Execute;
-    end;
-    if alinha = 29 then
+    end;*)
+    if alinha = 28 then
     begin
       //SaltaLinhas(alinha);
       RodPed01.Execute;
@@ -2965,13 +2965,13 @@ begin
       alinha := alinha + 1;
 
       QryPedPecas.Next;
-      if alinha = 29 then
+      if alinha = 28 then
         RodPed02.Execute;
     end;
-    if alinha < 29 then
+    if alinha < 28 then
       SaltaLinhas(alinha);
     //Mprint(replchar('=',80),'S',80,1,0);
-    QryRecebimentos.Close;
+    (*QryRecebimentos.Close;
     QryRecebimentos.ParamByName('PED').AsInteger := QryCstPedPEDID.Value;
     QryRecebimentos.Open;
     QryRecebimentos.First;
@@ -2980,10 +2980,10 @@ begin
       Mprint( Trim(QryRecebimentosFORMA.Value ),'S',20,0,1);
       Mprint( QryRecebimentosVALOR.Value ,'F',9,1,1);
       QryRecebimentos.Next;
-      if alinha = 29 then
+      if alinha = 28 then
         RodPed02.Execute;
-    end;
-    if alinha = 29 then
+    end;*)
+    if alinha = 28 then
     begin
       //SaltaLinhas(alinha);
       RodPed02.Execute;
@@ -3025,12 +3025,12 @@ begin
       alinha := alinha + 1;
 
       QryPedPecas.Next;
-      if alinha = 29 then
+      if alinha = 28 then
         RodPed03.Execute;
     end;
-    if alinha < 29 then
+    if alinha < 28 then
       SaltaLinhas(alinha);
-    QryRecebimentos.Close;
+    (*QryRecebimentos.Close;
     QryRecebimentos.ParamByName('PED').AsInteger := QryCstPedPEDID.Value;
     QryRecebimentos.Open;
     QryRecebimentos.First;
@@ -3039,10 +3039,10 @@ begin
       Mprint( Trim(QryRecebimentosFORMA.Value ),'S',20,0,1);
       Mprint( QryRecebimentosVALOR.Value ,'F',9,1,1);
       QryRecebimentos.Next;
-      if alinha = 29 then
+      if alinha = 28 then
         RodPed03.Execute;
-    end;
-    if alinha = 29 then
+    end;*)
+    if alinha = 28 then
     begin
       //SaltaLinhas(alinha);
       RodPed03.Execute;

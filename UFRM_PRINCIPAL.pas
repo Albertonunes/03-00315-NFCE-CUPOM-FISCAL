@@ -265,6 +265,7 @@ type
     bImprimirLogo: TButton;
     bApagarLogo: TButton;
     Image1: TImage;
+    ExcluirCupom: TMenuItem;
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure cx_codbarrasExit(Sender: TObject);

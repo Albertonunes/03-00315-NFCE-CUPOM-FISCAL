@@ -13974,6 +13974,10 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
       Caption = 'Imprimir Cupom'
       OnClick = ImprimirCupom1Click
     end
+    object ExcluirCupom: TMenuItem
+      Caption = 'Excluir Cupom'
+      Enabled = False
+    end
   end
   object OpenPictureDialog1: TOpenPictureDialog
     Left = 408
