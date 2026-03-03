@@ -804,10 +804,6 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Margins.Bottom = 4
       Caption = 'Cart'#227'o de D'#233'bito'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label9: TLabel
         Left = 15
         Top = 6
@@ -957,10 +953,6 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Margins.Bottom = 4
       Caption = 'Cart'#227'o de cr'#233'dito'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label10: TLabel
         Left = 15
         Top = 6
@@ -1122,10 +1114,6 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Margins.Bottom = 4
       Caption = 'Trocas'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label17: TLabel
         Left = 18
         Top = 6

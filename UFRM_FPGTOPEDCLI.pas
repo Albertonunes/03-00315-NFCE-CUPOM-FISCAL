@@ -950,6 +950,17 @@ begin
       // lebrar de calcular o juros quando for cartão de credito
       InsereReceber.Execute;
     end;
+    // libera a qtde liberada total caso parametro (libera pedido total = S)
+    if DmdPrincipal.QryParamsLIBERA_PEDIDO_TOTAL.Value = 'S' then
+    begin
+      QryManu.Close;
+      QryManu.SQL.Clear;
+      QryManu.SQL.Add('UPDATE PEDIDO_MATERIAIS_ITENS_CLIENTE    ');
+      QryManu.SQL.Add('SET    QTDE_LIB=QUANT-QTDE_FAT+QTDE_TEMP ');
+      QryManu.SQL.Add('WHERE  (PEDID = :PEDIDO)                 ');
+      QryManu.ParamByName('PEDIDO').AsInteger := PEDID;
+      QryManu.ExecSQL;
+    end;
     DMD_PRO00315.qryposicaoped.Close;
     DMD_PRO00315.qryposicaoped.ParamByName('pedido').AsInteger := PEDID;
     DMD_PRO00315.qryposicaoped.ParamByName('pos').AsString     := 'FECHADO';
