@@ -297,7 +297,7 @@ object DMD_PRO00315: TDMD_PRO00315
         'OTACAO_CTRC'
       'FROM            PARAMETROS_SISTEMA'
       'WHERE FILIAL = :DIAG_EMPRESA')
-    Left = 192
+    Left = 243
     Top = 256
     ParamData = <
       item
@@ -688,7 +688,7 @@ object DMD_PRO00315: TDMD_PRO00315
   end
   object QryManu: TFDQuery
     Connection = DmdPrincipal.FDConexao
-    Left = 192
+    Left = 243
     Top = 196
   end
   object QryEmpresas: TFDQuery
@@ -698,7 +698,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'FROM EMPRESA A'
       'WHERE DIAG_EMPRESA = :EMP'
       'ORDER BY DIAG_EMPRESA')
-    Left = 297
+    Left = 348
     Top = 200
     ParamData = <
       item
@@ -1518,7 +1518,7 @@ object DMD_PRO00315: TDMD_PRO00315
       ',PEDIDO_ID= :PEDID'
       'WHERE     (NF_ID = :IDNF)'
       ' ')
-    Left = 408
+    Left = 459
     Top = 160
     ParamData = <
       item
@@ -1789,7 +1789,7 @@ object DMD_PRO00315: TDMD_PRO00315
       '           ,:QTDE_TRIBUTADA'
       '           ,:VLR_FCP'
       '           ,:VLR_FRETE)')
-    Left = 408
+    Left = 459
     Top = 208
     ParamData = <
       item
@@ -1994,7 +1994,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'FROM CFOP A '
       'WHERE (A.FILIAL = :DIAG_EMPRESA)'
       'ORDER BY A.CFOP_COD')
-    Left = 504
+    Left = 555
     Top = 155
     ParamData = <
       item
@@ -2121,7 +2121,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'ST,REDBASEJ,REDBASEF,VLR_PAUTA,FLAG,ICMS_INT,CFOP_ID'
       'FROM MATERIAIS_IMPOSTOS'
       'WHERE (CODID=:CODID) AND (UF=:UF) AND (FILIAL = :FILIAL)')
-    Left = 616
+    Left = 667
     Top = 152
     ParamData = <
       item
@@ -2280,7 +2280,7 @@ object DMD_PRO00315: TDMD_PRO00315
         ' B.CIDADE_UF=E.UF_ID LEFT OUTER JOIN'
       '        GESTOR_TIPOCLIENTE AS G ON A.TIPO = G.TIPO'
       'WHERE A.COD_CLIENTE = :CLIENTE')
-    Left = 504
+    Left = 555
     Top = 211
     ParamData = <
       item
@@ -2705,7 +2705,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'SELECT UF_ID, ICMS,ICMSUB,COEFSUB,CALCULO'
       'FROM ESTADOS'
       'WHERE UF_ID = :UF')
-    Left = 615
+    Left = 666
     Top = 210
     ParamData = <
       item
@@ -2820,7 +2820,7 @@ object DMD_PRO00315: TDMD_PRO00315
       ', :NF_TIPOPAG'
       ', :NF_CODIGO'
       ')')
-    Left = 408
+    Left = 459
     Top = 257
     ParamData = <
       item
@@ -3171,19 +3171,25 @@ object DMD_PRO00315: TDMD_PRO00315
         '_CUSTO_MEDIO, '
       
         '       A.VLR_VENDA2, A.EMBALAGEM, A.ALIQ_IPI, A.ALIQ_ICMS, A.SIT' +
-        '_TRIBUTARIA,  '
+        '_TRIBUTARIA,'
       
-        '       A.CLASS_FISCAL AS NCM, A.COD_BARRAS, A.VLR_CUSTO, A.VLR_V' +
-        'ENDA, A.QTDE_VOL, '
+        #9'   C.CFOP_CSOSN,C.CFOP_COD,A.CLASS_FISCAL AS NCM, A.COD_BARRAS,' +
+        ' A.VLR_CUSTO, '
       
-        '       A.ESTOQUE_PADRAO, A.ONU,  A.RISCO, A.VLR_VENDA3, A.DESC_R' +
-        'EDUZIDA, '
-      '       A.COMISSAO,A.CEST,A.PESO_VARIADO,A.ANP,A.BALANCA,A.PESO'
-      'FROM   MATERIAIS A '
+        #9'   A.VLR_VENDA, A.QTDE_VOL,A.ESTOQUE_PADRAO, A.ONU,  A.RISCO, A' +
+        '.VLR_VENDA3,'
+      
+        #9'   A.DESC_REDUZIDA,A.COMISSAO,A.CEST,A.PESO_VARIADO,A.ANP,A.BAL' +
+        'ANCA,A.PESO,I.CFOP_ID'
+      'FROM   MATERIAIS A LEFT JOIN '
+      
+        '       MATERIAIS_IMPOSTOS I ON (A.CODID = I.CODID) AND I.UF='#39'SP'#39 +
+        ' LEFT JOIN'
+      #9'   CFOP C ON I.CFOP_ID=C.CFOP_ID'
       'WHERE  (A.BLOQUEIO = '#39'N'#39') AND (A.FILIAL = :FILIAL)'
       '              AND (A.CODID = :CODID)'
       '')
-    Left = 296
+    Left = 347
     Top = 256
     ParamData = <
       item
@@ -3327,6 +3333,22 @@ object DMD_PRO00315: TDMD_PRO00315
       FieldName = 'PESO'
       Origin = 'PESO'
     end
+    object QryLookMateriaisCFOP_CSOSN: TStringField
+      FieldName = 'CFOP_CSOSN'
+      Origin = 'CFOP_CSOSN'
+      FixedChar = True
+      Size = 3
+    end
+    object QryLookMateriaisCFOP_COD: TStringField
+      FieldName = 'CFOP_COD'
+      Origin = 'CFOP_COD'
+      FixedChar = True
+      Size = 15
+    end
+    object QryLookMateriaisCFOP_ID: TIntegerField
+      FieldName = 'CFOP_ID'
+      Origin = 'CFOP_ID'
+    end
   end
   object QryFiltroObs: TFDQuery
     MasterFields = 'NF_ID'
@@ -3337,7 +3359,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'WHERE NF_ID = :NF_ID'
       'ORDER BY IDNF ')
     Left = 31
-    Top = 265
+    Top = 333
     ParamData = <
       item
         Name = 'NF_ID'
@@ -3402,7 +3424,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'LEFT JOIN EMPRESA F ON A.DIAG_EMPRESA=F.DIAG_EMPRESA '
       'WHERE A.NF_ID = :NF_ID')
     Left = 25
-    Top = 161
+    Top = 173
     ParamData = <
       item
         Name = 'NF_ID'
@@ -3775,8 +3797,8 @@ object DMD_PRO00315: TDMD_PRO00315
         'TIPOPAG, NF_CODIGO'
       'FROM NOTA_FISCAL_DUPLICATA'
       'WHERE NF_ID = :NF_ID')
-    Left = 35
-    Top = 320
+    Left = 27
+    Top = 276
     ParamData = <
       item
         Name = 'NF_ID'
@@ -3822,7 +3844,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'FROM TRANSPORTADOR'
       'WHERE TRANSP_ID = :TRANSP_ID')
     Left = 36
-    Top = 369
+    Top = 381
     ParamData = <
       item
         Name = 'TRANSP_ID'
@@ -3955,7 +3977,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'WHERE NF_ID = :NF_ID'
       'ORDER BY ORDEM')
     Left = 24
-    Top = 216
+    Top = 228
     ParamData = <
       item
         Name = 'NF_ID'
@@ -4209,8 +4231,8 @@ object DMD_PRO00315: TDMD_PRO00315
       'FROM NFE_SCAN'
       'GROUP BY NFE_SERIE_SCAN,NFE_NF_SCAN'
       'ORDER BY NFE_SERIE_SCAN,NFE_NF_SCAN DESC')
-    Left = 144
-    Top = 361
+    Left = 243
+    Top = 321
     object QrySerieContingenciaNFE_SERIE_SCAN: TStringField
       FieldName = 'NFE_SERIE_SCAN'
       FixedChar = True
@@ -4226,7 +4248,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'SELECT DIAG_EMPRESA, UF, IEST'
       'FROM NFE_EMPRESA_IEST'
       'WHERE DIAG_EMPRESA = :DIAG_EMPRESA')
-    Left = 384
+    Left = 435
     Top = 360
     ParamData = <
       item
@@ -4253,7 +4275,7 @@ object DMD_PRO00315: TDMD_PRO00315
     SQL.Strings = (
       'SELECT A.CIDADE_NOME,A.CIDADE_UF,A.CODIGO_PAIS,B.PAIS'
       'FROM CIDADES A LEFT JOIN PAISES B ON A.CODIGO_PAIS=B.CODIGO')
-    Left = 452
+    Left = 503
     Top = 356
     object QryCidadeCIDADE_NOME: TStringField
       FieldName = 'CIDADE_NOME'
@@ -4282,7 +4304,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'SELECT     CODID, TIPO_MATERIAL, ANP, CODIF'
       'FROM         MATERIAIS'
       'WHERE     (CODID = :CODIGO)')
-    Left = 520
+    Left = 571
     Top = 360
     ParamData = <
       item
@@ -4316,7 +4338,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'SELECT        DESCRICAO, CODIGO, UN'
       'FROM            TABELA_ANP'
       'WHERE        (CODIGO = :ANP)')
-    Left = 608
+    Left = 659
     Top = 354
     ParamData = <
       item
@@ -4354,7 +4376,7 @@ object DMD_PRO00315: TDMD_PRO00315
       ',NSU = :NSU'
       'WHERE NF_ID = :NF_ID'
       '')
-    Left = 505
+    Left = 556
     Top = 276
     ParamData = <
       item
@@ -4399,7 +4421,7 @@ object DMD_PRO00315: TDMD_PRO00315
       '     NFE_STATUS,SITUACAO,NFE_CODSTATUS,NFE_RECIBO'
       'FROM   NOTA_FISCAL'
       'WHERE  (NF_NUMERO=1) AND (DIAG_EMPRESA=1)')
-    Left = 297
+    Left = 348
     Top = 312
     object QryCstNotaNF_ID: TFDAutoIncField
       FieldName = 'NF_ID'
@@ -4459,7 +4481,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'WHERE  (A.BLOQUEIO = '#39'N'#39') AND (A.FILIAL = :FILIAL)'
       '              AND (A.CODID = :CODID)'
       '')
-    Left = 296
+    Left = 347
     Top = 368
     ParamData = <
       item
@@ -4637,7 +4659,7 @@ object DMD_PRO00315: TDMD_PRO00315
   end
   object DsrBuscaProd: TDataSource
     DataSet = QryBuscaProd
-    Left = 296
+    Left = 347
     Top = 432
   end
   object QryBuscaCliente: TFDQuery
@@ -4648,7 +4670,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'FROM GESTOR_CLIENTE A'
       'WHERE A.COD_CLIENTE <> -1'
       '')
-    Left = 400
+    Left = 451
     Top = 424
     object QryBuscaClienteNOME: TStringField
       FieldName = 'NOME'
@@ -4700,7 +4722,7 @@ object DMD_PRO00315: TDMD_PRO00315
   end
   object DsrBuscaCliente: TDataSource
     DataSet = QryBuscaCliente
-    Left = 400
+    Left = 451
     Top = 480
   end
   object QryBuscaPed: TFDQuery
@@ -4733,7 +4755,7 @@ object DMD_PRO00315: TDMD_PRO00315
       
         '        GESTOR_CLIENTE B ON A.COD_CLIENTE = B.COD_CLIENTE       ' +
         '          ')
-    Left = 512
+    Left = 563
     Top = 424
     object QryBuscaPedPEDIDO: TIntegerField
       FieldName = 'PEDIDO'
@@ -4981,7 +5003,7 @@ object DMD_PRO00315: TDMD_PRO00315
   end
   object DsrBuscaPed: TDataSource
     DataSet = QryBuscaPed
-    Left = 512
+    Left = 563
     Top = 480
   end
   object QryItensPed: TFDQuery
@@ -5008,7 +5030,7 @@ object DMD_PRO00315: TDMD_PRO00315
       '           QTDE_ENTREGUE, VLR_ICMSSUB, VLR_MERCADORIA'
       'FROM        PEDIDO_MATERIAIS_ITENS_CLIENTE'
       'WHERE     (PEDID = :PEDID)')
-    Left = 616
+    Left = 667
     Top = 424
     ParamData = <
       item
@@ -5222,7 +5244,7 @@ object DMD_PRO00315: TDMD_PRO00315
   end
   object DsrItensPed: TDataSource
     DataSet = QryItensPed
-    Left = 616
+    Left = 667
     Top = 480
   end
   object QryCaixaAberto: TFDQuery
@@ -5239,7 +5261,7 @@ object DMD_PRO00315: TDMD_PRO00315
       '            CAIXA AS B ON A.ID_CAIXA = B.ID_CAIXA'
       'WHERE   (PA = :PA) AND (DTFECHAMENTO IS NULL)'
       ' AND (B.FILIAL = :FILIAL)')
-    Left = 192
+    Left = 251
     Top = 428
     ParamData = <
       item
@@ -5321,7 +5343,7 @@ object DMD_PRO00315: TDMD_PRO00315
         '     '
       '')
     Left = 32
-    Top = 444
+    Top = 456
     object QryTabPrecoCOD_TABELA: TFDAutoIncField
       FieldName = 'COD_TABELA'
       Origin = 'COD_TABELA'
@@ -5444,7 +5466,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'SELECT *'
       'FROM NOTA_FISCAL_ITEM_PEDIDO'
       'WHERE NF_ID = 1')
-    Left = 408
+    Left = 459
     Top = 306
     object QryInsPedidoNF_ID: TIntegerField
       FieldName = 'NF_ID'
@@ -5484,7 +5506,7 @@ object DMD_PRO00315: TDMD_PRO00315
   object DsrTabPreco: TDataSource
     DataSet = QryTabPreco
     Left = 32
-    Top = 496
+    Top = 508
   end
   object QryPadrao: TFDQuery
     MasterFields = 'DIAG_EMPRESA'
@@ -5506,8 +5528,8 @@ object DMD_PRO00315: TDMD_PRO00315
       'FROM NOTA_FISCAL A'
       'WHERE DIAG_EMPRESA=:DIAG_EMPRESA'
       '')
-    Left = 127
-    Top = 158
+    Left = 263
+    Top = 134
     ParamData = <
       item
         Name = 'DIAG_EMPRESA'
@@ -5632,13 +5654,13 @@ object DMD_PRO00315: TDMD_PRO00315
   end
   object DSPadrao: TDataSource
     DataSet = QryPadrao
-    Left = 159
-    Top = 158
+    Left = 295
+    Top = 134
   end
   object DSFiltroIBS: TDataSource
     DataSet = QryFiltroIBS
-    Left = 40
-    Top = 608
+    Left = 32
+    Top = 612
   end
   object QryFiltroIBS: TFDQuery
     MasterFields = 'NF_ITEM_ID'
@@ -5676,7 +5698,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'WHERE NF_ITEM_ID = :NF_ITEM_ID'
       'ORDER BY NF_ITEM_ID')
     Left = 32
-    Top = 552
+    Top = 564
     ParamData = <
       item
         Name = 'NF_ITEM_ID'
@@ -6185,8 +6207,8 @@ object DMD_PRO00315: TDMD_PRO00315
       '           ,:tpCredPresIBSZFM'
       '           ,:vCredPresIBSZFM'
       '           ,:vIBS)')
-    Left = 177
-    Top = 521
+    Left = 244
+    Top = 537
     ParamData = <
       item
         Name = 'NF_ID'
@@ -6512,7 +6534,7 @@ object DMD_PRO00315: TDMD_PRO00315
   object retornaid: TFDStoredProc
     Connection = DmdPrincipal.FDConexao
     StoredProcName = 'dbo.RETORNA_ID'
-    Left = 616
+    Left = 667
     Top = 281
     ParamData = <
       item
@@ -6541,7 +6563,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'UPDATE PEDIDO_MATERIAIS_CLIENTE'
       'SET POSICAO = :POS, DT_FECHAMENTO = :DTF'
       'WHERE PEDID = :PEDIDO')
-    Left = 296
+    Left = 347
     Top = 490
     ParamData = <
       item
@@ -6641,7 +6663,7 @@ object DMD_PRO00315: TDMD_PRO00315
         '                                      '
       '   LEFT JOIN ESTOQUE F ON A.ESTOQUE_ID = F.ESTOQUE_ID '
       '   LEFT JOIN GESTOR_TIPOCOBR G ON G.COD_TPCOBR=C.TIPOCOBR ')
-    Left = 406
+    Left = 457
     Top = 559
     object QryPedPecasSERASA: TStringField
       FieldName = 'SERASA'
@@ -7315,7 +7337,7 @@ object DMD_PRO00315: TDMD_PRO00315
   end
   object DSPedPecas: TDataSource
     DataSet = QryPedPecas
-    Left = 405
+    Left = 456
     Top = 616
   end
   object Qryunid: TFDQuery
@@ -7328,7 +7350,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'WHERE UNI_CODIGO= :UNIDADE AND CODID= :CODID'
       ''
       '')
-    Left = 486
+    Left = 537
     Top = 559
     ParamData = <
       item
@@ -7366,7 +7388,7 @@ object DMD_PRO00315: TDMD_PRO00315
   end
   object dsunid: TDataSource
     DataSet = Qryunid
-    Left = 493
+    Left = 544
     Top = 616
   end
   object Qryemb: TFDQuery
@@ -7377,7 +7399,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'SELECT DESCRICAO,PESO'
       'FROM MATERIAIS'
       'WHERE CODID= :IDEMB AND BLOQUEIO='#39'N'#39)
-    Left = 574
+    Left = 625
     Top = 559
     ParamData = <
       item
@@ -7396,12 +7418,12 @@ object DMD_PRO00315: TDMD_PRO00315
   end
   object dsemb: TDataSource
     DataSet = Qryemb
-    Left = 573
+    Left = 624
     Top = 616
   end
   object DSCstPed: TDataSource
     DataSet = QryCstPed
-    Left = 648
+    Left = 699
     Top = 618
   end
   object QryCstPed: TFDQuery
@@ -7431,7 +7453,7 @@ object DMD_PRO00315: TDMD_PRO00315
         '                      GESTOR_CLIENTE B ON A.COD_CLIENTE = B.COD_' +
         'CLIENTE'
       'WHERE     (A.POSICAO <> '#39'.X'#39') AND (A.PEDID = :PEDID)')
-    Left = 648
+    Left = 699
     Top = 562
     ParamData = <
       item
@@ -7631,7 +7653,7 @@ object DMD_PRO00315: TDMD_PRO00315
   end
   object DsTipoImp: TDataSource
     DataSet = QryTipoImp
-    Left = 729
+    Left = 780
     Top = 614
   end
   object QryTipoImp: TFDQuery
@@ -7641,7 +7663,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'FROM         TIPO_STATUS'
       'WHERE     (TIPOTIPO = '#39'IMPPEDIDO'#39')'
       'ORDER BY TIPOID')
-    Left = 729
+    Left = 780
     Top = 558
     object QryTipoImpTIPOID: TIntegerField
       FieldName = 'TIPOID'
@@ -7664,7 +7686,7 @@ object DMD_PRO00315: TDMD_PRO00315
       'FROM ESTOQUE_MATERIAIS A LEFT JOIN ESTOQUE B '
       'ON A.ESTOQUE_ID = B.ESTOQUE_ID'
       'WHERE MATERIAL_ID = :CODID')
-    Left = 722
+    Left = 773
     Top = 423
     ParamData = <
       item
@@ -7705,12 +7727,12 @@ object DMD_PRO00315: TDMD_PRO00315
   end
   object dsestoque_id: TDataSource
     DataSet = QryEstoque_id
-    Left = 722
+    Left = 773
     Top = 478
   end
   object DsRecebimentos: TDataSource
     DataSet = QryRecebimentos
-    Left = 296
+    Left = 347
     Top = 608
   end
   object QryRecebimentos: TFDQuery
@@ -7724,7 +7746,7 @@ object DMD_PRO00315: TDMD_PRO00315
       '                      PARCELAS, CLIENTE, ID_CREDITO'
       'FROM         DETALHA_RECEBIMENTOS'
       'WHERE     (CONTROLE = :PED) AND (DC='#39'C'#39')')
-    Left = 296
+    Left = 347
     Top = 560
     ParamData = <
       item
@@ -7844,5 +7866,129 @@ object DMD_PRO00315: TDMD_PRO00315
     DataSet = QryParcelas
     Left = 712
     Top = 96
+  end
+  object QryPedFaturou: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      
+        'SELECT  A.PEDIDO, A.POSICAO, A.PEDID, A.STATUS, A.DATA_FATURAMEN' +
+        'TO, '
+      
+        '             A.FILIAL, A.FILIAL_PEDIDO, A.VLR_MERCADORIA        ' +
+        '                                      '
+      'FROM    PEDIDO_MATERIAIS_CLIENTE A '
+      'WHERE A.PEDID = :PEDID                 ')
+    Left = 771
+    Top = 352
+    ParamData = <
+      item
+        Name = 'PEDID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object QryPedFaturouPEDIDO: TIntegerField
+      FieldName = 'PEDIDO'
+      Origin = 'PEDIDO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryPedFaturouPOSICAO: TStringField
+      FieldName = 'POSICAO'
+      Origin = 'POSICAO'
+      FixedChar = True
+      Size = 15
+    end
+    object QryPedFaturouPEDID: TFDAutoIncField
+      FieldName = 'PEDID'
+      Origin = 'PEDID'
+      ReadOnly = True
+    end
+    object QryPedFaturouSTATUS: TStringField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      FixedChar = True
+      Size = 30
+    end
+    object QryPedFaturouDATA_FATURAMENTO: TSQLTimeStampField
+      FieldName = 'DATA_FATURAMENTO'
+      Origin = 'DATA_FATURAMENTO'
+    end
+    object QryPedFaturouFILIAL: TIntegerField
+      FieldName = 'FILIAL'
+      Origin = 'FILIAL'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryPedFaturouFILIAL_PEDIDO: TIntegerField
+      FieldName = 'FILIAL_PEDIDO'
+      Origin = 'FILIAL_PEDIDO'
+    end
+    object QryPedFaturouVLR_MERCADORIA: TFloatField
+      FieldName = 'VLR_MERCADORIA'
+      Origin = 'VLR_MERCADORIA'
+    end
+  end
+  object QryUnidEmb: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      
+        'SELECT        CODID, UNI_CODIGO, FATOR, FATOR_KG, PADRAO, QTDE_C' +
+        'ASAS'
+      'FROM            MATERIAIS_UNIDADE_MEDIDA'
+      'WHERE  UNI_CODIGO= :UNID AND CODID = :CODID'
+      '')
+    Left = 779
+    Top = 210
+    ParamData = <
+      item
+        Name = 'UNID'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 4
+      end
+      item
+        Name = 'CODID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Size = 4
+      end>
+    object QryUnidEmbCODID: TIntegerField
+      FieldName = 'CODID'
+    end
+    object QryUnidEmbUNI_CODIGO: TStringField
+      FieldName = 'UNI_CODIGO'
+      FixedChar = True
+      Size = 3
+    end
+    object QryUnidEmbFATOR: TFloatField
+      FieldName = 'FATOR'
+    end
+    object QryUnidEmbFATOR_KG: TFloatField
+      FieldName = 'FATOR_KG'
+    end
+    object QryUnidEmbPADRAO: TStringField
+      FieldName = 'PADRAO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryUnidEmbQTDE_CASAS: TIntegerField
+      FieldName = 'QTDE_CASAS'
+      Origin = 'QTDE_CASAS'
+    end
+  end
+  object DsrFiltroNF: TDataSource
+    DataSet = QryFiltroNF
+    Left = 128
+    Top = 170
+  end
+  object DsrFiltroItens: TDataSource
+    DataSet = QryFiltroItens
+    Left = 128
+    Top = 226
+  end
+  object DsrFiltroDuplicata: TDataSource
+    DataSet = QryFiltroDuplicata
+    Left = 136
+    Top = 282
   end
 end

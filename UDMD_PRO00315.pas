@@ -1296,6 +1296,28 @@ type
     QryParcelasVALOR: TFloatField;
     QryParcelasVENCTO: TSQLTimeStampField;
     DsParcelas: TDataSource;
+    QryPedFaturou: TFDQuery;
+    QryPedFaturouPEDIDO: TIntegerField;
+    QryPedFaturouPOSICAO: TStringField;
+    QryPedFaturouPEDID: TFDAutoIncField;
+    QryPedFaturouSTATUS: TStringField;
+    QryPedFaturouDATA_FATURAMENTO: TSQLTimeStampField;
+    QryPedFaturouFILIAL: TIntegerField;
+    QryPedFaturouFILIAL_PEDIDO: TIntegerField;
+    QryPedFaturouVLR_MERCADORIA: TFloatField;
+    QryUnidEmb: TFDQuery;
+    QryUnidEmbCODID: TIntegerField;
+    QryUnidEmbUNI_CODIGO: TStringField;
+    QryUnidEmbFATOR: TFloatField;
+    QryUnidEmbFATOR_KG: TFloatField;
+    QryUnidEmbPADRAO: TStringField;
+    QryUnidEmbQTDE_CASAS: TIntegerField;
+    QryLookMateriaisCFOP_CSOSN: TStringField;
+    QryLookMateriaisCFOP_COD: TStringField;
+    QryLookMateriaisCFOP_ID: TIntegerField;
+    DsrFiltroNF: TDataSource;
+    DsrFiltroItens: TDataSource;
+    DsrFiltroDuplicata: TDataSource;
     procedure MemItensBeforePost(DataSet: TDataSet);
     procedure MemItensAfterDelete(DataSet: TDataSet);
   private
@@ -1387,8 +1409,8 @@ begin
     QryCfopItem.Locate('CFOP_ID',MemItenscfop_id.Value,[]);
 
     MemItensvlr_icms.Value   := Arredondar(MemItensbase_icms.Value * (MemItensaliq_icms.Value / 100),2) ;
-    if (MemItensST.Value = '010') or (MemItensST.Value = '030') or (MemItensST.Value = '060')
-    or (MemItensST.Value = '070') then
+    if ((MemItensST.Value = '010') or (MemItensST.Value = '030') or (MemItensST.Value = '060')
+    or (MemItensST.Value = '070')) and (QryCFOPItemCALCULA_SUBSTITUICAO.Value = 'S') then
     begin
       CalcST := 'S';
     end

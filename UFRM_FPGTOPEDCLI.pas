@@ -391,6 +391,7 @@ var
   alinha , nCont : integer;
   TotPed, TotMer, Vol ,PesoLiq : Real;
   PesoBru, TotQtd,  TotGeral : Real;
+  Finalizou : boolean;
 
 implementation
 
@@ -437,9 +438,11 @@ begin
         RxPgtoVALOR.Value          := Arredondar(cx_VALOR.Value, 2);
         RxPgtoVALOR_DESCONTO.Value := Arredondar(cx_VALOR.Value, 2);
       end;
+      if RxPgtoVALOR.Value = 0 then
+        MsgAtencao('Valor Zerado');
       RxPgto.Post;
       cx_VALOR.Value := 0;
-      cxc_fpgto.SetFocus
+      cxc_fpgto.SetFocus;
     end;
     if cxc_fpgto.Text = 'CHEQUE' THEN
     begin
@@ -477,14 +480,15 @@ begin
         QryCartao.Close;
         QryCartao.ParamByName('DC').AsString := 'D';
         QryCartao.Open;
-        cxpagecontrol1.Visible := true;
+        cxpagecontrol1.Visible  := true;
         cxtab_cheque.TabVisible := false;
-        cxtab_deb.TabVisible := true;
-        cxtab_cred.TabVisible := false;
-        cxTab_troca.TabVisible := false;
+        cxtab_deb.TabVisible    := true;
+        cxtab_cred.TabVisible   := false;
+        cxTab_troca.TabVisible  := false;
         cxc_cartaodeb.ClearSelection;
         cx_nrcartaodeb.Clear;
         cxpagecontrol1.ActivePage := cxtab_deb;
+        cx_nrcartaodeb.Text := '4321';
         cxc_cartaodeb.SetFocus;
       end;
     end;
@@ -499,8 +503,6 @@ begin
       end
       else
       Begin
-        cx_parccred.Text      := '1';
-        cx_parccred.EditValue := 1;
         QryCartao.Close;
         QryCartao.ParamByName('DC').AsString := 'C';
         QryCartao.Open;
@@ -513,9 +515,11 @@ begin
         cx_nrcartaocred.Clear;
         cx_parccred.ClearSelection;
         cxpagecontrol1.ActivePage := cxtab_cred;
+        cx_parccred.Text      := '1';
+        cx_parccred.EditValue := 1;
+        cx_nrcartaocred.Text  := '1234';
         cxc_cartaocred.SetFocus;
       end;
-      cxc_cartaocred.SetFocus;
     end;
     if cxc_fpgto.Text = 'TROCA' THEN
     begin
@@ -537,72 +541,26 @@ begin
         cx_numTroca.SetFocus;
       end;
     end;
-
-    {
-      if cxc_fpgto.Text = 'TROCA' THEN
-      BEGIN
-      cxpagecontrol1.Visible    := false ;
-      RxPgto.Insert ;
-      RxPgtoForma.Value   := cxc_fpgto.Text ;
-      RxPgtoDATA.Value    := strtodate(formatdatetime('dd/mm/yyyy',date)) ;
-      RxPgtoCLIENTE.Value := cx_cliente.Text ;
-      if arredondar(cx_valor.Value,2) > arredondar(cx_total.Value,2) Then
-      Begin
-      RxPgtoVALOR.Value := cx_total.Value ;
-      end
-      else
-      Begin
-      RxPgtoVALOR.Value := cx_valor.Value ;
-      end;
-      RxPgto.Post   ;
-      cx_valor.Value := 0 ;
-      cxc_fpgto.SetFocus ;
-
-      asoma := cx_total.Value - avalue ;
-      if arredondar(cx_valor.Value,2) > (arredondar(asoma,2)) Then
-      Begin
-      MessageDlg('Valor Maior que o Total !',  mtInformation, [MBOK], 0);
-      cx_valor.SetFocus ;
-      end
-      else
-      Begin
-      cxpagecontrol1.Visible    := true;
-      cxtab_cheque.TabVisible   := false;
-      cxtab_deb.TabVisible      := false;
-      cxtab_cred.TabVisible     := false;
-      cxTab_troca.TabVisible    := true;
-      cx_chq.Clear ; cx_venc.Clear ;
-      cxpagecontrol1.ActivePage := cxtab_cheque ;
-      cx_bco.SetFocus ;
-      end;
-      END;
-      {if cxc_fpgto.Text = 'CONTRAVALE' THEN
-      BEGIN
-      cxpagecontrol1.Visible    := false ;
-      RxPgto.Insert ;
-      RxPgtoForma.Value := cxc_fpgto.Text ;
-      RxPgtoDATA.Value  := strtodate(formatdatetime('dd/mm/yyyy',date)) ;
-      if arredondar(cx_valor.Value,2) > arredondar(cx_total.Value,2) Then
-      Begin
-      RxPgtoVALOR.Value := cx_total.Value ;
-      end
-      else
-      Begin
-      RxPgtoVALOR.Value := cx_valor.Value ;
-      end;
-      RxPgto.Post   ;
-      cx_valor.Value := 0 ;
-      cxc_fpgto.SetFocus ;
-      END; }
     AValue := cxGrid1DBTableView1.DataController.Summary.FooterSummaryValues[0];
-    if AValue = null Then
+    IF AValue = null Then
     begin
       AValue := 0;
     end;
     if (Arredondar(AValue, 2) = Arredondar(cx_total.Value, 2)) and
       (bt_grava.Enabled = true) Then
-      // if bt_grava.Enabled = true Then
-      bt_grava.SetFocus;
+      if cxc_fpgto.Text = 'TROCA' Then
+        cx_numTroca.SetFocus
+      else
+        if (cxc_fpgto.Text = 'CARTAO CREDITO') or
+           (cxc_fpgto.Text = 'CREDITO LOJA') Then
+          cxc_cartaocred.SetFocus
+        else
+          if (cxc_fpgto.Text = 'CARTAO DEBITO') or (cxc_fpgto.Text = 'VALE ALIMENTACAO')
+             or (cxc_fpgto.Text = 'VALE REFEICAO') or (cxc_fpgto.Text = 'VALE PRESENTE')
+             or (cxc_fpgto.Text = 'VALE COMBUSTIVEL') then
+            cxc_cartaodeb.SetFocus
+          else
+            bt_grava.SetFocus;
   end;
 end;
 
@@ -1138,7 +1096,10 @@ begin
       Arredondar((AValue + cx_VALOR.Value), 2));
     BT_IOK.Enabled := true;
     BT_ICANCEL.Enabled := true;
-    BT_IOK.SetFocus;
+    if (CX_FALTA.Value > 0) and (cx_VALOR.Value = 0) then
+      cxc_fpgto.SetFocus
+    else
+      BT_IOK.SetFocus;
   end
   else
   Begin
@@ -1155,7 +1116,28 @@ begin
     bt_grava.Enabled := true;
     BT_IOK.Enabled := false;
     BT_ICANCEL.Enabled := false;
-    bt_grava.SetFocus;
+    if (cxc_fpgto.Text = 'TROCA') and not Finalizou Then
+    begin
+      cx_numTroca.SetFocus;
+      finalizou := true;
+    end
+    else
+      if ((cxc_fpgto.Text = 'CARTAO CREDITO') or
+         (cxc_fpgto.Text = 'CREDITO LOJA')) and not Finalizou Then
+      begin
+        cxc_cartaocred.SetFocus;
+        finalizou := true;
+      end
+      else
+        if ((cxc_fpgto.Text = 'CARTAO DEBITO') or (cxc_fpgto.Text = 'VALE ALIMENTACAO')
+           or (cxc_fpgto.Text = 'VALE REFEICAO') or (cxc_fpgto.Text = 'VALE PRESENTE')
+           or (cxc_fpgto.Text = 'VALE COMBUSTIVEL')) and not Finalizou then
+        begin
+          cxc_cartaodeb.SetFocus;
+          finalizou := true;
+        end
+        else
+          bt_grava.SetFocus;
   end;
 end;
 
@@ -1164,6 +1146,8 @@ begin
   RxPgtoFinal.Close;
   RxPgtoFinal.Open;
   RxPgto.First;
+  if not rxpgto.RecordCount > 0 then
+    MsgAtencao('avisar TI - transf pagto');
   While Not(RxPgto.Eof) DO
   Begin
     RxPgtoFinal.Insert;
@@ -1357,6 +1341,8 @@ begin
   // CUPOM PGTO
   QryPgtoPED.Close;
   //QryPgtoPED.Open;
+  if not RxPgtoFinal.RecordCount > 0 then
+    MsgAtencao('Avisar ocorrencia para TI');
   RxPgtoFinal.First;
   While Not(RxPgtoFinal.Eof) Do
   Begin
@@ -1948,6 +1934,7 @@ end;
 
 procedure TFRM_PGTOPEDCLI.FormShow(Sender: TObject);
 begin
+  Finalizou := false;
   RxPgto.Close;
   RxPgto.Open;
   QryCartao.Close;
@@ -2883,10 +2870,21 @@ begin
       QryTipoImp.Locate('TIPOID',QryPedPecasENTREGA.Value,[]);
       Mprint( #27#64 ,'S',0,0,0);
       Mprint( UpperCase(Copy(QryTipoImpTIPONOME.Value,1,1)) ,'S',1,0,0);
-      if (QryPedPecasQUANT.Value - int(QryPedPecasQUANT.Value)) > 0 then
+      QryUnidEmb.Close;
+      QryUnidEmb.ParamByName('CODID').AsInteger := QryPedPecasCODID.Value;
+      QryUnidEmb.ParamByName('UNID').AsString   := QryPedPecasUNIDADE.Value;
+      QryUnidEmb.Open;
+      QryUnidEmb.First;
+      if QryUnidEmbQTDE_CASAS.Value = 3 then
         Mprint( QryPedPecasQUANT.Value ,'Q',7,0,0)
       else
-        Mprint( QryPedPecasQUANT.Value ,'U',7,0,0);
+        if QryUnidEmbQTDE_CASAS.Value = 1 then
+          Mprint( QryPedPecasQUANT.Value ,'X',7,0,0)
+        else
+          if (QryPedPecasQUANT.Value - int(QryPedPecasQUANT.Value)) > 0 then
+            Mprint( QryPedPecasQUANT.Value ,'Z',7,0,0)
+          else
+            Mprint( QryPedPecasQUANT.Value ,'U',7,0,0);
       Mprint( Trim(QryPedPecasUNIDADE.Value ),'S',3,0,1);
       Mprint( Copy(QryPedPecasDESCRICAOPROD.Value,1,45) ,'S',45,0,0);
       Mprint( Copy(QryPedPecasCOD_INTERNO.Value,1,6) ,'S',6,0,0);
@@ -2944,10 +2942,21 @@ begin
       QryTipoImp.Locate('TIPOID',QryPedPecasENTREGA.Value,[]);
       Mprint( #27#64 ,'S',0,0,0);
       Mprint( UpperCase(Copy(QryTipoImpTIPONOME.Value,1,1)) ,'S',1,0,0);
-      if (QryPedPecasQUANT.Value - int(QryPedPecasQUANT.Value)) > 0 then
+      QryUnidEmb.Close;
+      QryUnidEmb.ParamByName('CODID').AsInteger := QryPedPecasCODID.Value;
+      QryUnidEmb.ParamByName('UNID').AsString   := QryPedPecasUNIDADE.Value;
+      QryUnidEmb.Open;
+      QryUnidEmb.First;
+      if QryUnidEmbQTDE_CASAS.Value = 3 then
         Mprint( QryPedPecasQUANT.Value ,'Q',7,0,0)
       else
-        Mprint( QryPedPecasQUANT.Value ,'U',7,0,0);
+        if QryUnidEmbQTDE_CASAS.Value = 1 then
+          Mprint( QryPedPecasQUANT.Value ,'X',7,0,0)
+        else
+          if (QryPedPecasQUANT.Value - int(QryPedPecasQUANT.Value)) > 0 then
+            Mprint( QryPedPecasQUANT.Value ,'Z',7,0,0)
+          else
+            Mprint( QryPedPecasQUANT.Value ,'U',7,0,0);
       Mprint( Trim(QryPedPecasUNIDADE.Value ),'S',3,0,1);
       Mprint( Copy(QryPedPecasDESCRICAOPROD.Value,1,45) ,'S',45,0,0);
       Mprint( Copy(QryPedPecasCOD_INTERNO.Value,1,6) ,'S',6,0,0);
@@ -3004,10 +3013,21 @@ begin
       QryTipoImp.Locate('TIPOID',QryPedPecasENTREGA.Value,[]);
       Mprint( #27#64 ,'S',0,0,0);
       Mprint( UpperCase(Copy(QryTipoImpTIPONOME.Value,1,1)) ,'S',1,0,0);
-      if (QryPedPecasQUANT.Value - int(QryPedPecasQUANT.Value)) > 0 then
+      QryUnidEmb.Close;
+      QryUnidEmb.ParamByName('CODID').AsInteger := QryPedPecasCODID.Value;
+      QryUnidEmb.ParamByName('UNID').AsString   := QryPedPecasUNIDADE.Value;
+      QryUnidEmb.Open;
+      QryUnidEmb.First;
+      if QryUnidEmbQTDE_CASAS.Value = 3 then
         Mprint( QryPedPecasQUANT.Value ,'Q',7,0,0)
       else
-        Mprint( QryPedPecasQUANT.Value ,'U',7,0,0);
+        if QryUnidEmbQTDE_CASAS.Value = 1 then
+          Mprint( QryPedPecasQUANT.Value ,'X',7,0,0)
+        else
+          if (QryPedPecasQUANT.Value - int(QryPedPecasQUANT.Value)) > 0 then
+            Mprint( QryPedPecasQUANT.Value ,'Z',7,0,0)
+          else
+            Mprint( QryPedPecasQUANT.Value ,'U',7,0,0);
       Mprint( Trim(QryPedPecasUNIDADE.Value ),'S',3,0,1);
       Mprint( Copy(QryPedPecasDESCRICAOPROD.Value,1,45) ,'S',45,0,0);
       Mprint( Copy(QryPedPecasCOD_INTERNO.Value,1,6) ,'S',6,0,0);

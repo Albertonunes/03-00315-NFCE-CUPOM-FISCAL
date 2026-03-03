@@ -261,13 +261,22 @@ begin
       MemItensGTIN.Value           := QryItensPedCODBARRAS.Value;
       MemItensCEST.Value           := QryLookMateriaisCEST.Value;
       MemItensESTOQUE_ID.Value     := QryItensPedESTOQUE_ID.Value;
-      MemItensST.Value             := '000';//iif( length(QryItensPedST.Value)>1,QryItensPedST.Value,QryLookMateriaisSIT_TRIBUTARIA.Value);
+      MemItensST.Value             := QryLookMateriaisSIT_TRIBUTARIA.Value;//'000';//iif( length(QryItensPedST.Value)>1,QryItensPedST.Value,QryLookMateriaisSIT_TRIBUTARIA.Value);
       MemItensPESO.Value           := QryItensPedPESO.Value;
       MemItensAUTOID.Value         := QryItensPedAUTOID.Value;
       MemItensESTOQUE_ID.Value     := QryItensPedESTOQUE_ID.Value;
       MemItensPEDIDO.Value         := QryItensPedPEDIDO.Value;
       MemItensPEDID.Value          := QryItensPedPEDID.Value;
-      MemItensCFOP.Value           := '5102';
+      if QryLookMateriaisCFOP_ID.IsNull then
+      begin
+        MemItensCFOP.Value           := '5102';
+        MemItensCSOSN.Value          := '102';
+      end
+      else
+      begin
+        MemItensCFOP.Value           := RemoveChar(QryLookMateriaisCFOP_COD.Value);
+        MemItensCSOSN.Value          := QryLookMateriaisCFOP_CSOSN.Value;
+      end;
       MemItensMOVIMENTOU_ESTOQUE.Value := QryItensPedMOVIMENTOU_ESTOQUE.Value;
       MemItensMOVIMENTA_ESTOQUE.Value  := DmdPrincipal.QryParamsMOV_ESTOQUE_PEDIDO.Value;
       MemItens.Post;

@@ -25,7 +25,8 @@ uses
   UDMCONFIG in '..\Comum\UDMCONFIG.pas' {DMCONFIG: TDataModule},
   udm4 in '..\Comum\udm4.pas' {DM4: TDataModule},
   UDM_PEDIDOC in 'UDM_PEDIDOC.pas' {DM_PEDIDOC: TDataModule},
-  FRM_CONFIGURASERIAL in 'FRM_CONFIGURASERIAL.pas' {FRMCONFIGURASERIAL};
+  FRM_CONFIGURASERIAL in 'FRM_CONFIGURASERIAL.pas' {FRMCONFIGURASERIAL},
+  UFRM_EDITCUPOM in 'UFRM_EDITCUPOM.pas' {FRM_EDITCUPOM};
 
 {$R *.res}
 
@@ -52,5 +53,7 @@ begin
   Application.CreateForm(TDM4, DM4);
   Application.CreateForm(TDM_PEDIDOC, DM_PEDIDOC);
   Application.CreateForm(TFRMCONFIGURASERIAL, FRMCONFIGURASERIAL);
+  Application.CreateForm(TFRM_EDITCUPOM, FRM_EDITCUPOM);
+  Application.CreateForm(TFRM_EDITCUPOM, FRM_EDITCUPOM);
   Application.Run;
 end.

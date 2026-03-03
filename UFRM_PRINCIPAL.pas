@@ -266,6 +266,10 @@ type
     bApagarLogo: TButton;
     Image1: TImage;
     ExcluirCupom: TMenuItem;
+    Gerarxml1: TMenuItem;
+    Atualizarxml1: TMenuItem;
+    InutilizarCupom1: TMenuItem;
+    AtualizarData1: TMenuItem;
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure cx_codbarrasExit(Sender: TObject);
@@ -320,6 +324,11 @@ type
     procedure bGravarLogoClick(Sender: TObject);
     procedure bApagarLogoClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure Gerarxml1Click(Sender: TObject);
+    procedure Atualizarxml1Click(Sender: TObject);
+    procedure InutilizarCupom1Click(Sender: TObject);
+    procedure AtualizarData1Click(Sender: TObject);
+    procedure cxGrid2DBTableView1DblClick(Sender: TObject);
   private
     { private declarations }
     {$IFDEF ELGIN_E1}
@@ -362,7 +371,7 @@ uses UDmdPrincipal, untFuncoes_Advensys, UntPrincipal, UDMD_PRO00315,
   UFRM_CONFIGURA, UFRM_TROCAFILIAL, ULibrary, UFRM_CAIXA, UFRM_FECHAVENDA,
   UFRM_OPCOES, UFRM_BUSCAPROD, UFRM_BUSCAPED, UFRM_FPGTOPEDCLI, UFRM_CLIENTE,
   ACBrImage, ACBrConsts, ACBrUtil, typinfo, IniFiles, Printers, math, synacode,
-  CONFIGURASERIAL;
+  CONFIGURASERIAL, UFRM_EDITCUPOM;
 (*
   typinfo, IniFiles, Printers, math, synacode,, ConfiguraSerial
    ;
@@ -447,6 +456,27 @@ begin
   else
     tabParametros.Show;
 
+end;
+
+procedure TFRM_PRINCIPAL.AtualizarData1Click(Sender: TObject);
+begin
+  with DMD_PRO00315 do
+  begin
+    QryManu.Close;
+    QryManu.SQL.Clear;
+    QryManu.SQL.Add('UPDATE NOTA_FISCAL          ');
+    QryManu.SQL.Add('SET NF_DT_EMISSAO = :DTEMIS ');
+    QryManu.SQL.Add('WHERE NF_ID = :NFID         ');
+    QryManu.ParamByName('DTEMIS').AsDateTime := Now;
+    QryManu.ParamByName('NFID').AsInteger    := cxGrid2DBTableView1NF_ID.EditValue;
+    QryManu.ExecSQL;
+    btconsulta.Click;
+  end;
+end;
+
+procedure TFRM_PRINCIPAL.Atualizarxml1Click(Sender: TObject);
+begin
+  FRM_CONFIGURA.btnAtualizarClick(self);
 end;
 
 procedure TFRM_PRINCIPAL.bApagarLogoClick(Sender: TObject);
@@ -623,6 +653,11 @@ begin
   end ;
 end;
 
+procedure TFRM_PRINCIPAL.Gerarxml1Click(Sender: TObject);
+begin
+  FRM_CONFIGURA.btn_gerarxmlClick(Self);
+end;
+
 procedure TFRM_PRINCIPAL.GravarINI;
 Var
   ArqINI : String ;
@@ -699,7 +734,7 @@ begin
       Begin
         SQL.Add('AND ((A.NF_DT_EMISSAO >= :dti) AND (A.NF_DT_EMISSAO <= :dtf))');
         ParamByName('dti').AsDateTime := cxdt1.Date;
-        ParamByName('dtf').AsDateTime := cxdt2.Date;
+        ParamByName('dtf').AsDateTime := cxdt2.Date+1;
       end;
       If (CXSTATUS.Text = 'PENDENTE') Then
         SQL.Add('AND (A.SITUACAO = ''P'')');
@@ -795,6 +830,9 @@ end;
 
 procedure TFRM_PRINCIPAL.buscapedidoExecute(Sender: TObject);
 begin
+  DMD_PRO00315.QryBuscaPed.Close;
+  DMD_PRO00315.MemItens.Close;
+  DMD_PRO00315.MemItens.Open;
   FRM_BUSCAPED.ShowModal;
   RecalcularItens;
 end;
@@ -857,6 +895,38 @@ begin
     tabconsulta.Show
   else
     tabVenda.Show;
+end;
+
+procedure TFRM_PRINCIPAL.cxGrid2DBTableView1DblClick(Sender: TObject);
+var
+  nIDNF : integer;
+begin
+  if Length(cxGrid2DBTableView1NFE_PROTOCOLO.EditValue) > 1 then
+  begin
+
+  end
+  else
+  begin
+    nIDNF := cxGrid2DBTableView1NF_ID.EditValue;
+    with DMD_PRO00315 do
+    begin
+      QryFiltroNF.Close;
+      QryFiltroNF.ParamByName('NF_ID').AsInteger := nIDNF;
+      QryFiltroNF.Open;
+      QryFiltroItens.Close;
+      QryFiltroItens.ParamByName('NF_ID').AsInteger := nIDNF;
+      QryFiltroItens.Open;
+      QryFiltroDuplicata.Close;
+      QryFiltroDuplicata.ParamByName('NF_ID').AsInteger := nIDNF;
+      QryFiltroDuplicata.Open;
+      QryFiltroObs.Close;
+      QryFiltroObs.ParamByName('NF_ID').AsInteger := nIDNF;
+      QryFiltroObs.Open;
+      QryTranspNF.Close;
+      QryTranspNF.Open;
+    end;
+  end;
+  FRM_EDITCUPOM.ShowModal;
 end;
 
 procedure TFRM_PRINCIPAL.cx_codbarrasExit(Sender: TObject);
@@ -1264,6 +1334,15 @@ begin
   with DMD_PRO00315 do
   begin
     MemItens.First;
+    if MemItens.Eof then
+      texto := ' Sem Produtos';
+    // verificar se o pedido foi faturado na 304
+    QryPedFaturou.Close;
+    QryPedFaturou.ParamByName('PEDID').AsInteger := PEDID;
+    QryPedFaturou.Open;
+    QryPedFaturou.First;
+    if QryPedFaturouPOSICAO.Value = 'FECHADO' then
+      texto := ' Pedido Já Faturado';
     while not MemItens.Eof do
     begin
       if Length( RemoveChar(MemItensNCM.Value)) < 8 then
@@ -1432,12 +1511,26 @@ begin
       MemItensMOVIMENTA_ESTOQUE.Value := DmdPrincipal.QryParamsMOV_ESTOQUE_PEDIDO.Value;
       MemItensST.Value             := QryLookMateriaisSIT_TRIBUTARIA.Value;
       MemItensPESO.Value           := QryLookMateriaisPESO.Value;
-      MemItensCFOP.Value           := '5102';
+      if QryLookMateriaisCFOP_ID.IsNull then
+      begin
+        MemItensCFOP.Value           := '5102';
+        MemItensCSOSN.Value          := '102';
+      end
+      else
+      begin
+        MemItensCFOP.Value           := RemoveChar(QryLookMateriaisCFOP_COD.Value);
+        MemItensCSOSN.Value          := QryLookMateriaisCFOP_CSOSN.Value;
+      end;
       MemItens.Post;
     end;
     RecalcularItens;
     MULTIPLICADOR := 1;
   end;
+end;
+
+procedure TFRM_PRINCIPAL.InutilizarCupom1Click(Sender: TObject);
+begin
+  FRM_CONFIGURA.btnInutilizarClick(Self);
 end;
 
 procedure TFRM_PRINCIPAL.RecalcularItens;

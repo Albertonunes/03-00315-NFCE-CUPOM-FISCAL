@@ -600,7 +600,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
     Align = alTop
     TabOrder = 3
     Visible = False
-    Properties.ActivePage = cxTab_troca
+    Properties.ActivePage = cxtab_cheque
     Properties.CustomButtons.Buttons = <>
     OnChange = cxpagecontrol1Change
     ClientRectBottom = 93
@@ -614,10 +614,6 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Margins.Bottom = 4
       Caption = 'Cheques'
       ImageIndex = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label5: TLabel
         Left = 228
         Top = 6
@@ -1126,6 +1122,10 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Margins.Bottom = 4
       Caption = 'Trocas'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label17: TLabel
         Left = 18
         Top = 6
@@ -1379,7 +1379,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
   end
   object pnl_impressao: TPanel
     Left = 209
-    Top = 183
+    Top = 240
     Width = 413
     Height = 172
     Margins.Left = 4

@@ -159,6 +159,7 @@ type
     cbVersaoQRCode: TComboBox;
     Label53: TLabel;
     rgReformaTributaria: TRadioGroup;
+    btnInutilizar: TcxButton;
     procedure btc_alteracaminhoClick(Sender: TObject);
     procedure btc_atualizaCertClick(Sender: TObject);
     procedure btc_salvarClick(Sender: TObject);
@@ -191,6 +192,7 @@ type
     procedure btn_enviarClick(Sender: TObject);
     procedure btSerialClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
+    procedure btnInutilizarClick(Sender: TObject);
   private
     { Private declarations }
     procedure AbrirNota(nIDNF:integer);
@@ -2138,12 +2140,19 @@ begin
     begin
       ACBrNFe1.NotasFiscais.Clear;
       ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+      ACBrNFe1.Configuracoes.Arquivos.Salvar := false;
       ForceDirectories(QryEmpresaNFE_LOG.Value + '\LOGs\' +
         FormatDateTime('yyyymm',ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.dEmi));
+      ACBrNFe1.Configuracoes.Arquivos.PathSalvar := QryEmpresaNFE_LOG.Value + '\LOGs\' +
+        FormatDateTime('yyyymm',ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.dEmi);
+      ACBrNFe1.Configuracoes.Arquivos.PathNFe := QryEmpresaNFE_LOG.Value + '\LOGs\' +
+        FormatDateTime('yyyymm',ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.dEmi);
       ACBrNFe1.Consultar;
       vcstatus := ACBrNFe1.WebServices.Consulta.cStat;
       ACBrNFe1.NotasFiscais.Items[0].GravarXML;
       MsgInformacao('Arquivo gravado em: ' + OpenDialog1.FileName);
+      //MsgInformacao(QryEmpresaNFE_LOG.Value + '\LOGs\' +
+      //  FormatDateTime('yyyymm',ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.dEmi));
       // procurar a nota fiscal
       QryCstNota.Close;
       QryCstNota.SQL.Clear;
@@ -2168,11 +2177,11 @@ begin
         begin
           Situacao := 'A';
           // verifica o financeiro
-          if Copy(QryParamsIMPRESSAO.Value, 45, 1) = 'S' then
-          Begin
+          //if Copy(QryParamsIMPRESSAO.Value, 45, 1) = 'S' then
+          //Begin
             // validar financeiro
-            ActInsereReceber.Execute;
-          end;
+          //  ActInsereReceber.Execute;
+          //end;
         end;
 
         IF vcstatus = 101 then
@@ -2210,7 +2219,7 @@ begin
         MsgInformacao(IntToStr(vcstatus));
         ACBrNFe1.NotasFiscais.Clear;
         // ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
-        MsgInformacao('Arquivo XML Atualizado com Sucesso ! ');
+        //MsgInformacao('Arquivo XML Atualizado com Sucesso ! ');
       end
       else
       begin
@@ -2231,6 +2240,33 @@ begin
   IE := ACBrNFe1.WebServices.ConsultaCadastro.IE;
   teste := ACBrNFe1.WebServices.ConsultaCadastro.xMotivo;
   msgAtencao(IE+' - '+teste);
+end;
+
+procedure TFRM_CONFIGURA.btnInutilizarClick(Sender: TObject);
+var
+  Modelo, Serie, Ano, NumeroInicial, NumeroFinal, Justificativa: String;
+begin
+ Ano := IntToStr(YearOf(date));
+ if not(InputQuery('WebServices Inutilização ', 'Ano',    Ano)) then
+    exit;
+ Modelo := '65';
+ if not(InputQuery('WebServices Inutilização ', 'Modelo', Modelo)) then
+    exit;
+ Serie := '2';
+ if not(InputQuery('WebServices Inutilização ', 'Serie',  Serie)) then
+    exit;
+ NumeroInicial := '';
+ if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroInicial)) then
+    exit;
+ NumeroFinal := '';
+ if not(InputQuery('WebServices Inutilização ', 'Número Final', NumeroFinal)) then
+    exit;
+ Justificativa := 'Não utilizado por erro';
+ if not(InputQuery('WebServices Inutilização ', 'Justificativa', Justificativa)) then
+    exit;
+
+  ACBrNFe1.WebServices.Inutiliza(RemoveChar(DmdPrincipal.qryEMPRESASEMPRESA_CNPJ.Value), Justificativa, StrToInt(Ano), StrToInt(Modelo), StrToInt(Serie), StrToInt(NumeroInicial), StrToInt(NumeroFinal));
+
 end;
 
 procedure TFRM_CONFIGURA.btnValidarAssinaturaClick(Sender: TObject);
@@ -2407,9 +2443,13 @@ var
   NFID : string;
   nIDNF : integer;
 begin
-  if not(InputQuery('Nota Fiscal', 'Numero da Nota', NFID)) then
-    exit;
-  nIDNF := StrToInt(NFID);
+  //if not(InputQuery('ID Nota Fiscal', 'Numero da Nota', NFID)) then
+  //  exit;
+  //NFID := FRM_PRINCIPAL.cxGrid2DBTableView1NF_ID.EditValue;
+  nIDNF := FRM_PRINCIPAL.cxGrid2DBTableView1NF_ID.EditValue;
+
+  //nIDNF := StrToInt(NFID);
+  ACBrNFe1.Configuracoes.Arquivos.Salvar := false;
   with DMD_PRO00315 do
   begin
     QryFiltroNF.Close;
@@ -2427,7 +2467,11 @@ begin
     QryTranspNF.Close;
     QryTranspNF.Open;
     ForceDirectories(QryEmpresasNFE_LOG.Value + '\LOGs\' +
-    FormatDateTime('yyyymm',QryFiltroNFNF_DT_EMISSAO.AsDateTime));
+              FormatDateTime('yyyymm',QryFiltroNFNF_DT_EMISSAO.AsDateTime));
+    ACBrNFe1.Configuracoes.Arquivos.PathSalvar := QryEmpresasNFE_LOG.Value + '\LOGs\' +
+                            FormatDateTime('yyyymm',QryFiltroNFNF_DT_EMISSAO.AsDateTime);
+    ACBrNFe1.Configuracoes.Arquivos.PathNFe := QryEmpresasNFE_LOG.Value + '\LOGs\' +
+                            FormatDateTime('yyyymm',QryFiltroNFNF_DT_EMISSAO.AsDateTime);
   end;
   ActLerConfIni.Execute;
   ActGerarNFe.Execute;

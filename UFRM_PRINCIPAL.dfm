@@ -1362,6 +1362,7 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
         TabOrder = 2
         object cxGrid2DBTableView1: TcxGridDBTableView
           PopupMenu = menunota
+          OnDblClick = cxGrid2DBTableView1DblClick
           Navigator.Buttons.CustomButtons = <>
           ScrollbarAnnotations.CustomAnnotations = <>
           DataController.Summary.DefaultGroupSummaryItems = <>
@@ -13960,8 +13961,8 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
     end
   end
   object menunota: TPopupMenu
-    Left = 292
-    Top = 365
+    Left = 236
+    Top = 293
     object Enviarcupom: TMenuItem
       Caption = 'Enviar Cupom'
       OnClick = EnviarcupomClick
@@ -13977,6 +13978,22 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
     object ExcluirCupom: TMenuItem
       Caption = 'Excluir Cupom'
       Enabled = False
+    end
+    object Gerarxml1: TMenuItem
+      Caption = 'Gerar xml'
+      OnClick = Gerarxml1Click
+    end
+    object Atualizarxml1: TMenuItem
+      Caption = 'Atualizar xml'
+      OnClick = Atualizarxml1Click
+    end
+    object InutilizarCupom1: TMenuItem
+      Caption = 'Inutilizar Cupom'
+      OnClick = InutilizarCupom1Click
+    end
+    object AtualizarData1: TMenuItem
+      Caption = 'Atualizar Data'
+      OnClick = AtualizarData1Click
     end
   end
   object OpenPictureDialog1: TOpenPictureDialog
