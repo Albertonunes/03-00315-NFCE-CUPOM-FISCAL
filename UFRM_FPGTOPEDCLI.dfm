@@ -600,7 +600,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
     Align = alTop
     TabOrder = 3
     Visible = False
-    Properties.ActivePage = cxtab_cheque
+    Properties.ActivePage = cxtab_deb
     Properties.CustomButtons.Buttons = <>
     OnChange = cxpagecontrol1Change
     ClientRectBottom = 93
@@ -2149,6 +2149,9 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
     end
     object RxPgtoFinalDC: TStringField
       FieldName = 'DC'
+    end
+    object RxPgtoFinalID_CREDITO: TIntegerField
+      FieldName = 'ID_CREDITO'
     end
   end
   object MemTroca: TdxMemData

@@ -311,6 +311,7 @@ type
     RodPed01: TAction;
     RodPed02: TAction;
     RodPed03: TAction;
+    RxPgtoFinalID_CREDITO: TIntegerField;
     procedure BT_IOKClick(Sender: TObject);
     procedure bt_confirmaChequeClick(Sender: TObject);
     procedure bt_confirmaDebitoClick(Sender: TObject);
@@ -962,8 +963,9 @@ begin
       QryManu.ExecSQL;
     end;
     DMD_PRO00315.qryposicaoped.Close;
-    DMD_PRO00315.qryposicaoped.ParamByName('pedido').AsInteger := PEDID;
-    DMD_PRO00315.qryposicaoped.ParamByName('pos').AsString     := 'FECHADO';
+    DMD_PRO00315.qryposicaoped.ParamByName('PEDIDO').AsInteger := PEDID;
+    DMD_PRO00315.qryposicaoped.ParamByName('DTF').AsDateTime   := now;
+    DMD_PRO00315.qryposicaoped.ParamByName('POS').AsString     := 'FECHADO';
     DMD_PRO00315.qryposicaoped.ExecSQL;
     try
       FinalizarVenda.Execute;
@@ -1175,6 +1177,8 @@ begin
     RxPgtoFinalDATA.Value        := RxPgtoDATA.Value;
     RxPgtoFinalVALOR_REAL.Value  := RxPgtoVALOR_DESCONTO.Value;
     RxPgtoFinalAUTORIZACAO.Value := RxPgtoAUTORIZACAO.Value;
+    if RxPgtoID_CREDITO.Value > 0 then
+      RxPgtoFinalID_CREDITO.Value  := RxPgtoID_CREDITO.Value;
     RxPgtoFinal.Post;
     RxPgto.Next;
   end;
@@ -1373,7 +1377,10 @@ begin
     QryPgtoPED.ParamByName('AUTORIZACAO').AsString  := '2';
     QryPgtoPED.ParamByName('PARCELAS').AsInteger    := RxPgtoFinalPARCELAS.Value;
     QryPgtoPED.ParamByName('CLIENTE').AsString      := cx_cliente.Text;
-    QryPgtoPED.ParamByName('ID_CREDITO').AsInteger  := 0;
+    if RxPgtoFinalID_CREDITO.Value > 0 then
+      QryPgtoPED.ParamByName('ID_CREDITO').AsInteger  := RxPgtoFinalID_CREDITO.Value
+    else
+      QryPgtoPED.ParamByName('ID_CREDITO').AsInteger  := 0;
     QryPgtoPED.ParamByName('ID_CONTROLE').AsInteger := StrToInt(ID_CONTROLE.Text);
     QryPgtoPED.ParamByName('DC').AsString           := 'C';
     QryPgtoPED.ExecSQL;

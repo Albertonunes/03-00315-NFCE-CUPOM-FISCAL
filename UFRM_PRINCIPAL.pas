@@ -901,7 +901,8 @@ procedure TFRM_PRINCIPAL.cxGrid2DBTableView1DblClick(Sender: TObject);
 var
   nIDNF : integer;
 begin
-  if Length(cxGrid2DBTableView1NFE_PROTOCOLO.EditValue) > 1 then
+
+  if not cxGrid2DBTableView1NFE_PROTOCOLO.EditValue = '' then
   begin
 
   end
@@ -913,17 +914,20 @@ begin
       QryFiltroNF.Close;
       QryFiltroNF.ParamByName('NF_ID').AsInteger := nIDNF;
       QryFiltroNF.Open;
+      //MsgInformacao('NF');
       QryFiltroItens.Close;
       QryFiltroItens.ParamByName('NF_ID').AsInteger := nIDNF;
       QryFiltroItens.Open;
+      //MsgInformacao('itens NF');
       QryFiltroDuplicata.Close;
       QryFiltroDuplicata.ParamByName('NF_ID').AsInteger := nIDNF;
       QryFiltroDuplicata.Open;
+      //MsgInformacao('duplicata NF');
       QryFiltroObs.Close;
       QryFiltroObs.ParamByName('NF_ID').AsInteger := nIDNF;
       QryFiltroObs.Open;
-      QryTranspNF.Close;
-      QryTranspNF.Open;
+      //QryTranspNF.Close;
+      //QryTranspNF.Open;
     end;
   end;
   FRM_EDITCUPOM.ShowModal;
