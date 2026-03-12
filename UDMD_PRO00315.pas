@@ -1320,6 +1320,7 @@ type
     DsrFiltroDuplicata: TDataSource;
     procedure MemItensBeforePost(DataSet: TDataSet);
     procedure MemItensAfterDelete(DataSet: TDataSet);
+    procedure QryFiltroDuplicataAfterInsert(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -1524,6 +1525,11 @@ begin
     FRM_FECHAVENDA.actBaseIcms.Execute;
   end;
 
+end;
+
+procedure TDMD_PRO00315.QryFiltroDuplicataAfterInsert(DataSet: TDataSet);
+begin
+  QryFiltroDuplicataNF_ID.Value := QryFiltroNFNF_ID.Value;
 end;
 
 end.

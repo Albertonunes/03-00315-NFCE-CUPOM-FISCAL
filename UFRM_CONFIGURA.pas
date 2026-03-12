@@ -2192,6 +2192,8 @@ begin
           Situacao := 'S'; // esperando processamento
         IF vcstatus = 204 then
           Situacao := 'A'; // Duplicidade volta a aceita com sucesso
+        IF vcstatus = 217 then
+          Situacao := 'I'; // Duplicidade volta a aceita com sucesso
 
         MDS := 'EMISSOR NFE';
         ACT := 'ATUALIZADO SEFAZ';

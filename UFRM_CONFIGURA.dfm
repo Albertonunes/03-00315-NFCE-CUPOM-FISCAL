@@ -27,7 +27,7 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
     Margins.Bottom = 4
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabcertificado
+    Properties.ActivePage = Tabopcoes
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 529
     ClientRectLeft = 4
@@ -1573,9 +1573,12 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
     Configuracoes.Geral.SSLCryptLib = cryNone
     Configuracoes.Geral.SSLHttpLib = httpNone
     Configuracoes.Geral.SSLXmlSignLib = xsNone
+    Configuracoes.Geral.Salvar = False
     Configuracoes.Geral.FormatoAlerta = 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'
     Configuracoes.Geral.ModeloDF = moNFCe
+    Configuracoes.Geral.AtualizarXMLCancelado = True
     Configuracoes.Arquivos.OrdenacaoPath = <>
+    Configuracoes.Arquivos.SalvarApenasNFeProcessadas = True
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.QuebradeLinha = '|'

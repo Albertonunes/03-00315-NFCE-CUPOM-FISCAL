@@ -30,7 +30,7 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
     Margins.Bottom = 4
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = tabconsulta
+    Properties.ActivePage = tabVenda
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 740
     ClientRectLeft = 4

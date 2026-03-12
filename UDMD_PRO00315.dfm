@@ -3789,6 +3789,7 @@ object DMD_PRO00315: TDMD_PRO00315
     end
   end
   object QryFiltroDuplicata: TFDQuery
+    AfterInsert = QryFiltroDuplicataAfterInsert
     MasterFields = 'NF_ID'
     Connection = DmdPrincipal.FDConexao
     SQL.Strings = (

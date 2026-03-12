@@ -902,12 +902,12 @@ var
   nIDNF : integer;
 begin
 
-  if not cxGrid2DBTableView1NFE_PROTOCOLO.EditValue = '' then
-  begin
-
-  end
-  else
-  begin
+  //if not cxGrid2DBTableView1NFE_PROTOCOLO.EditValue = '' then
+  //begin
+  //
+  //end
+  //else
+  //begin
     nIDNF := cxGrid2DBTableView1NF_ID.EditValue;
     with DMD_PRO00315 do
     begin
@@ -929,7 +929,7 @@ begin
       //QryTranspNF.Close;
       //QryTranspNF.Open;
     end;
-  end;
+  //end;
   FRM_EDITCUPOM.ShowModal;
 end;
 
