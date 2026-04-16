@@ -3382,43 +3382,36 @@ object DMD_PRO00315: TDMD_PRO00315
     SQL.Strings = (
       
         'SELECT C.CFOP_NATOP,A.NOME,A.CNPJ,A.NF_DT_EMISSAO,A.ENDERECO,A.B' +
-        'AIRRO,A.CEP, A.TIPO, '
+        'AIRRO,A.CEP, A.TIPO,A.NF_DT_ENT_SAI,'
       
-        'A.NF_DT_ENT_SAI,A.CIDADE,A.FONE,A.UF,A.IE,A.NF_VLR_BASE_ICMS,A.N' +
-        'F_VLR_ICMS,A.NF_VLR_BASE_IPI,'
+        '            A.CIDADE,A.FONE,A.UF,A.IE,A.NF_VLR_BASE_ICMS,A.NF_VL' +
+        'R_ICMS,A.NF_VLR_BASE_IPI,A.NF_VLR_BASE_ICMSUB,'
       
-        'A.NF_VLR_BASE_ICMSUB,A.NF_VLR_IPI,A.NF_VLR_TOTAL,A.NF_VLR_TOTMER' +
-        'C,A.NF_VLR_FRETE,'
+        '            A.NF_VLR_IPI,A.NF_VLR_TOTAL,A.NF_VLR_TOTMERC,A.NF_VL' +
+        'R_FRETE,A.NF_VLR_SEGURO,A.NF_VLR_OUTRAS,'
       
-        'A.NF_VLR_SEGURO,A.NF_VLR_OUTRAS, A.ENDERECO_NUM,A.NF_FRETEXCONTA' +
-        ',A.NF_PLACA,A.NF_PLACA_UF,'
+        '            A.ENDERECO_NUM,A.NF_FRETEXCONTA,A.NF_PLACA,A.NF_PLAC' +
+        'A_UF, A.NF_VOL_MARCA,A.NF_VOL_NUMERO,'
       
-        'A.NF_VOL_MARCA,A.NF_VOL_NUMERO,A.NF_VOL_QTDE, A.ENDERECO_COMPL,A' +
-        '.NF_VOL_ESPECIE,'
+        '            A.NF_VOL_QTDE, A.ENDERECO_COMPL,A.NF_VOL_ESPECIE,A.N' +
+        'F_VOL_PESO,A.NF_VOL_PESOBRUTO,A.DIAG_EMPRESA,'
       
-        'A.NF_VOL_PESO,A.NF_VOL_PESOBRUTO,A.DIAG_EMPRESA,A.SERIE_ID, A.NF' +
-        '_NUMERO, A.NFE_FINALIDADE,'
+        '            A.SERIE_ID, A.NF_NUMERO, A.NFE_FINALIDADE,F.TEXTO_LI' +
+        'VRE,F.RAZAO_SOCIAL AS RAZ_EMP,F.ENDERECO AS END_EMP,'
       
-        'F.TEXTO_LIVRE,F.RAZAO_SOCIAL AS RAZ_EMP,F.ENDERECO AS END_EMP,F.' +
-        'CIDADE AS CID_EMP,'
+        '            F.CIDADE AS CID_EMP,F.UF AS UF_EMP,A.NF_VLR_ICMSUB,F' +
+        '.TEL1 AS TEL_EMP,F.FANTASIA AS FAN_EMP,A.NF_ID,'
       
-        'F.UF AS UF_EMP,A.NF_VLR_ICMSUB,F.TEL1 AS TEL_EMP,F.FANTASIA AS F' +
-        'AN_EMP,A.NF_ID,E.TRANSP_NOME,'
+        '            E.TRANSP_NOME,E.TRANSP_CNPJ, A.CODCID_IBGE, A.UF_IBG' +
+        'E,E.TRANSP_ENDERECO,A.TRANSP_ID,A.NFE_REFERENCIADA,'
       
-        'E.TRANSP_CNPJ, A.CODCID_IBGE, A.UF_IBGE,E.TRANSP_ENDERECO,A.TRAN' +
-        'SP_ID,A.NFE_REFERENCIADA,'
+        '            E.TRANSP_CEP,E.TRANSP_CIDADE,E.TRANSP_UF, A.FPGTO_VP' +
+        'O,A.SEUPEDIDO, A.FPAGTO, A.NF_VLR_BASE_ISS,'
       
-        'E.TRANSP_CEP,E.TRANSP_CIDADE,E.TRANSP_UF, B.NF_ITEM_MARCA, B.NF_' +
-        'ITEM_EMBALAGEM, '
-      
-        'A.FPGTO_VPO, A.SEUPEDIDO, A.FPAGTO, A.NF_VLR_BASE_ISS,A.SITUACAO' +
-        ',B.NF_ITEM_PED,B.VLR_CREDICMS,'
-      
-        'A.NF_VLR_ISS, A.NF_VLR_TOTSERV, A.NF_VLR_TOTDESC,A.NFE_MODELO,A.' +
-        'NFE_SERIE,B.NF_ITEM_PEDIT,'
-      'A.NFE_PROTOCOLO, A.NFE_IDNOTA,A.GESTOR_CLIENTE'
+        '            A.SITUACAO,A.NF_VLR_ISS, A.NF_VLR_TOTSERV, A.NF_VLR_' +
+        'TOTDESC,A.NFE_MODELO,A.NFE_SERIE,'
+      '            A.NFE_PROTOCOLO, A.NFE_IDNOTA,A.GESTOR_CLIENTE'
       'FROM NOTA_FISCAL A  '
-      'LEFT JOIN NOTA_FISCAL_ITEM  B ON A.NF_ID=B.NF_ID '
       'LEFT JOIN CFOP C ON A.CFOP_ID=C.CFOP_ID'
       'LEFT JOIN TRANSPORTADOR E ON A.TRANSP_ID=E.TRANSP_ID '
       'LEFT JOIN EMPRESA F ON A.DIAG_EMPRESA=F.DIAG_EMPRESA '
@@ -3433,343 +3426,347 @@ object DMD_PRO00315: TDMD_PRO00315
         Size = 4
       end>
     object QryFiltroNFCFOP_NATOP: TStringField
-      DisplayWidth = 50
       FieldName = 'CFOP_NATOP'
+      Origin = 'CFOP_NATOP'
       FixedChar = True
       Size = 50
     end
     object QryFiltroNFNOME: TStringField
       FieldName = 'NOME'
+      Origin = 'NOME'
       FixedChar = True
       Size = 100
     end
     object QryFiltroNFCNPJ: TStringField
       FieldName = 'CNPJ'
+      Origin = 'CNPJ'
       FixedChar = True
       Size = 18
-    end
-    object QryFiltroNFENDERECO: TStringField
-      FieldName = 'ENDERECO'
-      FixedChar = True
-      Size = 70
-    end
-    object QryFiltroNFBAIRRO: TStringField
-      FieldName = 'BAIRRO'
-      FixedChar = True
-      Size = 40
-    end
-    object QryFiltroNFCEP: TStringField
-      FieldName = 'CEP'
-      FixedChar = True
-      Size = 9
-    end
-    object QryFiltroNFCIDADE: TStringField
-      FieldName = 'CIDADE'
-      FixedChar = True
-      Size = 40
-    end
-    object QryFiltroNFFONE: TStringField
-      FieldName = 'FONE'
-      FixedChar = True
-      Size = 18
-    end
-    object QryFiltroNFUF: TStringField
-      FieldName = 'UF'
-      FixedChar = True
-      Size = 2
-    end
-    object QryFiltroNFIE: TStringField
-      FieldName = 'IE'
-      FixedChar = True
-      Size = 25
-    end
-    object QryFiltroNFNF_VLR_BASE_ICMS: TFloatField
-      FieldName = 'NF_VLR_BASE_ICMS'
-    end
-    object QryFiltroNFNF_VLR_ICMS: TFloatField
-      FieldName = 'NF_VLR_ICMS'
-    end
-    object QryFiltroNFNF_VLR_BASE_IPI: TFloatField
-      FieldName = 'NF_VLR_BASE_IPI'
-    end
-    object QryFiltroNFNF_VLR_IPI: TFloatField
-      FieldName = 'NF_VLR_IPI'
-    end
-    object QryFiltroNFNF_VLR_TOTAL: TFloatField
-      FieldName = 'NF_VLR_TOTAL'
-    end
-    object QryFiltroNFNF_VLR_TOTMERC: TFloatField
-      FieldName = 'NF_VLR_TOTMERC'
-    end
-    object QryFiltroNFNF_VLR_FRETE: TFloatField
-      FieldName = 'NF_VLR_FRETE'
-    end
-    object QryFiltroNFNF_VLR_SEGURO: TFloatField
-      FieldName = 'NF_VLR_SEGURO'
-    end
-    object QryFiltroNFNF_VLR_OUTRAS: TFloatField
-      FieldName = 'NF_VLR_OUTRAS'
-    end
-    object QryFiltroNFNF_FRETEXCONTA: TStringField
-      FieldName = 'NF_FRETEXCONTA'
-      FixedChar = True
-      Size = 1
-    end
-    object QryFiltroNFNF_PLACA: TStringField
-      FieldName = 'NF_PLACA'
-      FixedChar = True
-      Size = 8
-    end
-    object QryFiltroNFNF_PLACA_UF: TStringField
-      FieldName = 'NF_PLACA_UF'
-      FixedChar = True
-      Size = 2
-    end
-    object QryFiltroNFNF_VOL_MARCA: TStringField
-      FieldName = 'NF_VOL_MARCA'
-      FixedChar = True
-    end
-    object QryFiltroNFNF_VOL_NUMERO: TStringField
-      FieldName = 'NF_VOL_NUMERO'
-      FixedChar = True
-      Size = 10
-    end
-    object QryFiltroNFNF_VOL_QTDE: TIntegerField
-      FieldName = 'NF_VOL_QTDE'
-    end
-    object QryFiltroNFNF_VOL_ESPECIE: TStringField
-      FieldName = 'NF_VOL_ESPECIE'
-      FixedChar = True
-    end
-    object QryFiltroNFNF_VOL_PESO: TFloatField
-      FieldName = 'NF_VOL_PESO'
-    end
-    object QryFiltroNFNF_VOL_PESOBRUTO: TFloatField
-      FieldName = 'NF_VOL_PESOBRUTO'
-    end
-    object QryFiltroNFDIAG_EMPRESA: TIntegerField
-      FieldName = 'DIAG_EMPRESA'
-    end
-    object QryFiltroNFNF_NUMERO: TIntegerField
-      FieldName = 'NF_NUMERO'
-    end
-    object QryFiltroNFTEXTO_LIVRE: TStringField
-      FieldName = 'TEXTO_LIVRE'
-      FixedChar = True
-      Size = 50
-    end
-    object QryFiltroNFRAZ_EMP: TStringField
-      FieldName = 'RAZ_EMP'
-      FixedChar = True
-      Size = 100
-    end
-    object QryFiltroNFEND_EMP: TStringField
-      FieldName = 'END_EMP'
-      FixedChar = True
-      Size = 70
-    end
-    object QryFiltroNFCID_EMP: TStringField
-      FieldName = 'CID_EMP'
-      FixedChar = True
-      Size = 50
-    end
-    object QryFiltroNFUF_EMP: TStringField
-      FieldName = 'UF_EMP'
-      FixedChar = True
-      Size = 2
-    end
-    object QryFiltroNFTEL_EMP: TStringField
-      FieldName = 'TEL_EMP'
-      FixedChar = True
-    end
-    object QryFiltroNFFAN_EMP: TStringField
-      FieldName = 'FAN_EMP'
-      FixedChar = True
-      Size = 50
-    end
-    object QryFiltroNFNF_ID: TFDAutoIncField
-      FieldName = 'NF_ID'
-      ReadOnly = True
-    end
-    object QryFiltroNFTRANSP_NOME: TStringField
-      FieldName = 'TRANSP_NOME'
-      FixedChar = True
-      Size = 50
-    end
-    object QryFiltroNFTRANSP_CNPJ: TStringField
-      FieldName = 'TRANSP_CNPJ'
-      FixedChar = True
-      Size = 25
-    end
-    object QryFiltroNFTRANSP_ENDERECO: TStringField
-      FieldName = 'TRANSP_ENDERECO'
-      FixedChar = True
-      Size = 50
-    end
-    object QryFiltroNFTRANSP_CEP: TStringField
-      FieldName = 'TRANSP_CEP'
-      FixedChar = True
-      Size = 9
-    end
-    object QryFiltroNFTRANSP_CIDADE: TStringField
-      FieldName = 'TRANSP_CIDADE'
-      FixedChar = True
-      Size = 10
-    end
-    object QryFiltroNFTRANSP_UF: TStringField
-      FieldName = 'TRANSP_UF'
-      FixedChar = True
-      Size = 2
-    end
-    object QryFiltroNFNF_ITEM_MARCA: TStringField
-      FieldName = 'NF_ITEM_MARCA'
-      FixedChar = True
-      Size = 30
-    end
-    object QryFiltroNFNF_ITEM_EMBALAGEM: TStringField
-      FieldName = 'NF_ITEM_EMBALAGEM'
-      FixedChar = True
-      Size = 30
-    end
-    object QryFiltroNFSEUPEDIDO: TStringField
-      FieldName = 'SEUPEDIDO'
-      FixedChar = True
-      Size = 10
-    end
-    object QryFiltroNFLKUTIL1: TStringField
-      DisplayWidth = 150
-      FieldKind = fkCalculated
-      FieldName = 'LKUTIL1'
-      Size = 150
-      Calculated = True
-    end
-    object QryFiltroNFLKUTIL2: TStringField
-      DisplayWidth = 150
-      FieldKind = fkCalculated
-      FieldName = 'LKUTIL2'
-      Size = 150
-      Calculated = True
-    end
-    object QryFiltroNFFPAGTO: TStringField
-      FieldName = 'FPAGTO'
-      FixedChar = True
-    end
-    object QryFiltroNFNF_VLR_BASE_ICMSUB: TFloatField
-      FieldName = 'NF_VLR_BASE_ICMSUB'
-    end
-    object QryFiltroNFNF_VLR_ICMSUB: TFloatField
-      FieldName = 'NF_VLR_ICMSUB'
-    end
-    object QryFiltroNFNF_VLR_BASE_ISS: TFloatField
-      FieldName = 'NF_VLR_BASE_ISS'
-    end
-    object QryFiltroNFNF_VLR_ISS: TFloatField
-      FieldName = 'NF_VLR_ISS'
-    end
-    object QryFiltroNFNF_VLR_TOTSERV: TFloatField
-      FieldName = 'NF_VLR_TOTSERV'
-    end
-    object QryFiltroNFLKUTIL3: TStringField
-      FieldKind = fkCalculated
-      FieldName = 'LKUTIL3'
-      Size = 2
-      Calculated = True
-    end
-    object QryFiltroNFFPGTO_VPO: TStringField
-      FieldName = 'FPGTO_VPO'
-      FixedChar = True
-      Size = 1
-    end
-    object QryFiltroNFlknfe_DTEMISSAO: TStringField
-      FieldKind = fkCalculated
-      FieldName = 'lknfe_DTEMISSAO'
-      Size = 10
-      Calculated = True
-    end
-    object QryFiltroNFlknfe_DTSAIDA: TStringField
-      FieldKind = fkCalculated
-      FieldName = 'lknfe_DTSAIDA'
-      Size = 10
-      Calculated = True
-    end
-    object QryFiltroNFlknfe_ES: TStringField
-      FieldKind = fkCalculated
-      FieldName = 'lknfe_ES'
-      Size = 1
-      Calculated = True
-    end
-    object QryFiltroNFENDERECO_NUM: TIntegerField
-      FieldName = 'ENDERECO_NUM'
-    end
-    object QryFiltroNFENDERECO_COMPL: TStringField
-      FieldName = 'ENDERECO_COMPL'
-      FixedChar = True
-      Size = 40
-    end
-    object QryFiltroNFCODCID_IBGE: TIntegerField
-      FieldName = 'CODCID_IBGE'
-    end
-    object QryFiltroNFUF_IBGE: TStringField
-      FieldName = 'UF_IBGE'
-      FixedChar = True
-      Size = 2
-    end
-    object QryFiltroNFNFE_FINALIDADE: TStringField
-      FieldName = 'NFE_FINALIDADE'
-      FixedChar = True
-      Size = 1
-    end
-    object QryFiltroNFSERIE_ID: TIntegerField
-      FieldName = 'SERIE_ID'
-    end
-    object QryFiltroNFTRANSP_ID: TIntegerField
-      FieldName = 'TRANSP_ID'
-    end
-    object QryFiltroNFTIPO: TStringField
-      FieldName = 'TIPO'
-      FixedChar = True
-      Size = 1
-    end
-    object QryFiltroNFSITUACAO: TStringField
-      FieldName = 'SITUACAO'
-      FixedChar = True
-      Size = 1
-    end
-    object QryFiltroNFNFE_REFERENCIADA: TIntegerField
-      FieldName = 'NFE_REFERENCIADA'
-    end
-    object QryFiltroNFNF_VLR_TOTDESC: TFloatField
-      FieldName = 'NF_VLR_TOTDESC'
-    end
-    object QryFiltroNFNFE_MODELO: TStringField
-      FieldName = 'NFE_MODELO'
-      FixedChar = True
-      Size = 5
-    end
-    object QryFiltroNFNFE_SERIE: TStringField
-      FieldName = 'NFE_SERIE'
-      FixedChar = True
-      Size = 5
-    end
-    object QryFiltroNFNF_ITEM_PED: TStringField
-      FieldName = 'NF_ITEM_PED'
-      FixedChar = True
-      Size = 15
-    end
-    object QryFiltroNFNF_ITEM_PEDIT: TIntegerField
-      FieldName = 'NF_ITEM_PEDIT'
     end
     object QryFiltroNFNF_DT_EMISSAO: TSQLTimeStampField
       FieldName = 'NF_DT_EMISSAO'
       Origin = 'NF_DT_EMISSAO'
     end
+    object QryFiltroNFENDERECO: TStringField
+      FieldName = 'ENDERECO'
+      Origin = 'ENDERECO'
+      FixedChar = True
+      Size = 70
+    end
+    object QryFiltroNFBAIRRO: TStringField
+      FieldName = 'BAIRRO'
+      Origin = 'BAIRRO'
+      FixedChar = True
+      Size = 40
+    end
+    object QryFiltroNFCEP: TStringField
+      FieldName = 'CEP'
+      Origin = 'CEP'
+      FixedChar = True
+      Size = 9
+    end
+    object QryFiltroNFTIPO: TStringField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      FixedChar = True
+      Size = 1
+    end
     object QryFiltroNFNF_DT_ENT_SAI: TSQLTimeStampField
       FieldName = 'NF_DT_ENT_SAI'
       Origin = 'NF_DT_ENT_SAI'
     end
-    object QryFiltroNFVLR_CREDICMS: TFloatField
-      FieldName = 'VLR_CREDICMS'
-      Origin = 'VLR_CREDICMS'
+    object QryFiltroNFCIDADE: TStringField
+      FieldName = 'CIDADE'
+      Origin = 'CIDADE'
+      FixedChar = True
+      Size = 40
+    end
+    object QryFiltroNFFONE: TStringField
+      FieldName = 'FONE'
+      Origin = 'FONE'
+      FixedChar = True
+      Size = 18
+    end
+    object QryFiltroNFUF: TStringField
+      FieldName = 'UF'
+      Origin = 'UF'
+      FixedChar = True
+      Size = 2
+    end
+    object QryFiltroNFIE: TStringField
+      FieldName = 'IE'
+      Origin = 'IE'
+      FixedChar = True
+      Size = 25
+    end
+    object QryFiltroNFNF_VLR_BASE_ICMS: TFloatField
+      FieldName = 'NF_VLR_BASE_ICMS'
+      Origin = 'NF_VLR_BASE_ICMS'
+    end
+    object QryFiltroNFNF_VLR_ICMS: TFloatField
+      FieldName = 'NF_VLR_ICMS'
+      Origin = 'NF_VLR_ICMS'
+    end
+    object QryFiltroNFNF_VLR_BASE_IPI: TFloatField
+      FieldName = 'NF_VLR_BASE_IPI'
+      Origin = 'NF_VLR_BASE_IPI'
+    end
+    object QryFiltroNFNF_VLR_BASE_ICMSUB: TFloatField
+      FieldName = 'NF_VLR_BASE_ICMSUB'
+      Origin = 'NF_VLR_BASE_ICMSUB'
+    end
+    object QryFiltroNFNF_VLR_IPI: TFloatField
+      FieldName = 'NF_VLR_IPI'
+      Origin = 'NF_VLR_IPI'
+    end
+    object QryFiltroNFNF_VLR_TOTAL: TFloatField
+      FieldName = 'NF_VLR_TOTAL'
+      Origin = 'NF_VLR_TOTAL'
+    end
+    object QryFiltroNFNF_VLR_TOTMERC: TFloatField
+      FieldName = 'NF_VLR_TOTMERC'
+      Origin = 'NF_VLR_TOTMERC'
+    end
+    object QryFiltroNFNF_VLR_FRETE: TFloatField
+      FieldName = 'NF_VLR_FRETE'
+      Origin = 'NF_VLR_FRETE'
+    end
+    object QryFiltroNFNF_VLR_SEGURO: TFloatField
+      FieldName = 'NF_VLR_SEGURO'
+      Origin = 'NF_VLR_SEGURO'
+    end
+    object QryFiltroNFNF_VLR_OUTRAS: TFloatField
+      FieldName = 'NF_VLR_OUTRAS'
+      Origin = 'NF_VLR_OUTRAS'
+    end
+    object QryFiltroNFENDERECO_NUM: TIntegerField
+      FieldName = 'ENDERECO_NUM'
+      Origin = 'ENDERECO_NUM'
+    end
+    object QryFiltroNFNF_FRETEXCONTA: TStringField
+      FieldName = 'NF_FRETEXCONTA'
+      Origin = 'NF_FRETEXCONTA'
+      FixedChar = True
+      Size = 1
+    end
+    object QryFiltroNFNF_PLACA: TStringField
+      FieldName = 'NF_PLACA'
+      Origin = 'NF_PLACA'
+      FixedChar = True
+      Size = 8
+    end
+    object QryFiltroNFNF_PLACA_UF: TStringField
+      FieldName = 'NF_PLACA_UF'
+      Origin = 'NF_PLACA_UF'
+      FixedChar = True
+      Size = 2
+    end
+    object QryFiltroNFNF_VOL_MARCA: TStringField
+      FieldName = 'NF_VOL_MARCA'
+      Origin = 'NF_VOL_MARCA'
+      FixedChar = True
+    end
+    object QryFiltroNFNF_VOL_NUMERO: TStringField
+      FieldName = 'NF_VOL_NUMERO'
+      Origin = 'NF_VOL_NUMERO'
+      FixedChar = True
+      Size = 10
+    end
+    object QryFiltroNFNF_VOL_QTDE: TIntegerField
+      FieldName = 'NF_VOL_QTDE'
+      Origin = 'NF_VOL_QTDE'
+    end
+    object QryFiltroNFENDERECO_COMPL: TStringField
+      FieldName = 'ENDERECO_COMPL'
+      Origin = 'ENDERECO_COMPL'
+      FixedChar = True
+    end
+    object QryFiltroNFNF_VOL_ESPECIE: TStringField
+      FieldName = 'NF_VOL_ESPECIE'
+      Origin = 'NF_VOL_ESPECIE'
+      FixedChar = True
+    end
+    object QryFiltroNFNF_VOL_PESO: TFloatField
+      FieldName = 'NF_VOL_PESO'
+      Origin = 'NF_VOL_PESO'
+    end
+    object QryFiltroNFNF_VOL_PESOBRUTO: TFloatField
+      FieldName = 'NF_VOL_PESOBRUTO'
+      Origin = 'NF_VOL_PESOBRUTO'
+    end
+    object QryFiltroNFDIAG_EMPRESA: TIntegerField
+      FieldName = 'DIAG_EMPRESA'
+      Origin = 'DIAG_EMPRESA'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryFiltroNFSERIE_ID: TIntegerField
+      FieldName = 'SERIE_ID'
+      Origin = 'SERIE_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryFiltroNFNF_NUMERO: TIntegerField
+      FieldName = 'NF_NUMERO'
+      Origin = 'NF_NUMERO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryFiltroNFNFE_FINALIDADE: TStringField
+      FieldName = 'NFE_FINALIDADE'
+      Origin = 'NFE_FINALIDADE'
+      FixedChar = True
+      Size = 1
+    end
+    object QryFiltroNFTEXTO_LIVRE: TStringField
+      FieldName = 'TEXTO_LIVRE'
+      Origin = 'TEXTO_LIVRE'
+      FixedChar = True
+      Size = 50
+    end
+    object QryFiltroNFRAZ_EMP: TStringField
+      FieldName = 'RAZ_EMP'
+      Origin = 'RAZ_EMP'
+      Size = 100
+    end
+    object QryFiltroNFEND_EMP: TStringField
+      FieldName = 'END_EMP'
+      Origin = 'END_EMP'
+      Size = 70
+    end
+    object QryFiltroNFCID_EMP: TStringField
+      FieldName = 'CID_EMP'
+      Origin = 'CID_EMP'
+      Size = 50
+    end
+    object QryFiltroNFUF_EMP: TStringField
+      FieldName = 'UF_EMP'
+      Origin = 'UF_EMP'
+      FixedChar = True
+      Size = 2
+    end
+    object QryFiltroNFNF_VLR_ICMSUB: TFloatField
+      FieldName = 'NF_VLR_ICMSUB'
+      Origin = 'NF_VLR_ICMSUB'
+    end
+    object QryFiltroNFTEL_EMP: TStringField
+      FieldName = 'TEL_EMP'
+      Origin = 'TEL_EMP'
+      FixedChar = True
+    end
+    object QryFiltroNFFAN_EMP: TStringField
+      FieldName = 'FAN_EMP'
+      Origin = 'FAN_EMP'
+      Size = 50
+    end
+    object QryFiltroNFNF_ID: TFDAutoIncField
+      FieldName = 'NF_ID'
+      Origin = 'NF_ID'
+      ReadOnly = True
+    end
+    object QryFiltroNFTRANSP_NOME: TStringField
+      FieldName = 'TRANSP_NOME'
+      Origin = 'TRANSP_NOME'
+      FixedChar = True
+      Size = 50
+    end
+    object QryFiltroNFTRANSP_CNPJ: TStringField
+      FieldName = 'TRANSP_CNPJ'
+      Origin = 'TRANSP_CNPJ'
+      FixedChar = True
+      Size = 25
+    end
+    object QryFiltroNFCODCID_IBGE: TIntegerField
+      FieldName = 'CODCID_IBGE'
+      Origin = 'CODCID_IBGE'
+    end
+    object QryFiltroNFUF_IBGE: TStringField
+      FieldName = 'UF_IBGE'
+      Origin = 'UF_IBGE'
+      FixedChar = True
+      Size = 2
+    end
+    object QryFiltroNFTRANSP_ENDERECO: TStringField
+      FieldName = 'TRANSP_ENDERECO'
+      Origin = 'TRANSP_ENDERECO'
+      FixedChar = True
+      Size = 50
+    end
+    object QryFiltroNFTRANSP_ID: TIntegerField
+      FieldName = 'TRANSP_ID'
+      Origin = 'TRANSP_ID'
+    end
+    object QryFiltroNFNFE_REFERENCIADA: TIntegerField
+      FieldName = 'NFE_REFERENCIADA'
+      Origin = 'NFE_REFERENCIADA'
+    end
+    object QryFiltroNFTRANSP_CEP: TStringField
+      FieldName = 'TRANSP_CEP'
+      Origin = 'TRANSP_CEP'
+      FixedChar = True
+      Size = 9
+    end
+    object QryFiltroNFTRANSP_CIDADE: TStringField
+      FieldName = 'TRANSP_CIDADE'
+      Origin = 'TRANSP_CIDADE'
+      FixedChar = True
+      Size = 40
+    end
+    object QryFiltroNFTRANSP_UF: TStringField
+      FieldName = 'TRANSP_UF'
+      Origin = 'TRANSP_UF'
+      FixedChar = True
+      Size = 2
+    end
+    object QryFiltroNFFPGTO_VPO: TStringField
+      FieldName = 'FPGTO_VPO'
+      Origin = 'FPGTO_VPO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryFiltroNFSEUPEDIDO: TStringField
+      FieldName = 'SEUPEDIDO'
+      Origin = 'SEUPEDIDO'
+      FixedChar = True
+    end
+    object QryFiltroNFFPAGTO: TStringField
+      FieldName = 'FPAGTO'
+      Origin = 'FPAGTO'
+      FixedChar = True
+    end
+    object QryFiltroNFNF_VLR_BASE_ISS: TFloatField
+      FieldName = 'NF_VLR_BASE_ISS'
+      Origin = 'NF_VLR_BASE_ISS'
+    end
+    object QryFiltroNFSITUACAO: TStringField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryFiltroNFNF_VLR_ISS: TFloatField
+      FieldName = 'NF_VLR_ISS'
+      Origin = 'NF_VLR_ISS'
+    end
+    object QryFiltroNFNF_VLR_TOTSERV: TFloatField
+      FieldName = 'NF_VLR_TOTSERV'
+      Origin = 'NF_VLR_TOTSERV'
+    end
+    object QryFiltroNFNF_VLR_TOTDESC: TFloatField
+      FieldName = 'NF_VLR_TOTDESC'
+      Origin = 'NF_VLR_TOTDESC'
+    end
+    object QryFiltroNFNFE_MODELO: TStringField
+      FieldName = 'NFE_MODELO'
+      Origin = 'NFE_MODELO'
+      FixedChar = True
+      Size = 5
+    end
+    object QryFiltroNFNFE_SERIE: TStringField
+      FieldName = 'NFE_SERIE'
+      Origin = 'NFE_SERIE'
+      FixedChar = True
+      Size = 5
     end
     object QryFiltroNFNFE_PROTOCOLO: TStringField
       FieldName = 'NFE_PROTOCOLO'
@@ -3786,6 +3783,12 @@ object DMD_PRO00315: TDMD_PRO00315
     object QryFiltroNFGESTOR_CLIENTE: TIntegerField
       FieldName = 'GESTOR_CLIENTE'
       Origin = 'GESTOR_CLIENTE'
+    end
+    object QryFiltroNFlknfe_ES: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'lknfe_ES'
+      Size = 1
+      Calculated = True
     end
   end
   object QryFiltroDuplicata: TFDQuery
@@ -6208,8 +6211,8 @@ object DMD_PRO00315: TDMD_PRO00315
       '           ,:tpCredPresIBSZFM'
       '           ,:vCredPresIBSZFM'
       '           ,:vIBS)')
-    Left = 244
-    Top = 537
+    Left = 252
+    Top = 497
     ParamData = <
       item
         Name = 'NF_ID'
@@ -7978,7 +7981,7 @@ object DMD_PRO00315: TDMD_PRO00315
     end
   end
   object DsrFiltroNF: TDataSource
-    DataSet = QryFiltroNF
+    DataSet = QryImprimeNF
     Left = 128
     Top = 170
   end
@@ -7991,5 +7994,866 @@ object DMD_PRO00315: TDMD_PRO00315
     DataSet = QryFiltroDuplicata
     Left = 136
     Top = 282
+  end
+  object QryTipoCobr: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      'SELECT Cod_TpCobr, Desc_TpCobr'
+      'FROM Gestor_TipoCobr Gestor_tipocobr'
+      'order by Desc_TpCobr')
+    Left = 252
+    Top = 566
+    object QryTipoCobrCod_TpCobr: TStringField
+      FieldName = 'Cod_TpCobr'
+      Origin = 'Cod_TpCobr'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      FixedChar = True
+      Size = 5
+    end
+    object QryTipoCobrDesc_TpCobr: TStringField
+      FieldName = 'Desc_TpCobr'
+      Origin = 'Desc_TpCobr'
+      Required = True
+      FixedChar = True
+      Size = 40
+    end
+  end
+  object DsrTipoCobr: TDataSource
+    DataSet = QryTipoCobr
+    Left = 252
+    Top = 622
+  end
+  object QryInsereReceber: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      
+        'SELECT  Documento, Cod_Cliente, FILIAL, IDCTREC, RefOriginal, Re' +
+        'fOrigem, Parcela, DtEmissao, DtVencimento, Dias, Banco,'
+      
+        '              Portador, EspDoc, TipoCobr, Categ, Class, ValorDoc' +
+        'umento, SaldoDocumento, ISS, PIS, COFINS, IR, CSLL, OUTROS, '
+      
+        '             Obs, Posicao, CentroCusto, ContaContabil, IDORIG, I' +
+        'DREC, DataPgto, FLAGSELECAO, ContaContabilPgto, '
+      
+        '             ContaContabilJuros, FlagSituacao, PA, UNIDADE, NF, ' +
+        'EMPRESA_FAT, AVALIACAO, FATURA, NOSSONRO, CAUCAO, '
+      
+        '             DTPROC, CDDEST, CDORIG, CTRC, OBSATRASO, NOSSONROCB' +
+        ', GEROUCOB, DIASPROTESTO, CTRL, USR, VENDEDOR,'
+      '             NF_ID, VALOR_DESCONTO, PEDID'
+      'FROM  GESTOR_CTARECEBER'
+      'WHERE FILIAL < 0')
+    Left = 240
+    Top = 371
+    object QryInsereReceberDocumento: TStringField
+      FieldName = 'Documento'
+      Origin = 'Documento'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      FixedChar = True
+      Size = 40
+    end
+    object QryInsereReceberCod_Cliente: TIntegerField
+      FieldName = 'Cod_Cliente'
+      Origin = 'Cod_Cliente'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryInsereReceberFILIAL: TIntegerField
+      FieldName = 'FILIAL'
+      Origin = 'FILIAL'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryInsereReceberIDCTREC: TFDAutoIncField
+      FieldName = 'IDCTREC'
+      Origin = 'IDCTREC'
+      ReadOnly = True
+    end
+    object QryInsereReceberRefOriginal: TStringField
+      FieldName = 'RefOriginal'
+      Origin = 'RefOriginal'
+      FixedChar = True
+      Size = 50
+    end
+    object QryInsereReceberRefOrigem: TStringField
+      FieldName = 'RefOrigem'
+      Origin = 'RefOrigem'
+      Required = True
+      FixedChar = True
+      Size = 50
+    end
+    object QryInsereReceberParcela: TIntegerField
+      FieldName = 'Parcela'
+      Origin = 'Parcela'
+    end
+    object QryInsereReceberDtEmissao: TSQLTimeStampField
+      FieldName = 'DtEmissao'
+      Origin = 'DtEmissao'
+    end
+    object QryInsereReceberDtVencimento: TSQLTimeStampField
+      FieldName = 'DtVencimento'
+      Origin = 'DtVencimento'
+    end
+    object QryInsereReceberDias: TIntegerField
+      FieldName = 'Dias'
+      Origin = 'Dias'
+    end
+    object QryInsereReceberBanco: TIntegerField
+      FieldName = 'Banco'
+      Origin = 'Banco'
+    end
+    object QryInsereReceberPortador: TStringField
+      FieldName = 'Portador'
+      Origin = 'Portador'
+      FixedChar = True
+      Size = 5
+    end
+    object QryInsereReceberEspDoc: TStringField
+      FieldName = 'EspDoc'
+      Origin = 'EspDoc'
+      FixedChar = True
+      Size = 5
+    end
+    object QryInsereReceberTipoCobr: TStringField
+      FieldName = 'TipoCobr'
+      Origin = 'TipoCobr'
+      FixedChar = True
+      Size = 5
+    end
+    object QryInsereReceberCateg: TStringField
+      FieldName = 'Categ'
+      Origin = 'Categ'
+      FixedChar = True
+      Size = 5
+    end
+    object QryInsereReceberClass: TStringField
+      FieldName = 'Class'
+      Origin = 'Class'
+      FixedChar = True
+      Size = 5
+    end
+    object QryInsereReceberValorDocumento: TFloatField
+      FieldName = 'ValorDocumento'
+      Origin = 'ValorDocumento'
+      Required = True
+    end
+    object QryInsereReceberSaldoDocumento: TFloatField
+      FieldName = 'SaldoDocumento'
+      Origin = 'SaldoDocumento'
+    end
+    object QryInsereReceberISS: TFloatField
+      FieldName = 'ISS'
+      Origin = 'ISS'
+    end
+    object QryInsereReceberPIS: TFloatField
+      FieldName = 'PIS'
+      Origin = 'PIS'
+    end
+    object QryInsereReceberCOFINS: TFloatField
+      FieldName = 'COFINS'
+      Origin = 'COFINS'
+    end
+    object QryInsereReceberIR: TFloatField
+      FieldName = 'IR'
+      Origin = 'IR'
+    end
+    object QryInsereReceberCSLL: TFloatField
+      FieldName = 'CSLL'
+      Origin = 'CSLL'
+    end
+    object QryInsereReceberOUTROS: TFloatField
+      FieldName = 'OUTROS'
+      Origin = 'OUTROS'
+    end
+    object QryInsereReceberObs: TMemoField
+      FieldName = 'Obs'
+      Origin = 'Obs'
+      BlobType = ftMemo
+    end
+    object QryInsereReceberPosicao: TStringField
+      FieldName = 'Posicao'
+      Origin = 'Posicao'
+      Required = True
+      FixedChar = True
+      Size = 15
+    end
+    object QryInsereReceberCentroCusto: TIntegerField
+      FieldName = 'CentroCusto'
+      Origin = 'CentroCusto'
+    end
+    object QryInsereReceberContaContabil: TIntegerField
+      FieldName = 'ContaContabil'
+      Origin = 'ContaContabil'
+    end
+    object QryInsereReceberIDORIG: TStringField
+      FieldName = 'IDORIG'
+      Origin = 'IDORIG'
+      FixedChar = True
+      Size = 15
+    end
+    object QryInsereReceberIDREC: TStringField
+      FieldName = 'IDREC'
+      Origin = 'IDREC'
+      FixedChar = True
+      Size = 15
+    end
+    object QryInsereReceberDataPgto: TSQLTimeStampField
+      FieldName = 'DataPgto'
+      Origin = 'DataPgto'
+    end
+    object QryInsereReceberFLAGSELECAO: TStringField
+      FieldName = 'FLAGSELECAO'
+      Origin = 'FLAGSELECAO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryInsereReceberContaContabilPgto: TIntegerField
+      FieldName = 'ContaContabilPgto'
+      Origin = 'ContaContabilPgto'
+    end
+    object QryInsereReceberContaContabilJuros: TIntegerField
+      FieldName = 'ContaContabilJuros'
+      Origin = 'ContaContabilJuros'
+    end
+    object QryInsereReceberFlagSituacao: TStringField
+      FieldName = 'FlagSituacao'
+      Origin = 'FlagSituacao'
+      FixedChar = True
+      Size = 1
+    end
+    object QryInsereReceberPA: TIntegerField
+      FieldName = 'PA'
+      Origin = 'PA'
+    end
+    object QryInsereReceberUNIDADE: TIntegerField
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+    end
+    object QryInsereReceberNF: TStringField
+      FieldName = 'NF'
+      Origin = 'NF'
+      FixedChar = True
+      Size = 10
+    end
+    object QryInsereReceberEMPRESA_FAT: TIntegerField
+      FieldName = 'EMPRESA_FAT'
+      Origin = 'EMPRESA_FAT'
+    end
+    object QryInsereReceberAVALIACAO: TStringField
+      FieldName = 'AVALIACAO'
+      Origin = 'AVALIACAO'
+      FixedChar = True
+      Size = 15
+    end
+    object QryInsereReceberFATURA: TStringField
+      FieldName = 'FATURA'
+      Origin = 'FATURA'
+      FixedChar = True
+    end
+    object QryInsereReceberNOSSONRO: TStringField
+      FieldName = 'NOSSONRO'
+      Origin = 'NOSSONRO'
+      FixedChar = True
+    end
+    object QryInsereReceberCAUCAO: TStringField
+      FieldName = 'CAUCAO'
+      Origin = 'CAUCAO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryInsereReceberDTPROC: TSQLTimeStampField
+      FieldName = 'DTPROC'
+      Origin = 'DTPROC'
+    end
+    object QryInsereReceberCDDEST: TIntegerField
+      FieldName = 'CDDEST'
+      Origin = 'CDDEST'
+    end
+    object QryInsereReceberCDORIG: TIntegerField
+      FieldName = 'CDORIG'
+      Origin = 'CDORIG'
+    end
+    object QryInsereReceberCTRC: TIntegerField
+      FieldName = 'CTRC'
+      Origin = 'CTRC'
+    end
+    object QryInsereReceberOBSATRASO: TStringField
+      FieldName = 'OBSATRASO'
+      Origin = 'OBSATRASO'
+      FixedChar = True
+      Size = 100
+    end
+    object QryInsereReceberNOSSONROCB: TStringField
+      FieldName = 'NOSSONROCB'
+      Origin = 'NOSSONROCB'
+      FixedChar = True
+      Size = 40
+    end
+    object QryInsereReceberGEROUCOB: TStringField
+      FieldName = 'GEROUCOB'
+      Origin = 'GEROUCOB'
+      FixedChar = True
+      Size = 1
+    end
+    object QryInsereReceberDIASPROTESTO: TIntegerField
+      FieldName = 'DIASPROTESTO'
+      Origin = 'DIASPROTESTO'
+    end
+    object QryInsereReceberCTRL: TIntegerField
+      FieldName = 'CTRL'
+      Origin = 'CTRL'
+    end
+    object QryInsereReceberUSR: TIntegerField
+      FieldName = 'USR'
+      Origin = 'USR'
+    end
+    object QryInsereReceberVENDEDOR: TIntegerField
+      FieldName = 'VENDEDOR'
+      Origin = 'VENDEDOR'
+    end
+    object QryInsereReceberNF_ID: TIntegerField
+      FieldName = 'NF_ID'
+      Origin = 'NF_ID'
+    end
+    object QryInsereReceberVALOR_DESCONTO: TFloatField
+      FieldName = 'VALOR_DESCONTO'
+      Origin = 'VALOR_DESCONTO'
+    end
+    object QryInsereReceberPEDID: TIntegerField
+      FieldName = 'PEDID'
+      Origin = 'PEDID'
+    end
+  end
+  object QryImprimeNF: TFDQuery
+    MasterFields = 'NF_ID'
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      
+        'SELECT NF_ID, NF_NUMERO, SERIE_ID, DIAG_EMPRESA, CFOP_ID, TRANSP' +
+        '_ID, GESTOR_CLIENTE, NOME, TEXTO_LEGAL_ID, VENDEDOR_ID, SEUPEDID' +
+        'O, PEDIDO_ID, VIA_TRANSP_ID, NF_DT_EMISSAO, NF_DT_ENT_SAI, NF_AL' +
+        'IQ_ICMS, '
+      
+        '                  NF_VLR_TOTAL, NF_ALIQ_ISS, NF_VLR_TOTMERC, NF_' +
+        'VLR_TOTSERV, NF_VLR_BASE_ICMS, NF_VLR_BASE_IPI, NF_VLR_BASE_ISS,' +
+        ' NF_VLR_BASE_ICMSUB, NF_VLR_ICMS, NF_VLR_IPI, NF_VLR_ISS, NF_VLR' +
+        '_ICMSUB, '
+      
+        '                  NF_VLR_FRETE, NF_VLR_SEGURO, NF_VLR_OUTRAS, NF' +
+        '_FRETEXCONTA, NF_PLACA, NF_PLACA_UF, NF_OBS1, NF_OBS2, NF_OBS3, ' +
+        'NF_OBS4, NF_OBS5, NF_OBS6, NF_OBS7, NF_VOL_MARCA, NF_VOL_NUMERO,' +
+        ' NF_VOL_QTDE, '
+      
+        '                  NF_VOL_ESPECIE, NF_VOL_PESO, NF_VOL_PESOBRUTO,' +
+        ' STATUS, IDORIG, CALCULA_IMPOSTO, NF_FISCAL1, NF_FISCAL2, NF_FIS' +
+        'CAL3, NF_FISCAL4, NF_FISCAL5, NF_FISCAL6, ENDERECO, ENDERECO_NUM' +
+        ', ENDERECO_COMPL, '
+      
+        '                  CODCID_IBGE, UF_IBGE, CIDADE, UF, CNPJ, CEP, B' +
+        'AIRRO, IE, FONE, FPAGTO, FPGTO_VPO, TIPO, TRANSPORTADORA, NFE_MO' +
+        'DELO, NFE_SERIE, NFE_FINALIDADE, NFE_RECIBO, NFE_PROTOCOLO, NFE_' +
+        'IDNOTA, NFE_DTENVIO, '
+      
+        '                  NFE_STATUS, NFE_CODSTATUS, NFE_NROCANCELAMENTO' +
+        ', SITUACAO, NFE_REFERENCIADA, NF_VLR_TOTDESC, NF_XML, VENDEDOR2,' +
+        ' ENVIADO_XML, VLR_RETENCAO, MANIFESTO, VLR_FCP, NSU, VLR_IBS, VL' +
+        'R_CBS, VLR_IS, '
+      '                  VLR_VTOT'
+      'FROM     NOTA_FISCAL '
+      'WHERE NF_ID = :NF_ID')
+    Left = 89
+    Top = 173
+    ParamData = <
+      item
+        Name = 'NF_ID'
+        DataType = ftAutoInc
+        ParamType = ptInput
+        Size = 4
+      end>
+    object QryImprimeNFNF_ID: TFDAutoIncField
+      FieldName = 'NF_ID'
+      Origin = 'NF_ID'
+      ReadOnly = True
+    end
+    object QryImprimeNFNF_NUMERO: TIntegerField
+      FieldName = 'NF_NUMERO'
+      Origin = 'NF_NUMERO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryImprimeNFSERIE_ID: TIntegerField
+      FieldName = 'SERIE_ID'
+      Origin = 'SERIE_ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryImprimeNFDIAG_EMPRESA: TIntegerField
+      FieldName = 'DIAG_EMPRESA'
+      Origin = 'DIAG_EMPRESA'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QryImprimeNFCFOP_ID: TIntegerField
+      FieldName = 'CFOP_ID'
+      Origin = 'CFOP_ID'
+    end
+    object QryImprimeNFTRANSP_ID: TIntegerField
+      FieldName = 'TRANSP_ID'
+      Origin = 'TRANSP_ID'
+    end
+    object QryImprimeNFGESTOR_CLIENTE: TIntegerField
+      FieldName = 'GESTOR_CLIENTE'
+      Origin = 'GESTOR_CLIENTE'
+    end
+    object QryImprimeNFNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      FixedChar = True
+      Size = 100
+    end
+    object QryImprimeNFTEXTO_LEGAL_ID: TIntegerField
+      FieldName = 'TEXTO_LEGAL_ID'
+      Origin = 'TEXTO_LEGAL_ID'
+    end
+    object QryImprimeNFVENDEDOR_ID: TIntegerField
+      FieldName = 'VENDEDOR_ID'
+      Origin = 'VENDEDOR_ID'
+    end
+    object QryImprimeNFSEUPEDIDO: TStringField
+      FieldName = 'SEUPEDIDO'
+      Origin = 'SEUPEDIDO'
+      FixedChar = True
+    end
+    object QryImprimeNFPEDIDO_ID: TIntegerField
+      FieldName = 'PEDIDO_ID'
+      Origin = 'PEDIDO_ID'
+    end
+    object QryImprimeNFVIA_TRANSP_ID: TIntegerField
+      FieldName = 'VIA_TRANSP_ID'
+      Origin = 'VIA_TRANSP_ID'
+    end
+    object QryImprimeNFNF_DT_EMISSAO: TSQLTimeStampField
+      FieldName = 'NF_DT_EMISSAO'
+      Origin = 'NF_DT_EMISSAO'
+    end
+    object QryImprimeNFNF_DT_ENT_SAI: TSQLTimeStampField
+      FieldName = 'NF_DT_ENT_SAI'
+      Origin = 'NF_DT_ENT_SAI'
+    end
+    object QryImprimeNFNF_ALIQ_ICMS: TFloatField
+      FieldName = 'NF_ALIQ_ICMS'
+      Origin = 'NF_ALIQ_ICMS'
+    end
+    object QryImprimeNFNF_VLR_TOTAL: TFloatField
+      FieldName = 'NF_VLR_TOTAL'
+      Origin = 'NF_VLR_TOTAL'
+    end
+    object QryImprimeNFNF_ALIQ_ISS: TFloatField
+      FieldName = 'NF_ALIQ_ISS'
+      Origin = 'NF_ALIQ_ISS'
+    end
+    object QryImprimeNFNF_VLR_TOTMERC: TFloatField
+      FieldName = 'NF_VLR_TOTMERC'
+      Origin = 'NF_VLR_TOTMERC'
+    end
+    object QryImprimeNFNF_VLR_TOTSERV: TFloatField
+      FieldName = 'NF_VLR_TOTSERV'
+      Origin = 'NF_VLR_TOTSERV'
+    end
+    object QryImprimeNFNF_VLR_BASE_ICMS: TFloatField
+      FieldName = 'NF_VLR_BASE_ICMS'
+      Origin = 'NF_VLR_BASE_ICMS'
+    end
+    object QryImprimeNFNF_VLR_BASE_IPI: TFloatField
+      FieldName = 'NF_VLR_BASE_IPI'
+      Origin = 'NF_VLR_BASE_IPI'
+    end
+    object QryImprimeNFNF_VLR_BASE_ISS: TFloatField
+      FieldName = 'NF_VLR_BASE_ISS'
+      Origin = 'NF_VLR_BASE_ISS'
+    end
+    object QryImprimeNFNF_VLR_BASE_ICMSUB: TFloatField
+      FieldName = 'NF_VLR_BASE_ICMSUB'
+      Origin = 'NF_VLR_BASE_ICMSUB'
+    end
+    object QryImprimeNFNF_VLR_ICMS: TFloatField
+      FieldName = 'NF_VLR_ICMS'
+      Origin = 'NF_VLR_ICMS'
+    end
+    object QryImprimeNFNF_VLR_IPI: TFloatField
+      FieldName = 'NF_VLR_IPI'
+      Origin = 'NF_VLR_IPI'
+    end
+    object QryImprimeNFNF_VLR_ISS: TFloatField
+      FieldName = 'NF_VLR_ISS'
+      Origin = 'NF_VLR_ISS'
+    end
+    object QryImprimeNFNF_VLR_ICMSUB: TFloatField
+      FieldName = 'NF_VLR_ICMSUB'
+      Origin = 'NF_VLR_ICMSUB'
+    end
+    object QryImprimeNFNF_VLR_FRETE: TFloatField
+      FieldName = 'NF_VLR_FRETE'
+      Origin = 'NF_VLR_FRETE'
+    end
+    object QryImprimeNFNF_VLR_SEGURO: TFloatField
+      FieldName = 'NF_VLR_SEGURO'
+      Origin = 'NF_VLR_SEGURO'
+    end
+    object QryImprimeNFNF_VLR_OUTRAS: TFloatField
+      FieldName = 'NF_VLR_OUTRAS'
+      Origin = 'NF_VLR_OUTRAS'
+    end
+    object QryImprimeNFNF_FRETEXCONTA: TStringField
+      FieldName = 'NF_FRETEXCONTA'
+      Origin = 'NF_FRETEXCONTA'
+      FixedChar = True
+      Size = 1
+    end
+    object QryImprimeNFNF_PLACA: TStringField
+      FieldName = 'NF_PLACA'
+      Origin = 'NF_PLACA'
+      FixedChar = True
+      Size = 8
+    end
+    object QryImprimeNFNF_PLACA_UF: TStringField
+      FieldName = 'NF_PLACA_UF'
+      Origin = 'NF_PLACA_UF'
+      FixedChar = True
+      Size = 2
+    end
+    object QryImprimeNFNF_OBS1: TStringField
+      FieldName = 'NF_OBS1'
+      Origin = 'NF_OBS1'
+      FixedChar = True
+      Size = 150
+    end
+    object QryImprimeNFNF_OBS2: TStringField
+      FieldName = 'NF_OBS2'
+      Origin = 'NF_OBS2'
+      FixedChar = True
+      Size = 150
+    end
+    object QryImprimeNFNF_OBS3: TStringField
+      FieldName = 'NF_OBS3'
+      Origin = 'NF_OBS3'
+      FixedChar = True
+      Size = 150
+    end
+    object QryImprimeNFNF_OBS4: TStringField
+      FieldName = 'NF_OBS4'
+      Origin = 'NF_OBS4'
+      FixedChar = True
+      Size = 150
+    end
+    object QryImprimeNFNF_OBS5: TStringField
+      FieldName = 'NF_OBS5'
+      Origin = 'NF_OBS5'
+      FixedChar = True
+      Size = 150
+    end
+    object QryImprimeNFNF_OBS6: TStringField
+      FieldName = 'NF_OBS6'
+      Origin = 'NF_OBS6'
+      FixedChar = True
+      Size = 150
+    end
+    object QryImprimeNFNF_OBS7: TStringField
+      FieldName = 'NF_OBS7'
+      Origin = 'NF_OBS7'
+      FixedChar = True
+      Size = 150
+    end
+    object QryImprimeNFNF_VOL_MARCA: TStringField
+      FieldName = 'NF_VOL_MARCA'
+      Origin = 'NF_VOL_MARCA'
+      FixedChar = True
+    end
+    object QryImprimeNFNF_VOL_NUMERO: TStringField
+      FieldName = 'NF_VOL_NUMERO'
+      Origin = 'NF_VOL_NUMERO'
+      FixedChar = True
+      Size = 10
+    end
+    object QryImprimeNFNF_VOL_QTDE: TIntegerField
+      FieldName = 'NF_VOL_QTDE'
+      Origin = 'NF_VOL_QTDE'
+    end
+    object QryImprimeNFNF_VOL_ESPECIE: TStringField
+      FieldName = 'NF_VOL_ESPECIE'
+      Origin = 'NF_VOL_ESPECIE'
+      FixedChar = True
+    end
+    object QryImprimeNFNF_VOL_PESO: TFloatField
+      FieldName = 'NF_VOL_PESO'
+      Origin = 'NF_VOL_PESO'
+    end
+    object QryImprimeNFNF_VOL_PESOBRUTO: TFloatField
+      FieldName = 'NF_VOL_PESOBRUTO'
+      Origin = 'NF_VOL_PESOBRUTO'
+    end
+    object QryImprimeNFSTATUS: TStringField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      FixedChar = True
+      Size = 1
+    end
+    object QryImprimeNFIDORIG: TStringField
+      FieldName = 'IDORIG'
+      Origin = 'IDORIG'
+      FixedChar = True
+      Size = 15
+    end
+    object QryImprimeNFCALCULA_IMPOSTO: TStringField
+      FieldName = 'CALCULA_IMPOSTO'
+      Origin = 'CALCULA_IMPOSTO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryImprimeNFNF_FISCAL1: TStringField
+      FieldName = 'NF_FISCAL1'
+      Origin = 'NF_FISCAL1'
+      FixedChar = True
+      Size = 100
+    end
+    object QryImprimeNFNF_FISCAL2: TStringField
+      FieldName = 'NF_FISCAL2'
+      Origin = 'NF_FISCAL2'
+      FixedChar = True
+      Size = 100
+    end
+    object QryImprimeNFNF_FISCAL3: TStringField
+      FieldName = 'NF_FISCAL3'
+      Origin = 'NF_FISCAL3'
+      FixedChar = True
+      Size = 100
+    end
+    object QryImprimeNFNF_FISCAL4: TStringField
+      FieldName = 'NF_FISCAL4'
+      Origin = 'NF_FISCAL4'
+      FixedChar = True
+      Size = 100
+    end
+    object QryImprimeNFNF_FISCAL5: TStringField
+      FieldName = 'NF_FISCAL5'
+      Origin = 'NF_FISCAL5'
+      FixedChar = True
+      Size = 100
+    end
+    object QryImprimeNFNF_FISCAL6: TStringField
+      FieldName = 'NF_FISCAL6'
+      Origin = 'NF_FISCAL6'
+      FixedChar = True
+      Size = 100
+    end
+    object QryImprimeNFENDERECO: TStringField
+      FieldName = 'ENDERECO'
+      Origin = 'ENDERECO'
+      FixedChar = True
+      Size = 70
+    end
+    object QryImprimeNFENDERECO_NUM: TIntegerField
+      FieldName = 'ENDERECO_NUM'
+      Origin = 'ENDERECO_NUM'
+    end
+    object QryImprimeNFENDERECO_COMPL: TStringField
+      FieldName = 'ENDERECO_COMPL'
+      Origin = 'ENDERECO_COMPL'
+      FixedChar = True
+    end
+    object QryImprimeNFCODCID_IBGE: TIntegerField
+      FieldName = 'CODCID_IBGE'
+      Origin = 'CODCID_IBGE'
+    end
+    object QryImprimeNFUF_IBGE: TStringField
+      FieldName = 'UF_IBGE'
+      Origin = 'UF_IBGE'
+      FixedChar = True
+      Size = 2
+    end
+    object QryImprimeNFCIDADE: TStringField
+      FieldName = 'CIDADE'
+      Origin = 'CIDADE'
+      FixedChar = True
+      Size = 40
+    end
+    object QryImprimeNFUF: TStringField
+      FieldName = 'UF'
+      Origin = 'UF'
+      FixedChar = True
+      Size = 2
+    end
+    object QryImprimeNFCNPJ: TStringField
+      FieldName = 'CNPJ'
+      Origin = 'CNPJ'
+      FixedChar = True
+      Size = 18
+    end
+    object QryImprimeNFCEP: TStringField
+      FieldName = 'CEP'
+      Origin = 'CEP'
+      FixedChar = True
+      Size = 9
+    end
+    object QryImprimeNFBAIRRO: TStringField
+      FieldName = 'BAIRRO'
+      Origin = 'BAIRRO'
+      FixedChar = True
+      Size = 40
+    end
+    object QryImprimeNFIE: TStringField
+      FieldName = 'IE'
+      Origin = 'IE'
+      FixedChar = True
+      Size = 25
+    end
+    object QryImprimeNFFONE: TStringField
+      FieldName = 'FONE'
+      Origin = 'FONE'
+      FixedChar = True
+      Size = 18
+    end
+    object QryImprimeNFFPAGTO: TStringField
+      FieldName = 'FPAGTO'
+      Origin = 'FPAGTO'
+      FixedChar = True
+    end
+    object QryImprimeNFFPGTO_VPO: TStringField
+      FieldName = 'FPGTO_VPO'
+      Origin = 'FPGTO_VPO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryImprimeNFTIPO: TStringField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryImprimeNFTRANSPORTADORA: TStringField
+      FieldName = 'TRANSPORTADORA'
+      Origin = 'TRANSPORTADORA'
+      FixedChar = True
+      Size = 100
+    end
+    object QryImprimeNFNFE_MODELO: TStringField
+      FieldName = 'NFE_MODELO'
+      Origin = 'NFE_MODELO'
+      FixedChar = True
+      Size = 5
+    end
+    object QryImprimeNFNFE_SERIE: TStringField
+      FieldName = 'NFE_SERIE'
+      Origin = 'NFE_SERIE'
+      FixedChar = True
+      Size = 5
+    end
+    object QryImprimeNFNFE_FINALIDADE: TStringField
+      FieldName = 'NFE_FINALIDADE'
+      Origin = 'NFE_FINALIDADE'
+      FixedChar = True
+      Size = 1
+    end
+    object QryImprimeNFNFE_RECIBO: TStringField
+      FieldName = 'NFE_RECIBO'
+      Origin = 'NFE_RECIBO'
+      FixedChar = True
+      Size = 15
+    end
+    object QryImprimeNFNFE_PROTOCOLO: TStringField
+      FieldName = 'NFE_PROTOCOLO'
+      Origin = 'NFE_PROTOCOLO'
+      FixedChar = True
+      Size = 15
+    end
+    object QryImprimeNFNFE_IDNOTA: TStringField
+      FieldName = 'NFE_IDNOTA'
+      Origin = 'NFE_IDNOTA'
+      FixedChar = True
+      Size = 50
+    end
+    object QryImprimeNFNFE_DTENVIO: TSQLTimeStampField
+      FieldName = 'NFE_DTENVIO'
+      Origin = 'NFE_DTENVIO'
+    end
+    object QryImprimeNFNFE_STATUS: TStringField
+      FieldName = 'NFE_STATUS'
+      Origin = 'NFE_STATUS'
+      FixedChar = True
+    end
+    object QryImprimeNFNFE_CODSTATUS: TIntegerField
+      FieldName = 'NFE_CODSTATUS'
+      Origin = 'NFE_CODSTATUS'
+    end
+    object QryImprimeNFNFE_NROCANCELAMENTO: TStringField
+      FieldName = 'NFE_NROCANCELAMENTO'
+      Origin = 'NFE_NROCANCELAMENTO'
+      FixedChar = True
+      Size = 15
+    end
+    object QryImprimeNFSITUACAO: TStringField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+      FixedChar = True
+      Size = 1
+    end
+    object QryImprimeNFNFE_REFERENCIADA: TIntegerField
+      FieldName = 'NFE_REFERENCIADA'
+      Origin = 'NFE_REFERENCIADA'
+    end
+    object QryImprimeNFNF_VLR_TOTDESC: TFloatField
+      FieldName = 'NF_VLR_TOTDESC'
+      Origin = 'NF_VLR_TOTDESC'
+    end
+    object QryImprimeNFNF_XML: TMemoField
+      FieldName = 'NF_XML'
+      Origin = 'NF_XML'
+      BlobType = ftMemo
+    end
+    object QryImprimeNFVENDEDOR2: TIntegerField
+      FieldName = 'VENDEDOR2'
+      Origin = 'VENDEDOR2'
+    end
+    object QryImprimeNFENVIADO_XML: TStringField
+      FieldName = 'ENVIADO_XML'
+      Origin = 'ENVIADO_XML'
+      FixedChar = True
+      Size = 1
+    end
+    object QryImprimeNFVLR_RETENCAO: TFloatField
+      FieldName = 'VLR_RETENCAO'
+      Origin = 'VLR_RETENCAO'
+    end
+    object QryImprimeNFMANIFESTO: TIntegerField
+      FieldName = 'MANIFESTO'
+      Origin = 'MANIFESTO'
+    end
+    object QryImprimeNFVLR_FCP: TFloatField
+      FieldName = 'VLR_FCP'
+      Origin = 'VLR_FCP'
+    end
+    object QryImprimeNFNSU: TIntegerField
+      FieldName = 'NSU'
+      Origin = 'NSU'
+    end
+    object QryImprimeNFVLR_IBS: TFloatField
+      FieldName = 'VLR_IBS'
+      Origin = 'VLR_IBS'
+    end
+    object QryImprimeNFVLR_CBS: TFloatField
+      FieldName = 'VLR_CBS'
+      Origin = 'VLR_CBS'
+    end
+    object QryImprimeNFVLR_IS: TFloatField
+      FieldName = 'VLR_IS'
+      Origin = 'VLR_IS'
+    end
+    object QryImprimeNFVLR_VTOT: TFloatField
+      FieldName = 'VLR_VTOT'
+      Origin = 'VLR_VTOT'
+    end
   end
 end

@@ -1348,6 +1348,82 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
         Height = 71
         Align = alBottom
         TabOrder = 1
+        object btc_tela: TcxButton
+          Left = 479
+          Top = 18
+          Width = 133
+          Height = 31
+          Cursor = crHandPoint
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Caption = '&Imprimir tela'
+          Colors.Normal = clMoneyGreen
+          LookAndFeel.Kind = lfOffice11
+          OptionsImage.Glyph.SourceDPI = 96
+          OptionsImage.Glyph.Data = {
+            89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+            6100000018744558745469746C65005072696E745469746C65733B5072696E74
+            3B393703740000021449444154785E8D92DF4B53611C87DFEC97844291778BFE
+            842E22EC26BA88208A2090AE461725CBA0854ABF569996ADB45A31CC68A5582A
+            1969184B122F1296198DEAC60A77A36158B6C934CF697AD6D0FAF47E5E5E5E56
+            8DF0C0C3D9BEDF87673B8757F8DACB86CBDBB762B1D017422C93E4095EA5B736
+            E3F9688581D2FFBED397819526E0BEBE117DB18386038DC5EA1E19F16124D983
+            F0EB66DE0DDDAFEE30B04AB254053C57CAB0B77EC33F740D86107CD88A6B2D6F
+            FEA0EA662B0385EA31789D0E3CC58C95427CF21B26125308B444F0259E8465A7
+            50177A89859FBFB2E18C813526E0BBDC033BE52031652391B4101D1A476A2E2D
+            03B3A8093E5381F1C9EF063963A0C8044ED63DC1C5504431F0760C9DBDC3680B
+            C75052EAC7894B6115F814B70D9C7147E7DEE30FB7C5317F1873E97924ADB4FC
+            E50C9A3A87E0FC58C0EE7DD5F05675A8C0D857CBC0197774E88ACAF3DD4A9A75
+            E6E1A43308DE8DC24A65B0BDE4388AB77972C21D1DBAC27BE6417379CD2390DE
+            FEF7B870A31FF169079ECA00B6EC3C9C134FC5553ACA15FA501448564B5C7CC6
+            D1097B51D015FA6DAE90E44BD61EF275E0DDC769C5A61DA77261F674195822C9
+            D327ABD0ED6D423436A9A86D1C4472C6416DDF67C2CF9C993D5D71E46C9781FF
+            6297BBBE6DCFFE0690730D2F18C846CDF41E74FF0E2CD7A7CC25597FD41FBE5F
+            1D1C40369C714747B9000C7C1C1DC9D72FB6488BEB342E3D2BA043F737ED4554
+            593261488E0000000049454E44AE426082}
+          OptionsImage.Spacing = 5
+          TabOrder = 0
+          OnClick = btc_telaClick
+        end
+        object btnaexcel: TcxButton
+          Left = 19
+          Top = 18
+          Width = 131
+          Height = 31
+          Cursor = crHandPoint
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Caption = 'Exporta Excel'
+          Colors.Normal = clMoneyGreen
+          LookAndFeel.Kind = lfOffice11
+          OptionsImage.Glyph.SourceDPI = 96
+          OptionsImage.Glyph.Data = {
+            89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+            610000001D744558745469746C65004578706F72743B586C733B4578706F7274
+            546F586C733B4CA099FE000001DD49444154785E8D53BB6E134114BDB36C2022
+            54FC004A9D86062571E42C523AA4144097262028E90C45522414AC11B8A78970
+            E8D2B988446B05AD6DF111F00D29E23CBCBB3393B36766562BDC30D6F83EF69E
+            73CFDD995522F2EF9660E77D2E8B5D5A2C5889B1D597A3DFC34845897B8A9F75
+            2863F98F18D6C2225B9637D9C1BBA75BC015812012AB92CEDB27357FEDCC8792
+            7E9BB461EE340954690D81B35C134071B4814431BF7857892E8DB0299727D0B9
+            66A02B4000FB57426E653D3146D0AC554D02B06A42AC27B04AD1B7AE34F8244B
+            561F494A684341A10D0B0CAA3FFEDC91ECCF29891C29DCE01BE73F3E8CA7D815
+            601071042A406C84E0F1FB29F159674AA20C7100BF5EDF9333E4CF9043DB1754
+            9017DA77B2BE1375736663495C8FB7DBDA97CDAF4B8ECDF8B75978055A3BD0F7
+            498AEE97D28775E74F30498EC75D74BF605D95742368AFC05541E6BE6CF4EECB
+            ABB53DE691AB151C8F3E81E4B30C3B17C4C4810011A50600B9828B3C6606B82B
+            BB203748FE80BA9AA0342CE683D6F236BA2FB1639BB3C2F66809E86769F3C807
+            E11E90E0C1622CE9F3132F809DBD6FEA5C36F92B2F9FAD3C04C179B807657E7D
+            F5EBCD874162808AFCC5A97CA5C289081722C9679723B879F3538DB0EF612FFC
+            C7276DFD47748D263CBA5B445552645BC908B30000000049454E44AE426082}
+          OptionsImage.Spacing = 5
+          TabOrder = 1
+          OnClick = btnaexcelClick
+        end
       end
       object cxGrid2: TcxGrid
         Left = 0
@@ -1365,8 +1441,87 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
           OnDblClick = cxGrid2DBTableView1DblClick
           Navigator.Buttons.CustomButtons = <>
           ScrollbarAnnotations.CustomAnnotations = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
+          DataController.DataSource = DMD_PRO00315.DSPadrao
+          DataController.Summary.DefaultGroupSummaryItems = <
+            item
+              Kind = skSum
+              Position = spFooter
+              Column = cxGrid2DBTableView1NF_VLR_TOTAL
+            end
+            item
+              Kind = skSum
+              Position = spFooter
+              Column = cxGrid2DBTableView1NF_VLR_TOTMERC
+            end
+            item
+              Kind = skSum
+              Position = spFooter
+              Column = cxGrid2DBTableView1NF_VLR_ICMS
+            end
+            item
+              Kind = skSum
+              Position = spFooter
+              Column = cxGrid2DBTableView1NF_VLR_ISS
+            end
+            item
+              Kind = skSum
+              Position = spFooter
+              Column = cxGrid2DBTableView1NF_VLR_IPI
+            end
+            item
+              Kind = skSum
+              Column = cxGrid2DBTableView1NF_VLR_TOTAL
+            end
+            item
+              Kind = skSum
+              Column = cxGrid2DBTableView1NF_VLR_TOTMERC
+            end
+            item
+              Kind = skSum
+              Column = cxGrid2DBTableView1NF_VLR_ICMS
+            end
+            item
+              Kind = skSum
+              Column = cxGrid2DBTableView1NF_VLR_ISS
+            end
+            item
+              Kind = skSum
+              Column = cxGrid2DBTableView1NF_VLR_IPI
+            end
+            item
+              Kind = skCount
+              Position = spFooter
+              Column = cxGrid2DBTableView1NF_NUMERO
+            end
+            item
+              Kind = skCount
+              Column = cxGrid2DBTableView1NF_NUMERO
+            end>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Kind = skSum
+              Column = cxGrid2DBTableView1NF_VLR_TOTAL
+            end
+            item
+              Kind = skSum
+              Column = cxGrid2DBTableView1NF_VLR_TOTMERC
+            end
+            item
+              Kind = skSum
+              Column = cxGrid2DBTableView1NF_VLR_ICMS
+            end
+            item
+              Kind = skSum
+              Column = cxGrid2DBTableView1NF_VLR_ISS
+            end
+            item
+              Kind = skSum
+              Column = cxGrid2DBTableView1NF_VLR_IPI
+            end
+            item
+              Kind = skCount
+              Column = cxGrid2DBTableView1NF_NUMERO
+            end>
           DataController.Summary.SummaryGroups = <>
           FilterRow.SeparatorWidth = 8
           FixedDataRows.SeparatorWidth = 8
@@ -1375,6 +1530,7 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
           OptionsData.Deleting = False
           OptionsData.Editing = False
           OptionsView.NavigatorOffset = 63
+          OptionsView.Footer = True
           OptionsView.GroupByBox = False
           OptionsView.IndicatorWidth = 15
           Preview.LeftIndent = 25
@@ -14015,5 +14171,29 @@ object FRM_PRINCIPAL: TFRM_PRINCIPAL
   object ACBrCMC71: TACBrCMC7
     Left = 512
     Top = 368
+  end
+  object dxComponentPrinter1: TdxComponentPrinter
+    CurrentLink = dxprintcupom
+    Version = 0
+    Left = 644
+    Top = 293
+    PixelsPerInch = 120
+    object dxprintcupom: TdxGridReportLink
+      Component = cxGrid2
+      PrinterPage.DMPaper = 1
+      PrinterPage.Footer = 6350
+      PrinterPage.GrayShading = True
+      PrinterPage.Header = 6350
+      PrinterPage.Margins.Bottom = 12700
+      PrinterPage.Margins.Left = 12700
+      PrinterPage.Margins.Right = 12700
+      PrinterPage.Margins.Top = 12700
+      PrinterPage.PageSize.X = 215900
+      PrinterPage.PageSize.Y = 279400
+      PrinterPage._dxMeasurementUnits_ = 0
+      PrinterPage._dxLastMU_ = 2
+      PixelsPerInch = 120
+      BuiltInReportLink = True
+    end
   end
 end

@@ -111,7 +111,6 @@ type
     cxGrid2DBTableView1QTDE_DEV: TcxGridDBColumn;
     cxGrid2DBTableView1VLR_FCP: TcxGridDBColumn;
     cxGrid2DBTableView1NF_ITEM_VLR_FRETE: TcxGridDBColumn;
-    cxGrid1DBTableView1CFOP_NATOP: TcxGridDBColumn;
     cxGrid1DBTableView1NOME: TcxGridDBColumn;
     cxGrid1DBTableView1CNPJ: TcxGridDBColumn;
     cxGrid1DBTableView1ENDERECO: TcxGridDBColumn;
@@ -155,8 +154,6 @@ type
     cxGrid1DBTableView1TRANSP_CEP: TcxGridDBColumn;
     cxGrid1DBTableView1TRANSP_CIDADE: TcxGridDBColumn;
     cxGrid1DBTableView1TRANSP_UF: TcxGridDBColumn;
-    cxGrid1DBTableView1NF_ITEM_MARCA: TcxGridDBColumn;
-    cxGrid1DBTableView1NF_ITEM_EMBALAGEM: TcxGridDBColumn;
     cxGrid1DBTableView1SEUPEDIDO: TcxGridDBColumn;
     cxGrid1DBTableView1FPAGTO: TcxGridDBColumn;
     cxGrid1DBTableView1NF_VLR_BASE_ICMSUB: TcxGridDBColumn;
@@ -178,11 +175,8 @@ type
     cxGrid1DBTableView1NF_VLR_TOTDESC: TcxGridDBColumn;
     cxGrid1DBTableView1NFE_MODELO: TcxGridDBColumn;
     cxGrid1DBTableView1NFE_SERIE: TcxGridDBColumn;
-    cxGrid1DBTableView1NF_ITEM_PED: TcxGridDBColumn;
-    cxGrid1DBTableView1NF_ITEM_PEDIT: TcxGridDBColumn;
     cxGrid1DBTableView1NF_DT_EMISSAO: TcxGridDBColumn;
     cxGrid1DBTableView1NF_DT_ENT_SAI: TcxGridDBColumn;
-    cxGrid1DBTableView1VLR_CREDICMS: TcxGridDBColumn;
     cxGrid1DBTableView1NFE_PROTOCOLO: TcxGridDBColumn;
     cxGrid1DBTableView1NFE_IDNOTA: TcxGridDBColumn;
     cxGrid1DBTableView1GESTOR_CLIENTE: TcxGridDBColumn;

@@ -381,6 +381,18 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       TabOrder = 4
       Width = 112
     end
+    object ck_baixarfinanceiro: TcxCheckBox
+      Left = 704
+      Top = 22
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Baixar financeiro'
+      State = cbsChecked
+      Style.TransparentBorder = False
+      TabOrder = 5
+    end
   end
   object cxTabControl4: TcxTabControl
     Left = 0
@@ -435,7 +447,7 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Transparent = True
     end
     object bt_grava: TcxButton
-      Left = 650
+      Left = 651
       Top = 21
       Width = 114
       Height = 28
@@ -614,6 +626,10 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Margins.Bottom = 4
       Caption = 'Cheques'
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label5: TLabel
         Left = 228
         Top = 6
@@ -953,6 +969,10 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Margins.Bottom = 4
       Caption = 'Cart'#227'o de cr'#233'dito'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label10: TLabel
         Left = 15
         Top = 6
@@ -1114,6 +1134,10 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       Margins.Bottom = 4
       Caption = 'Trocas'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label17: TLabel
         Left = 18
         Top = 6
@@ -2202,309 +2226,6 @@ object FRM_PGTOPEDCLI: TFRM_PGTOPEDCLI
       FieldName = 'PERCENTUAL'
       Origin = 'PERCENTUAL'
       Required = True
-    end
-  end
-  object QryInsereReceber: TFDQuery
-    Connection = DmdPrincipal.FDConexao
-    SQL.Strings = (
-      
-        'SELECT  Documento, Cod_Cliente, FILIAL, IDCTREC, RefOriginal, Re' +
-        'fOrigem, Parcela, DtEmissao, DtVencimento, Dias, Banco,'
-      
-        '              Portador, EspDoc, TipoCobr, Categ, Class, ValorDoc' +
-        'umento, SaldoDocumento, ISS, PIS, COFINS, IR, CSLL, OUTROS, '
-      
-        '             Obs, Posicao, CentroCusto, ContaContabil, IDORIG, I' +
-        'DREC, DataPgto, FLAGSELECAO, ContaContabilPgto, '
-      
-        '             ContaContabilJuros, FlagSituacao, PA, UNIDADE, NF, ' +
-        'EMPRESA_FAT, AVALIACAO, FATURA, NOSSONRO, CAUCAO, '
-      
-        '             DTPROC, CDDEST, CDORIG, CTRC, OBSATRASO, NOSSONROCB' +
-        ', GEROUCOB, DIASPROTESTO, CTRL, USR, VENDEDOR,'
-      '             NF_ID, VALOR_DESCONTO, PEDID'
-      'FROM  GESTOR_CTARECEBER'
-      'WHERE FILIAL < 0')
-    Left = 344
-    Top = 243
-    object QryInsereReceberDocumento: TStringField
-      FieldName = 'Documento'
-      Origin = 'Documento'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-      FixedChar = True
-      Size = 40
-    end
-    object QryInsereReceberCod_Cliente: TIntegerField
-      FieldName = 'Cod_Cliente'
-      Origin = 'Cod_Cliente'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object QryInsereReceberFILIAL: TIntegerField
-      FieldName = 'FILIAL'
-      Origin = 'FILIAL'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object QryInsereReceberIDCTREC: TFDAutoIncField
-      FieldName = 'IDCTREC'
-      Origin = 'IDCTREC'
-      ReadOnly = True
-    end
-    object QryInsereReceberRefOriginal: TStringField
-      FieldName = 'RefOriginal'
-      Origin = 'RefOriginal'
-      FixedChar = True
-      Size = 50
-    end
-    object QryInsereReceberRefOrigem: TStringField
-      FieldName = 'RefOrigem'
-      Origin = 'RefOrigem'
-      Required = True
-      FixedChar = True
-      Size = 50
-    end
-    object QryInsereReceberParcela: TIntegerField
-      FieldName = 'Parcela'
-      Origin = 'Parcela'
-    end
-    object QryInsereReceberDtEmissao: TSQLTimeStampField
-      FieldName = 'DtEmissao'
-      Origin = 'DtEmissao'
-    end
-    object QryInsereReceberDtVencimento: TSQLTimeStampField
-      FieldName = 'DtVencimento'
-      Origin = 'DtVencimento'
-    end
-    object QryInsereReceberDias: TIntegerField
-      FieldName = 'Dias'
-      Origin = 'Dias'
-    end
-    object QryInsereReceberBanco: TIntegerField
-      FieldName = 'Banco'
-      Origin = 'Banco'
-    end
-    object QryInsereReceberPortador: TStringField
-      FieldName = 'Portador'
-      Origin = 'Portador'
-      FixedChar = True
-      Size = 5
-    end
-    object QryInsereReceberEspDoc: TStringField
-      FieldName = 'EspDoc'
-      Origin = 'EspDoc'
-      FixedChar = True
-      Size = 5
-    end
-    object QryInsereReceberTipoCobr: TStringField
-      FieldName = 'TipoCobr'
-      Origin = 'TipoCobr'
-      FixedChar = True
-      Size = 5
-    end
-    object QryInsereReceberCateg: TStringField
-      FieldName = 'Categ'
-      Origin = 'Categ'
-      FixedChar = True
-      Size = 5
-    end
-    object QryInsereReceberClass: TStringField
-      FieldName = 'Class'
-      Origin = 'Class'
-      FixedChar = True
-      Size = 5
-    end
-    object QryInsereReceberValorDocumento: TFloatField
-      FieldName = 'ValorDocumento'
-      Origin = 'ValorDocumento'
-      Required = True
-    end
-    object QryInsereReceberSaldoDocumento: TFloatField
-      FieldName = 'SaldoDocumento'
-      Origin = 'SaldoDocumento'
-    end
-    object QryInsereReceberISS: TFloatField
-      FieldName = 'ISS'
-      Origin = 'ISS'
-    end
-    object QryInsereReceberPIS: TFloatField
-      FieldName = 'PIS'
-      Origin = 'PIS'
-    end
-    object QryInsereReceberCOFINS: TFloatField
-      FieldName = 'COFINS'
-      Origin = 'COFINS'
-    end
-    object QryInsereReceberIR: TFloatField
-      FieldName = 'IR'
-      Origin = 'IR'
-    end
-    object QryInsereReceberCSLL: TFloatField
-      FieldName = 'CSLL'
-      Origin = 'CSLL'
-    end
-    object QryInsereReceberOUTROS: TFloatField
-      FieldName = 'OUTROS'
-      Origin = 'OUTROS'
-    end
-    object QryInsereReceberObs: TMemoField
-      FieldName = 'Obs'
-      Origin = 'Obs'
-      BlobType = ftMemo
-    end
-    object QryInsereReceberPosicao: TStringField
-      FieldName = 'Posicao'
-      Origin = 'Posicao'
-      Required = True
-      FixedChar = True
-      Size = 15
-    end
-    object QryInsereReceberCentroCusto: TIntegerField
-      FieldName = 'CentroCusto'
-      Origin = 'CentroCusto'
-    end
-    object QryInsereReceberContaContabil: TIntegerField
-      FieldName = 'ContaContabil'
-      Origin = 'ContaContabil'
-    end
-    object QryInsereReceberIDORIG: TStringField
-      FieldName = 'IDORIG'
-      Origin = 'IDORIG'
-      FixedChar = True
-      Size = 15
-    end
-    object QryInsereReceberIDREC: TStringField
-      FieldName = 'IDREC'
-      Origin = 'IDREC'
-      FixedChar = True
-      Size = 15
-    end
-    object QryInsereReceberDataPgto: TSQLTimeStampField
-      FieldName = 'DataPgto'
-      Origin = 'DataPgto'
-    end
-    object QryInsereReceberFLAGSELECAO: TStringField
-      FieldName = 'FLAGSELECAO'
-      Origin = 'FLAGSELECAO'
-      FixedChar = True
-      Size = 1
-    end
-    object QryInsereReceberContaContabilPgto: TIntegerField
-      FieldName = 'ContaContabilPgto'
-      Origin = 'ContaContabilPgto'
-    end
-    object QryInsereReceberContaContabilJuros: TIntegerField
-      FieldName = 'ContaContabilJuros'
-      Origin = 'ContaContabilJuros'
-    end
-    object QryInsereReceberFlagSituacao: TStringField
-      FieldName = 'FlagSituacao'
-      Origin = 'FlagSituacao'
-      FixedChar = True
-      Size = 1
-    end
-    object QryInsereReceberPA: TIntegerField
-      FieldName = 'PA'
-      Origin = 'PA'
-    end
-    object QryInsereReceberUNIDADE: TIntegerField
-      FieldName = 'UNIDADE'
-      Origin = 'UNIDADE'
-    end
-    object QryInsereReceberNF: TStringField
-      FieldName = 'NF'
-      Origin = 'NF'
-      FixedChar = True
-      Size = 10
-    end
-    object QryInsereReceberEMPRESA_FAT: TIntegerField
-      FieldName = 'EMPRESA_FAT'
-      Origin = 'EMPRESA_FAT'
-    end
-    object QryInsereReceberAVALIACAO: TStringField
-      FieldName = 'AVALIACAO'
-      Origin = 'AVALIACAO'
-      FixedChar = True
-      Size = 15
-    end
-    object QryInsereReceberFATURA: TStringField
-      FieldName = 'FATURA'
-      Origin = 'FATURA'
-      FixedChar = True
-    end
-    object QryInsereReceberNOSSONRO: TStringField
-      FieldName = 'NOSSONRO'
-      Origin = 'NOSSONRO'
-      FixedChar = True
-    end
-    object QryInsereReceberCAUCAO: TStringField
-      FieldName = 'CAUCAO'
-      Origin = 'CAUCAO'
-      FixedChar = True
-      Size = 1
-    end
-    object QryInsereReceberDTPROC: TSQLTimeStampField
-      FieldName = 'DTPROC'
-      Origin = 'DTPROC'
-    end
-    object QryInsereReceberCDDEST: TIntegerField
-      FieldName = 'CDDEST'
-      Origin = 'CDDEST'
-    end
-    object QryInsereReceberCDORIG: TIntegerField
-      FieldName = 'CDORIG'
-      Origin = 'CDORIG'
-    end
-    object QryInsereReceberCTRC: TIntegerField
-      FieldName = 'CTRC'
-      Origin = 'CTRC'
-    end
-    object QryInsereReceberOBSATRASO: TStringField
-      FieldName = 'OBSATRASO'
-      Origin = 'OBSATRASO'
-      FixedChar = True
-      Size = 100
-    end
-    object QryInsereReceberNOSSONROCB: TStringField
-      FieldName = 'NOSSONROCB'
-      Origin = 'NOSSONROCB'
-      FixedChar = True
-      Size = 40
-    end
-    object QryInsereReceberGEROUCOB: TStringField
-      FieldName = 'GEROUCOB'
-      Origin = 'GEROUCOB'
-      FixedChar = True
-      Size = 1
-    end
-    object QryInsereReceberDIASPROTESTO: TIntegerField
-      FieldName = 'DIASPROTESTO'
-      Origin = 'DIASPROTESTO'
-    end
-    object QryInsereReceberCTRL: TIntegerField
-      FieldName = 'CTRL'
-      Origin = 'CTRL'
-    end
-    object QryInsereReceberUSR: TIntegerField
-      FieldName = 'USR'
-      Origin = 'USR'
-    end
-    object QryInsereReceberVENDEDOR: TIntegerField
-      FieldName = 'VENDEDOR'
-      Origin = 'VENDEDOR'
-    end
-    object QryInsereReceberNF_ID: TIntegerField
-      FieldName = 'NF_ID'
-      Origin = 'NF_ID'
-    end
-    object QryInsereReceberVALOR_DESCONTO: TFloatField
-      FieldName = 'VALOR_DESCONTO'
-      Origin = 'VALOR_DESCONTO'
-    end
-    object QryInsereReceberPEDID: TIntegerField
-      FieldName = 'PEDID'
-      Origin = 'PEDID'
     end
   end
   object QryInsRefTrib: TFDQuery

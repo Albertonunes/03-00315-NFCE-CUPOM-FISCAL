@@ -412,6 +412,17 @@ object FRM_BUSCAPED: TFRM_BUSCAPED
           DataBinding.FieldName = 'FJ'
           MinWidth = 25
         end
+        object cxGrid1DBTableView1TIPOCOBR: TcxGridDBColumn
+          Caption = 'Tipo cobran'#231'a'
+          DataBinding.FieldName = 'TIPOCOBR'
+          PropertiesClassName = 'TcxLookupComboBoxProperties'
+          Properties.KeyFieldNames = 'Cod_TpCobr'
+          Properties.ListColumns = <
+            item
+              FieldName = 'Desc_TpCobr'
+            end>
+          Properties.ListSource = DMD_PRO00315.DsrTipoCobr
+        end
       end
       object cxGrid1Level1: TcxGridLevel
         GridView = cxGrid1DBTableView1

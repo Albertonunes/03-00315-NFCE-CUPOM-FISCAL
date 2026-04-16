@@ -91,6 +91,7 @@ type
     Panel3: TPanel;
     Label4: TLabel;
     cx_semcupom: TcxCheckBox;
+    cxGrid1DBTableView1TIPOCOBR: TcxGridDBColumn;
     procedure FormShow(Sender: TObject);
     procedure btn_pesquisarClick(Sender: TObject);
     procedure cxGrid1DBTableView1CellDblClick(Sender: TcxCustomGridTableView;
@@ -416,6 +417,8 @@ begin
       ParamByName('FILIAL').AsInteger := 1;
     Open;
   end;
+  DMD_PRO00315.QryTipoCobr.Close;
+  DMD_PRO00315.QryTipoCobr.Open;
 end;
 
 end.

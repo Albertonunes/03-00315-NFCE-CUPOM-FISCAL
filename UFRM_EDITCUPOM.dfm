@@ -32,7 +32,6 @@ object FRM_EDITCUPOM: TFRM_EDITCUPOM
       Margins.Bottom = 4
       Align = alClient
       TabOrder = 0
-      ExplicitTop = -5
       object cxGrid1DBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         ScrollbarAnnotations.CustomAnnotations = <>
@@ -65,11 +64,6 @@ object FRM_EDITCUPOM: TFRM_EDITCUPOM
           Caption = 'Dt Emiss'#227'o'
           DataBinding.FieldName = 'NF_DT_EMISSAO'
           Width = 130
-        end
-        object cxGrid1DBTableView1CFOP_NATOP: TcxGridDBColumn
-          Caption = 'Natureza'
-          DataBinding.FieldName = 'CFOP_NATOP'
-          Width = 115
         end
         object cxGrid1DBTableView1NOME: TcxGridDBColumn
           Caption = 'Cliente'
@@ -251,14 +245,6 @@ object FRM_EDITCUPOM: TFRM_EDITCUPOM
           Caption = 'Uf Transp'
           DataBinding.FieldName = 'TRANSP_UF'
         end
-        object cxGrid1DBTableView1NF_ITEM_MARCA: TcxGridDBColumn
-          Caption = 'Marca Prod'
-          DataBinding.FieldName = 'NF_ITEM_MARCA'
-        end
-        object cxGrid1DBTableView1NF_ITEM_EMBALAGEM: TcxGridDBColumn
-          Caption = 'Embalagem'
-          DataBinding.FieldName = 'NF_ITEM_EMBALAGEM'
-        end
         object cxGrid1DBTableView1SEUPEDIDO: TcxGridDBColumn
           Caption = 'Pedido'
           DataBinding.FieldName = 'SEUPEDIDO'
@@ -336,21 +322,9 @@ object FRM_EDITCUPOM: TFRM_EDITCUPOM
           Caption = 'Serie'
           DataBinding.FieldName = 'NFE_SERIE'
         end
-        object cxGrid1DBTableView1NF_ITEM_PED: TcxGridDBColumn
-          Caption = 'Pedido Cliente'
-          DataBinding.FieldName = 'NF_ITEM_PED'
-        end
-        object cxGrid1DBTableView1NF_ITEM_PEDIT: TcxGridDBColumn
-          Caption = 'Item Pedido'
-          DataBinding.FieldName = 'NF_ITEM_PEDIT'
-        end
         object cxGrid1DBTableView1NF_DT_ENT_SAI: TcxGridDBColumn
           Caption = 'Dt Sa'#237'da'
           DataBinding.FieldName = 'NF_DT_ENT_SAI'
-        end
-        object cxGrid1DBTableView1VLR_CREDICMS: TcxGridDBColumn
-          Caption = 'Vlr Cred Icms'
-          DataBinding.FieldName = 'VLR_CREDICMS'
         end
         object cxGrid1DBTableView1GESTOR_CLIENTE: TcxGridDBColumn
           Caption = 'C'#243'd.Cliente'
@@ -369,7 +343,6 @@ object FRM_EDITCUPOM: TFRM_EDITCUPOM
     Height = 246
     Align = alTop
     TabOrder = 1
-    ExplicitTop = 89
     object cxGrid2: TcxGrid
       Left = 1
       Top = 1
@@ -381,7 +354,6 @@ object FRM_EDITCUPOM: TFRM_EDITCUPOM
       Margins.Bottom = 4
       Align = alClient
       TabOrder = 0
-      ExplicitHeight = 144
       object cxGrid2DBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         ScrollbarAnnotations.CustomAnnotations = <>
@@ -645,7 +617,6 @@ object FRM_EDITCUPOM: TFRM_EDITCUPOM
     Align = alTop
     Caption = 'Itens'
     TabOrder = 3
-    ExplicitTop = 113
   end
   object Panel5: TPanel
     Left = 0
@@ -655,7 +626,6 @@ object FRM_EDITCUPOM: TFRM_EDITCUPOM
     Align = alTop
     Caption = 'Pagamentos'
     TabOrder = 4
-    ExplicitTop = 307
   end
   object Panel6: TPanel
     Left = 0
@@ -664,8 +634,6 @@ object FRM_EDITCUPOM: TFRM_EDITCUPOM
     Height = 105
     Align = alClient
     TabOrder = 5
-    ExplicitTop = 331
-    ExplicitHeight = 118
     object cxGrid3: TcxGrid
       Left = 1
       Top = 1
@@ -677,10 +645,6 @@ object FRM_EDITCUPOM: TFRM_EDITCUPOM
       Margins.Bottom = 4
       Align = alClient
       TabOrder = 0
-      ExplicitLeft = 320
-      ExplicitTop = 30
-      ExplicitWidth = 313
-      ExplicitHeight = 250
       object cxGrid3DBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         Navigator.Buttons.Append.Visible = True

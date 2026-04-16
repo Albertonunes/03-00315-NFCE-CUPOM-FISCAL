@@ -366,7 +366,7 @@ begin
         Ide.dSaiEnt := QryFiltroNFNF_DT_ENT_SAI.AsDateTime;
         Ide.hSaiEnt := now;
       end;
-      Ide.tpNF := IIf(QryFiltroNFlknfe_ES.Value = '0', tnEntrada, tnSaida);
+      Ide.tpNF := tnSaida;
       if Ide.tpEmis <> teNormal then
       begin
         Ide.xJust  := 'Problemas com Internet';

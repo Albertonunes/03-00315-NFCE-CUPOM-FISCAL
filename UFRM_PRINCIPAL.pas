@@ -30,7 +30,12 @@ uses
   cxGrid, Vcl.StdCtrls, Vcl.Menus, cxButtons, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, dxBarBuiltInMenu, cxPC, Vcl.ComCtrls,
   dxCore, cxDateUtils, cxImageComboBox, cxCalendar, cxLabel, ACBrCMC7, ACBrBase,
-  ACBrPosPrinter, Vcl.ExtDlgs, ACBrDevice, Vcl.Samples.Spin, dxGDIPlusClasses
+  ACBrPosPrinter, Vcl.ExtDlgs, ACBrDevice, Vcl.Samples.Spin, dxGDIPlusClasses,
+  dxPSGlbl, dxPSUtl, dxPSEngn, dxPrnPg, dxBkgnd, dxWrap, dxPrnDev,
+  dxPSCompsProvider, dxPSFillPatterns, dxPSEdgePatterns, dxPSPDFExportCore,
+  dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
+  dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
+  dxPScxEditorProducers, dxPScxExtEditorProducers, dxPSCore, dxPScxCommon
   {$IFDEF ELGIN_E1}
   , ACBrPosPrinterElginE1Service
   {$ENDIF}
@@ -270,6 +275,10 @@ type
     Atualizarxml1: TMenuItem;
     InutilizarCupom1: TMenuItem;
     AtualizarData1: TMenuItem;
+    btc_tela: TcxButton;
+    btnaexcel: TcxButton;
+    dxComponentPrinter1: TdxComponentPrinter;
+    dxprintcupom: TdxGridReportLink;
     procedure FormShow(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure cx_codbarrasExit(Sender: TObject);
@@ -329,6 +338,8 @@ type
     procedure InutilizarCupom1Click(Sender: TObject);
     procedure AtualizarData1Click(Sender: TObject);
     procedure cxGrid2DBTableView1DblClick(Sender: TObject);
+    procedure btnaexcelClick(Sender: TObject);
+    procedure btc_telaClick(Sender: TObject);
   private
     { private declarations }
     {$IFDEF ELGIN_E1}
@@ -764,6 +775,22 @@ begin
 
 end;
 
+procedure TFRM_PRINCIPAL.btc_telaClick(Sender: TObject);
+begin
+  dxprintcupom.ReportTitle.Text := 'Período :  ' + cxdt1.Text + '  a  ' + cxdt2.Text;
+  dxprintcupom.Preview;
+
+end;
+
+procedure TFRM_PRINCIPAL.btnaexcelClick(Sender: TObject);
+begin
+  ExportarExcel(cxgrid2,iif(length(DmdPrincipal.QryPAPASTA.Value) > 3,DmdPrincipal.QryPAPASTA.Value ,'')+
+                'Cupom_'+ FormatDatetime('ddmmyyhhmm', now) +'.xls',false);
+
+  MsgInformacao('Arquivo Cupon_'+ FormatDatetime('ddmmyyhhmm', now) +'.XLS, criado com sucesso!');
+
+end;
+
 procedure TFRM_PRINCIPAL.btnconfirmatabClick(Sender: TObject);
 begin
   pnlTabpreco.Visible := false;
@@ -914,6 +941,9 @@ begin
       QryFiltroNF.Close;
       QryFiltroNF.ParamByName('NF_ID').AsInteger := nIDNF;
       QryFiltroNF.Open;
+      QryImprimeNF.Close;
+      QryImprimeNF.ParamByName('NF_ID').AsInteger := nIDNF;
+      QryImprimeNF.Open;
       //MsgInformacao('NF');
       QryFiltroItens.Close;
       QryFiltroItens.ParamByName('NF_ID').AsInteger := nIDNF;
