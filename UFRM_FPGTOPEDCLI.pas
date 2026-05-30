@@ -1188,12 +1188,12 @@ begin
       Mprint( QryPedPecasVLR_DESC.Value ,'F',10,0,0);
     end;
     Mprint( ' VLR TOTAL: ','S',20,0,1);
-    Mprint( TotPed + QryPedPecasVLRFRETE.Value - QryPedPecasVLR_DESC.Value ,'F',10,0,0);
+    Mprint( TotPed + QryPedPecasVLRFRETE.Value,'F',10,0,0);
     Mprint('','S',0,1,0);
     alinha := alinha + 1;
     Mprint( ' OBS.: ','S',8,0,0);
-    Mprint( Trim(Copy(QryPedPecasOBS.Value,1,70)),'S',70,0,0);
-    //Mprint(replchar('=',80),'S',80,1,0);
+    Mprint( Trim(Copy(QryPedPecasOBS.Value,1,70)),'S',70,1,0);
+    Mprint(replchar('=',80),'S',80,1,0);
     Mprint('','S',0,1,0);
     (*QryRecebimentos.Close;
     QryRecebimentos.ParamByName('PED').AsInteger := QryCstPedPEDID.Value;
@@ -1230,12 +1230,12 @@ begin
       Mprint( QryPedPecasVLR_DESC.Value ,'F',10,0,0);
     end;
     Mprint( ' VLR TOTAL: ','S',20,0,1);
-    Mprint( TotPed + QryPedPecasVLRFRETE.Value - QryPedPecasVLR_DESC.Value ,'F',10,0,0);
+    Mprint( TotPed + QryPedPecasVLRFRETE.Value,'F',10,0,0);
     Mprint('','S',0,1,0);
     alinha := alinha + 1;
     Mprint( ' OBS.: ','S',8,0,0);
-    Mprint( Trim(Copy(QryPedPecasOBS.Value,1,70)),'S',70,0,0);
-    //Mprint(replchar('=',80),'S',80,1,0);
+    Mprint( Trim(Copy(QryPedPecasOBS.Value,1,70)),'S',70,1,0);
+    Mprint(replchar('=',80),'S',80,1,0);
     Mprint('','S',0,1,0);
     (*QryRecebimentos.Close;
     QryRecebimentos.ParamByName('PED').AsInteger := QryCstPedPEDID.Value;
@@ -1271,9 +1271,11 @@ begin
       Mprint( QryPedPecasVLR_DESC.Value ,'F',10,0,0);
     end;
     Mprint( ' VLR TOTAL: ','S',20,0,1);
-    Mprint( TotPed + QryPedPecasVLRFRETE.Value - QryPedPecasVLR_DESC.Value ,'F',10,0,0);
+    Mprint( TotPed + QryPedPecasVLRFRETE.Value,'F',10,0,0);
     Mprint('','S',0,1,0);
     alinha := alinha + 1;
+    Mprint( ' OBS.: ','S',8,0,0);
+    Mprint( Trim(Copy(QryPedPecasOBS.Value,1,70)),'S',70,1,0);
     Mprint(replchar('=',80),'S',80,1,0);
     Mprint('','S',0,1,0);
     (*QryRecebimentos.Close;
@@ -2228,7 +2230,7 @@ end;
 
 procedure TFRM_PGTOPEDCLI.InsereReceberExecute(Sender: TObject);
 var
-  i : integer;
+  i, idrec : integer;
 begin
   with DMD_PRO00315 do
   begin
@@ -2263,6 +2265,32 @@ begin
 
       try
         QryInsereReceber.Post;
+        DMD_PRO00315.retornaid.Prepare;
+        DMD_PRO00315.retornaid.ParamByName('@NOME_TABELA').AsString := 'GESTOR_CTARECEBER';
+        DMD_PRO00315.retornaid.ExecProc;
+        idrec := DMD_PRO00315.retornaid.Params[2].Value;
+
+        if ck_baixarfinanceiro.Checked then
+        begin
+          QryManu.Close;
+          QryManu.SQL.Clear;
+          QryManu.SQL.Add('Insert Into Gestor_MovCaixa(Caixa, Data, Especie, ES, CentroCusto, Categ, ');
+          QryManu.SQL.Add('    Class, HistoricoDesc, Credito, Valor, Posicao, IDOrig,FILIAL)         ');
+          QryManu.SQL.Add('Values (1, :DTMOV, :FPGTO, ''C'', :CCUSTO, :CATEG,                        ');
+          QryManu.SQL.Add(':CLASS, :HIST, :CREDITO, :VLREC,''N'', :ID,:FILIAL)                        ');
+          QryManu.ParamByName('DTMOV').AsDateTime := date;
+          QryManu.ParamByName('FPGTO').AsString   := '';
+          QryManu.ParamByName('CCUSTO').AsInteger := 0;
+          QryManu.ParamByName('CATEG').AsString   := '';
+          QryManu.ParamByName('CLASS').AsString   := '';
+          QryManu.ParamByName('HIST').AsString    := 'RECEB. CAIXA : '+IntToStr(PEDID);
+          QryManu.ParamByName('CREDITO').AsFloat  := RxPgtoFinalVALOR.Value;
+          QryManu.ParamByName('VLREC').AsFloat    := RxPgtoFinalVALOR.Value;
+          QryManu.ParamByName('ID').AsString      := IntToStr(idrec);
+          QryManu.ParamByName('FILIAL').AsInteger := PRO_FILIAL;
+          QryManu.ExecSQL;
+
+        end;
       except
         QryInsereReceber.Cancel;
         MDS := 'NFCE' ;
@@ -3411,7 +3439,8 @@ begin
   if deubom then
   begin
     ActMovEstoque.Execute;
-    Imprimir.Execute;
+    if MsgConfirmacao('Deseja Imprimir')  = mryes then
+      Imprimir.Execute;
     close;
   end
   else

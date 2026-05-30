@@ -1292,7 +1292,7 @@ begin
               if not QryFiltroIBSNF_ITEM_ID.IsNull then
               begin
                 //  Informações do tributo: Imposto Seletivo
-                ISel.CSTIS        := StrToCSTIS(QryFiltroIBSCSTIS.Value);// cstisNenhum;
+                //ISel.CSTIS        := StrToCSTIS(QryFiltroIBSCSTIS.Value);// cstisNenhum;
                 ISel.cClassTribIS := QryFiltroIBScClassTribIS.Value;
 
                 ISel.vBCIS    := QryFiltroIBSvBCIS.Value;

@@ -167,7 +167,7 @@ begin
       Begin
         SQL.Add('AND ((A.DATA >= :DTI) AND (A.DATA <= :DTF))                      ');
         ParamByName('DTI').AsDateTime := cx_dtinin.Date;
-        ParamByName('DTF').AsDateTime := cx_dtfim.Date;
+        ParamByName('DTF').AsDateTime := cx_dtfim.Date+1;
       end;
         (*
         if cxcheckbox1.Caption = 'Período de Entrega' then
