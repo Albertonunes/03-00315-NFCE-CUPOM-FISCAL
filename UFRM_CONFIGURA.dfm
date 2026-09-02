@@ -2,90 +2,65 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
   Left = 0
   Top = 0
   Caption = 'FRM_CONFIGURA'
-  ClientHeight = 533
-  ClientWidth = 926
+  ClientHeight = 426
+  ClientWidth = 741
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -14
+  Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 120
-  TextHeight = 17
+  PixelsPerInch = 96
+  TextHeight = 13
   object cxPageControl1: TcxPageControl
     Left = 0
     Top = 0
-    Width = 926
-    Height = 533
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Width = 741
+    Height = 426
     Align = alClient
     TabOrder = 0
-    Properties.ActivePage = Tabopcoes
+    Properties.ActivePage = tabcertificado
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 529
+    ClientRectBottom = 422
     ClientRectLeft = 4
-    ClientRectRight = 922
-    ClientRectTop = 29
+    ClientRectRight = 737
+    ClientRectTop = 24
     object tabcertificado: TcxTabSheet
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
       Caption = 'Certificado'
       ImageIndex = 0
       object cxGroupBox1: TcxGroupBox
-        Left = 20
-        Top = 6
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 16
+        Top = 5
         Caption = 'Certificado'
-        PanelStyle.CaptionIndent = 3
         Style.BorderStyle = ebsUltraFlat
         Style.LookAndFeel.Kind = lfOffice11
         StyleDisabled.LookAndFeel.Kind = lfOffice11
         TabOrder = 0
-        Height = 482
-        Width = 401
+        Height = 385
+        Width = 321
         object cxc_caminho: TcxTextEdit
-          Left = 10
-          Top = 40
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 32
           TabOrder = 0
-          Width = 341
+          Width = 273
         end
         object cxLabel1: TcxLabel
-          Left = 14
-          Top = 19
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 11
+          Top = 15
           Caption = 'Caminho'
           Transparent = True
         end
         object btc_alteracaminho: TcxButton
-          Left = 351
-          Top = 39
-          Width = 32
-          Height = 29
+          Left = 281
+          Top = 31
+          Width = 25
+          Height = 23
           Cursor = crHandPoint
           Hint = 'Caminho do certificado'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           LookAndFeel.Kind = lfOffice11
           OptionsImage.Glyph.SourceDPI = 96
           OptionsImage.Glyph.Data = {
@@ -113,7 +88,6 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
             27B553814DB5700705354AF3752AA9BF05B86423F57FE2ABFB277F2F307967EB
             D304C5009400B370A006CEDBDCF8E2C608D0DA5CA657812EE0459BF9FC3219E0
             80E63747DF1680FF001724CEF504A838340000000049454E44AE426082}
-          OptionsImage.Spacing = 5
           ParentShowHint = False
           ShowHint = True
           TabOrder = 2
@@ -121,16 +95,12 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           OnClick = btc_alteracaminhoClick
         end
         object btc_atualizaCert: TcxButton
-          Left = 351
-          Top = 139
-          Width = 32
-          Height = 29
+          Left = 281
+          Top = 111
+          Width = 25
+          Height = 23
           Cursor = crHandPoint
           Hint = 'Atualizar Certificado'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           LookAndFeel.Kind = lfOffice11
           OptionsImage.Glyph.SourceDPI = 96
           OptionsImage.Glyph.Data = {
@@ -158,7 +128,6 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
             09176A46C3849553DC442D3882FFA682A28A5F3183B32A68AEC77DC8DCBF248E
             B619B0412465361309CA2622FE9C8EB08FEC4E7B682F890B893309CDD660AB2B
             2BA692D812FCFFBFF12735D001EA49B1E4AE0000000049454E44AE426082}
-          OptionsImage.Spacing = 5
           ParentShowHint = False
           ShowHint = True
           TabOrder = 3
@@ -166,55 +135,35 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           OnClick = btc_atualizaCertClick
         end
         object cxc_senha: TcxTextEdit
-          Left = 10
-          Top = 90
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 72
           TabOrder = 4
-          Width = 341
+          Width = 273
         end
         object cxc_numserie: TcxTextEdit
-          Left = 10
-          Top = 140
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 112
           TabOrder = 5
-          Width = 341
+          Width = 273
         end
         object cxLabel2: TcxLabel
-          Left = 14
-          Top = 69
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 11
+          Top = 55
           Caption = 'Senha'
           Transparent = True
         end
         object cxLabel3: TcxLabel
-          Left = 14
-          Top = 118
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 11
+          Top = 94
           Caption = 'N'#250'mero de S'#233'rie'
           Transparent = True
         end
         object btc_salvar: TcxButton
-          Left = 10
-          Top = 184
-          Width = 241
-          Height = 32
+          Left = 8
+          Top = 147
+          Width = 193
+          Height = 26
           Cursor = crHandPoint
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           Caption = '&Refazer Arquivo Configura'#231#227'o'
           Colors.Default = 14211272
           Colors.Hot = 14211272
@@ -247,70 +196,49 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
             C487E8E9E9A4E8D79D00B4DFBE85CFB7D2171A7614038BE67371C25F93BD7953
             22214FB09048FCDFBCD0C142277C5F0E9C1242E52B1C79BBF33C7E2726000000
             0049454E44AE426082}
-          OptionsImage.Spacing = 5
           TabOrder = 8
           OnClick = btc_salvarClick
         end
         object cx_arquivoini: TcxTextEdit
-          Left = 10
-          Top = 250
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 200
           Style.LookAndFeel.Kind = lfOffice11
           StyleDisabled.LookAndFeel.Kind = lfOffice11
           StyleFocused.LookAndFeel.Kind = lfOffice11
           StyleHot.LookAndFeel.Kind = lfOffice11
           TabOrder = 9
-          Width = 341
+          Width = 273
         end
         object cxLabel4: TcxLabel
-          Left = 14
-          Top = 229
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 11
+          Top = 183
           Caption = 'Caminho do arquivo de configura'#231#227'o'
           Transparent = True
         end
         object cxLabel5: TcxLabel
-          Left = 14
-          Top = 278
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 11
+          Top = 222
           Caption = 'Caminho do arquivo de Impress'#227'o'
           Transparent = True
         end
         object cx_Arquivoprint: TcxTextEdit
-          Left = 10
-          Top = 299
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 239
           Style.LookAndFeel.Kind = lfOffice11
           StyleDisabled.LookAndFeel.Kind = lfOffice11
           StyleFocused.LookAndFeel.Kind = lfOffice11
           StyleHot.LookAndFeel.Kind = lfOffice11
           TabOrder = 12
           Text = 'DANFE.fr3'
-          Width = 341
+          Width = 273
         end
         object btc_alteraprint: TcxButton
-          Left = 351
-          Top = 299
-          Width = 32
-          Height = 29
+          Left = 281
+          Top = 239
+          Width = 25
+          Height = 23
           Cursor = crHandPoint
           Hint = 'Caminho do arquivo de impress'#227'o'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           LookAndFeel.Kind = lfOffice11
           OptionsImage.Glyph.SourceDPI = 96
           OptionsImage.Glyph.Data = {
@@ -338,7 +266,6 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
             27B553814DB5700705354AF3752AA9BF05B86423F57FE2ABFB277F2F307967EB
             D304C5009400B370A006CEDBDCF8E2C608D0DA5CA657812EE0459BF9FC3219E0
             80E63747DF1680FF001724CEF504A838340000000049454E44AE426082}
-          OptionsImage.Spacing = 5
           ParentShowHint = False
           ShowHint = True
           TabOrder = 13
@@ -346,21 +273,17 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           OnClick = btc_alteraprintClick
         end
         object btc_alteraini: TcxButton
-          Left = 351
-          Top = 249
-          Width = 32
-          Height = 29
+          Left = 281
+          Top = 199
+          Width = 25
+          Height = 23
           Cursor = crHandPoint
           Hint = 'Caminho do arquivo ini'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           LookAndFeel.Kind = lfOffice11
           OptionsImage.Glyph.SourceDPI = 96
           OptionsImage.Glyph.Data = {
             424D360400000000000036000000280000001000000010000000010020000000
-            0000000000007412000074120000000000000000000000000000000000000000
+            000000000000C40E0000C40E0000000000000000000000000000000000000000
             0000000000000000000000000000000000000000000000000000000000000000
             000000000000000000000000000000000000000000000000000000000000005A
             75FF005774FF005975FF005E7CFF005A78FF00556FFF00000000000000000039
@@ -393,7 +316,6 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
             0000000000000000000000000000000000000000000000000000000000000000
             0000000000000000000000000000000000000000000000000000000000000000
             00000000000000000000000000000000000000000000}
-          OptionsImage.Spacing = 5
           ParentShowHint = False
           ShowHint = True
           TabOrder = 14
@@ -401,12 +323,8 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           OnClick = btc_alterainiClick
         end
         object cxversaonfe: TcxComboBox
-          Left = 10
-          Top = 360
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 288
           Properties.Items.Strings = (
             'Vers'#227'o 2.00'
             'Vers'#227'o 3.00'
@@ -414,25 +332,17 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
             'Vers'#227'o 4.00')
           TabOrder = 15
           Text = 'Vers'#227'o 4.00'
-          Width = 151
+          Width = 121
         end
         object lblversaonfe: TcxLabel
-          Left = 14
-          Top = 338
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 11
+          Top = 270
           Caption = 'Vers'#227'o da NFe'
           Transparent = True
         end
         object cxTipoCertificado: TcxComboBox
-          Left = 10
-          Top = 416
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 333
           Properties.Items.Strings = (
             'A1'
             'A3')
@@ -442,40 +352,27 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           StyleDisabled.ButtonStyle = btsOffice11
           TabOrder = 17
           Text = 'A1'
-          Width = 151
+          Width = 121
         end
         object cxLabel6: TcxLabel
-          Left = 14
-          Top = 394
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 11
+          Top = 315
           Caption = 'Tipo de Certificado'
           Transparent = True
         end
         object btnconsultaie: TcxButton
-          Left = 330
-          Top = 440
-          Width = 30
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 264
+          Top = 352
+          Width = 24
+          Height = 25
           Caption = '?'
-          OptionsImage.Spacing = 5
           TabOrder = 19
           OnClick = btnconsultaieClick
         end
       end
       object Rgc_FormaImpressao: TcxRadioGroup
-        Left = 428
-        Top = 6
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 342
+        Top = 5
         Caption = 'Forma de Impress'#227'o DANFE'
         Properties.Columns = 2
         Properties.Items = <
@@ -490,29 +387,20 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
         Style.LookAndFeel.Kind = lfOffice11
         StyleDisabled.LookAndFeel.Kind = lfOffice11
         TabOrder = 1
-        Height = 57
-        Width = 231
+        Height = 45
+        Width = 185
       end
       object cxGroupBox12: TcxGroupBox
-        Left = 663
-        Top = 6
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        PanelStyle.CaptionIndent = 3
+        Left = 530
+        Top = 5
         Style.LookAndFeel.Kind = lfOffice11
         StyleDisabled.LookAndFeel.Kind = lfOffice11
         TabOrder = 2
-        Height = 57
-        Width = 231
+        Height = 45
+        Width = 185
         object ck_datasaida: TcxCheckBox
-          Left = 10
-          Top = 20
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 16
           Caption = 'Envia Data e Hora de Sa'#237'da'
           Style.LookAndFeel.Kind = lfOffice11
           Style.TransparentBorder = False
@@ -523,25 +411,16 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
         end
       end
       object cxGroupBox15: TcxGroupBox
-        Left = 663
-        Top = 64
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        PanelStyle.CaptionIndent = 3
+        Left = 530
+        Top = 51
         Style.LookAndFeel.Kind = lfOffice11
         StyleDisabled.LookAndFeel.Kind = lfOffice11
         TabOrder = 3
-        Height = 56
-        Width = 231
+        Height = 45
+        Width = 185
         object ck_salvararquivos: TcxCheckBox
-          Left = 15
-          Top = 20
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 12
+          Top = 16
           Caption = 'Salvar arquivos retorno'
           Style.LookAndFeel.Kind = lfOffice11
           Style.TransparentBorder = False
@@ -552,12 +431,8 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
         end
       end
       object Rgc_TipoEmissao: TcxRadioGroup
-        Left = 428
-        Top = 128
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 342
+        Top = 102
         Caption = 'Tipo de Emiss'#227'o'
         Properties.Columns = 2
         Properties.Items = <
@@ -572,16 +447,12 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
         Style.LookAndFeel.Kind = lfOffice11
         StyleDisabled.LookAndFeel.Kind = lfOffice11
         TabOrder = 4
-        Height = 56
-        Width = 231
+        Height = 45
+        Width = 185
       end
       object Rgc_Ambiente: TcxRadioGroup
-        Left = 428
-        Top = 191
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 342
+        Top = 153
         Caption = 'Ambiente'
         Properties.Columns = 2
         Properties.Items = <
@@ -596,88 +467,62 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
         Style.LookAndFeel.Kind = lfOffice11
         StyleDisabled.LookAndFeel.Kind = lfOffice11
         TabOrder = 5
-        Height = 57
-        Width = 231
+        Height = 45
+        Width = 185
       end
       object cxGroupBox14: TcxGroupBox
-        Left = 663
-        Top = 191
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 530
+        Top = 153
         Caption = 'Timeout de envio'
-        PanelStyle.CaptionIndent = 3
         TabOrder = 6
-        Height = 57
-        Width = 231
+        Height = 45
+        Width = 185
         object cxc_timeout: TcxCurrencyEdit
-          Left = 14
-          Top = 20
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 11
+          Top = 16
           EditValue = 5000.000000000000000000
           Properties.AssignedValues.DisplayFormat = True
           Properties.DecimalPlaces = 0
           TabOrder = 0
           OnExit = cxc_timeoutExit
-          Width = 151
+          Width = 121
         end
       end
       object cxGroupBox13: TcxGroupBox
-        Left = 428
-        Top = 253
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 342
+        Top = 202
         Caption = 'Criptografia'
-        PanelStyle.CaptionIndent = 3
         Style.BorderStyle = ebsOffice11
         Style.LookAndFeel.Kind = lfOffice11
         StyleDisabled.LookAndFeel.Kind = lfOffice11
         TabOrder = 7
-        Height = 232
-        Width = 466
+        Height = 186
+        Width = 373
         object lSSLLib: TLabel
-          Left = 41
-          Top = 43
-          Width = 40
-          Height = 17
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 35
+          Top = 34
+          Width = 30
+          Height = 13
           Alignment = taRightJustify
           Caption = 'SSLLib'
           Color = clBtnFace
           ParentColor = False
         end
         object lCryptLib: TLabel
-          Left = 29
-          Top = 76
-          Width = 52
-          Height = 17
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 25
+          Top = 61
+          Width = 40
+          Height = 13
           Alignment = taRightJustify
           Caption = 'CryptLib'
           Color = clBtnFace
           ParentColor = False
         end
         object lHttpLib: TLabel
-          Left = 37
-          Top = 110
-          Width = 44
-          Height = 17
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 31
+          Top = 88
+          Width = 34
+          Height = 13
           Alignment = taRightJustify
           Caption = 'HttpLib'
           Color = clBtnFace
@@ -685,106 +530,74 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
         end
         object lXmlSign: TLabel
           Left = 13
-          Top = 144
-          Width = 68
-          Height = 17
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Top = 115
+          Width = 52
+          Height = 13
           Alignment = taRightJustify
           Caption = 'XMLSignLib'
           Color = clBtnFace
           ParentColor = False
         end
         object lSSLLib1: TLabel
-          Left = 26
-          Top = 178
-          Width = 54
-          Height = 17
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 23
+          Top = 142
+          Width = 41
+          Height = 13
           Alignment = taRightJustify
           Caption = 'SSLType'
           Color = clBtnFace
           ParentColor = False
         end
         object cbSSLLib: TComboBox
-          Left = 95
-          Top = 33
-          Width = 200
-          Height = 25
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 76
+          Top = 26
+          Width = 160
+          Height = 21
           Style = csDropDownList
           TabOrder = 0
           OnChange = cbSSLLibChange
         end
         object cbCryptLib: TComboBox
-          Left = 95
-          Top = 66
-          Width = 200
-          Height = 25
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 76
+          Top = 53
+          Width = 160
+          Height = 21
           Style = csDropDownList
           TabOrder = 1
           OnChange = cbCryptLibChange
         end
         object cbHttpLib: TComboBox
-          Left = 95
-          Top = 100
-          Width = 200
-          Height = 25
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 76
+          Top = 80
+          Width = 160
+          Height = 21
           Style = csDropDownList
           TabOrder = 2
           OnChange = cbHttpLibChange
         end
         object cbXmlSignLib: TComboBox
-          Left = 95
-          Top = 134
-          Width = 200
-          Height = 25
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 76
+          Top = 107
+          Width = 160
+          Height = 21
           Style = csDropDownList
           TabOrder = 3
           OnChange = cbXmlSignLibChange
         end
         object cbSSLType: TComboBox
-          Left = 95
-          Top = 168
-          Width = 200
-          Height = 25
+          Left = 76
+          Top = 134
+          Width = 160
+          Height = 21
           Hint = 'Depende de configura'#231#227'o de  SSL.HttpLib'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           Style = csDropDownList
           TabOrder = 4
           OnChange = cbSSLTypeChange
         end
       end
       object rgc_tipoimpressao: TcxRadioGroup
-        Left = 663
-        Top = 128
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 530
+        Top = 102
         Caption = 'Tipo de componente de Impress'#227'o'
         Properties.Columns = 2
         Properties.Items = <
@@ -799,159 +612,104 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
         Style.LookAndFeel.Kind = lfOffice11
         StyleDisabled.LookAndFeel.Kind = lfOffice11
         TabOrder = 8
-        Height = 56
-        Width = 231
+        Height = 45
+        Width = 185
       end
     end
     object Tabopcoes: TcxTabSheet
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
       Caption = 'Op'#231#245'es'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object btn_imprimir: TcxButton
-        Left = 90
-        Top = 90
-        Width = 94
-        Height = 31
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 72
+        Top = 72
+        Width = 75
+        Height = 25
         Caption = 'Imprimir'
-        OptionsImage.Spacing = 5
         TabOrder = 0
         OnClick = btn_imprimirClick
       end
       object btn_consultachave: TcxButton
-        Left = 220
-        Top = 90
-        Width = 131
-        Height = 31
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 176
+        Top = 72
+        Width = 105
+        Height = 25
         Caption = 'Consulta Chave'
-        OptionsImage.Spacing = 5
         TabOrder = 1
         OnClick = btn_consultachaveClick
       end
       object btn_ConsultaXml: TcxButton
-        Left = 220
-        Top = 140
-        Width = 131
-        Height = 31
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 176
+        Top = 112
+        Width = 105
+        Height = 25
         Caption = 'Consulta Xml'
-        OptionsImage.Spacing = 5
         TabOrder = 2
         OnClick = btn_ConsultaXmlClick
       end
       object btn_AdmCSC: TcxButton
-        Left = 700
-        Top = 90
-        Width = 141
-        Height = 31
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 560
+        Top = 72
+        Width = 113
+        Height = 25
         Caption = 'Administrar CSC'
-        OptionsImage.Spacing = 5
         TabOrder = 3
         OnClick = btn_AdmCSCClick
       end
       object btnAtualizar: TcxButton
-        Left = 700
-        Top = 140
-        Width = 141
-        Height = 31
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 560
+        Top = 112
+        Width = 113
+        Height = 25
         Caption = 'Atualiza Xml'
-        OptionsImage.Spacing = 5
         TabOrder = 4
         OnClick = btnAtualizarClick
       end
       object btnValidarXML: TButton
-        Left = 220
-        Top = 189
-        Width = 131
-        Height = 31
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 176
+        Top = 151
+        Width = 105
+        Height = 25
         Caption = 'Validar XML'
         TabOrder = 5
         OnClick = btnValidarXMLClick
       end
       object btnValidarAssinatura: TButton
-        Left = 369
-        Top = 189
-        Width = 221
-        Height = 31
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 295
+        Top = 151
+        Width = 177
+        Height = 25
         Caption = 'Validar Assinatura'
         TabOrder = 6
         OnClick = btnValidarAssinaturaClick
       end
       object btn_gerarxml: TcxButton
-        Left = 90
-        Top = 140
-        Width = 94
-        Height = 31
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 72
+        Top = 112
+        Width = 75
+        Height = 25
         Caption = 'Gerar xml'
-        OptionsImage.Spacing = 5
         TabOrder = 7
         OnClick = btn_gerarxmlClick
       end
       object btn_enviar: TcxButton
-        Left = 90
-        Top = 189
-        Width = 94
-        Height = 31
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 72
+        Top = 151
+        Width = 75
+        Height = 25
         Caption = 'Enviar xml'
-        OptionsImage.Spacing = 5
         TabOrder = 8
         OnClick = btn_enviarClick
       end
       object rgReformaTributaria: TRadioGroup
         Left = 0
-        Top = 10
-        Width = 301
-        Height = 50
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Top = 8
+        Width = 241
+        Height = 40
         Caption = 'Gera os campos da ReformaTributaria'
         Columns = 2
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -14
+        Font.Height = -11
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ItemIndex = 1
@@ -962,51 +720,52 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
         TabOrder = 9
       end
       object btnInutilizar: TcxButton
-        Left = 700
-        Top = 189
-        Width = 141
-        Height = 31
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 560
+        Top = 151
+        Width = 113
+        Height = 25
         Caption = 'Inutilizar Cupom'
-        OptionsImage.Spacing = 5
         TabOrder = 10
         OnClick = btnInutilizarClick
       end
+      object btnCancelarXML: TButton
+        Left = 295
+        Top = 313
+        Width = 142
+        Height = 20
+        Margins.Left = 2
+        Margins.Top = 2
+        Margins.Right = 2
+        Margins.Bottom = 2
+        Caption = 'Cancelamento com XML'
+        TabOrder = 11
+        OnClick = btnCancelarXMLClick
+      end
+      object btn_cancelarxml: TcxButton
+        Left = 295
+        Top = 112
+        Width = 105
+        Height = 25
+        Caption = 'Cancelamento Xml'
+        TabOrder = 12
+        OnClick = btn_cancelarxmlClick
+      end
     end
     object TabParametros: TcxTabSheet
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
       Caption = 'Parametros de impress'#227'o'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label7: TLabel
-        Left = 465
-        Top = 5
-        Width = 71
-        Height = 17
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 372
+        Top = 4
+        Width = 55
+        Height = 13
         Caption = 'Logo Marca'
       end
       object sbtnLogoMarca: TSpeedButton
-        Left = 753
-        Top = 23
-        Width = 28
-        Height = 30
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 602
+        Top = 18
+        Width = 23
+        Height = 24
         Glyph.Data = {
           76010000424D7601000000000000760000002800000020000000100000000100
           04000000000000010000130B0000130B00001000000000000000000000000000
@@ -1024,36 +783,24 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
         OnClick = sbtnLogoMarcaClick
       end
       object Label53: TLabel
-        Left = 16
-        Top = 5
-        Width = 101
-        Height = 17
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 13
+        Top = 4
+        Width = 80
+        Height = 13
         Caption = 'Vers'#227'o QR-Code'
       end
       object edtLogoMarca: TEdit
-        Left = 465
-        Top = 25
-        Width = 285
+        Left = 372
+        Top = 20
+        Width = 228
         Height = 25
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
         TabOrder = 0
       end
       object rgTipoDanfe: TRadioGroup
-        Left = 465
-        Top = 65
-        Width = 321
-        Height = 73
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 372
+        Top = 52
+        Width = 257
+        Height = 58
         Caption = 'DANFE'
         Columns = 2
         ItemIndex = 0
@@ -1064,103 +811,71 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
         TabOrder = 1
       end
       object gbEscPos: TGroupBox
-        Left = 465
-        Top = 145
-        Width = 321
-        Height = 291
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 372
+        Top = 116
+        Width = 257
+        Height = 233
         Caption = 'EscPos'
         TabOrder = 2
         object Label43: TLabel
-          Left = 10
-          Top = 30
-          Width = 43
-          Height = 17
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 24
+          Width = 34
+          Height = 13
           Caption = 'Modelo'
           Color = clBtnFace
           ParentColor = False
         end
         object Label44: TLabel
-          Left = 10
-          Top = 90
-          Width = 33
-          Height = 17
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 72
+          Width = 26
+          Height = 13
           Caption = 'Porta'
           Color = clBtnFace
           ParentColor = False
         end
         object Label45: TLabel
-          Left = 10
-          Top = 230
-          Width = 70
-          Height = 17
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 184
+          Width = 55
+          Height = 13
           Caption = 'Pag.Codigo'
           Color = clBtnFace
           ParentColor = False
         end
         object Label48: TLabel
-          Left = 10
-          Top = 170
-          Width = 48
-          Height = 17
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 136
+          Width = 38
+          Height = 13
           Caption = 'Colunas'
           Color = clBtnFace
           ParentColor = False
         end
         object Label49: TLabel
-          Left = 100
-          Top = 150
-          Width = 50
-          Height = 34
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 80
+          Top = 120
+          Width = 39
+          Height = 26
           Caption = 'Espa'#231'os'#13#10'Linhas'
           Color = clBtnFace
           ParentColor = False
         end
         object Label50: TLabel
-          Left = 180
-          Top = 150
-          Width = 38
-          Height = 34
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 144
+          Top = 120
+          Width = 30
+          Height = 26
           Caption = 'Linhas'#13#10'Pular'
           Color = clBtnFace
           ParentColor = False
         end
         object btSerial: TBitBtn
-          Left = 270
-          Top = 110
-          Width = 28
-          Height = 28
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 216
+          Top = 88
+          Width = 22
+          Height = 22
           Glyph.Data = {
             36030000424D3603000000000000360000002800000010000000100000000100
             1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
@@ -1194,94 +909,66 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           OnClick = btSerialClick
         end
         object cbxModeloPosPrinter: TComboBox
-          Left = 10
-          Top = 50
-          Width = 291
-          Height = 25
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 40
+          Width = 233
+          Height = 21
           Style = csDropDownList
           TabOrder = 1
         end
         object cbxPorta: TComboBox
-          Left = 10
-          Top = 110
-          Width = 251
-          Height = 25
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 88
+          Width = 201
+          Height = 21
           TabOrder = 2
         end
         object cbxPagCodigo: TComboBox
-          Left = 10
-          Top = 250
-          Width = 126
-          Height = 25
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 8
+          Top = 200
+          Width = 101
+          Height = 21
           Style = csDropDownList
           TabOrder = 3
         end
         object seColunas: TSpinEdit
-          Left = 10
-          Top = 190
-          Width = 61
+          Left = 8
+          Top = 152
+          Width = 49
           Height = 27
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           MaxValue = 9999
           MinValue = 0
           TabOrder = 4
           Value = 0
         end
         object seEspLinhas: TSpinEdit
-          Left = 100
-          Top = 190
-          Width = 61
+          Left = 80
+          Top = 152
+          Width = 49
           Height = 27
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           MaxValue = 9999
           MinValue = 0
           TabOrder = 5
           Value = 0
         end
         object seLinhasPular: TSpinEdit
-          Left = 180
-          Top = 190
-          Width = 61
+          Left = 144
+          Top = 152
+          Width = 49
           Height = 27
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           MaxValue = 9999
           MinValue = 0
           TabOrder = 6
           Value = 0
         end
         object cbCortarPapel: TCheckBox
-          Left = 179
-          Top = 245
-          Width = 106
-          Height = 24
+          Left = 143
+          Top = 196
+          Width = 85
+          Height = 19
           Hint = 
             'Conecta a Porta Serial a cada comando enviado'#13#10'Desconecta da Por' +
             'ta Serial ap'#243's o envio'
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           Caption = 'Cortar Papel'
           Checked = True
           State = cbChecked
@@ -1289,14 +976,10 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
         end
       end
       object rgDANFCE: TRadioGroup
-        Left = 465
-        Top = 421
-        Width = 321
-        Height = 62
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 372
+        Top = 337
+        Width = 257
+        Height = 49
         Caption = 'DANFCE'
         Columns = 3
         ItemIndex = 1
@@ -1307,65 +990,37 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
         TabOrder = 3
       end
       object cbVersaoQRCode: TComboBox
-        Left = 16
-        Top = 25
-        Width = 142
-        Height = 25
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 13
+        Top = 20
+        Width = 113
+        Height = 21
         TabOrder = 4
       end
     end
     object tabRetorno: TcxTabSheet
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
       Caption = 'Retorno'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxPageControl2: TcxPageControl
         Left = 0
         Top = 0
-        Width = 918
-        Height = 500
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Width = 733
+        Height = 398
         Align = alClient
         TabOrder = 0
         Properties.ActivePage = tabDados
         Properties.CustomButtons.Buttons = <>
-        ClientRectBottom = 496
+        ClientRectBottom = 394
         ClientRectLeft = 4
-        ClientRectRight = 914
-        ClientRectTop = 29
+        ClientRectRight = 729
+        ClientRectTop = 24
         object tabDados: TcxTabSheet
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           Caption = 'tabDados'
           ImageIndex = 0
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object MemoDados: TMemo
             Left = 0
             Top = 0
-            Width = 910
-            Height = 467
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Width = 725
+            Height = 370
             Align = alClient
             Lines.Strings = (
               'MemoDados')
@@ -1373,10 +1028,6 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           end
         end
         object tabRespws: TcxTabSheet
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           Caption = 'tabRespws'
           ImageIndex = 1
           ExplicitLeft = 0
@@ -1386,16 +1037,10 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           object WebBrowser1: TWebBrowser
             Left = 0
             Top = 0
-            Width = 910
-            Height = 467
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Width = 728
+            Height = 374
             Align = alClient
             TabOrder = 0
-            ExplicitWidth = 906
-            ExplicitHeight = 463
             ControlData = {
               4C0000003E4B00009D2600000000000000000000000000000000000000000000
               000000004C000000000000000000000001000000E0D057007335CF11AE690800
@@ -1405,10 +1050,6 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           end
         end
         object tabretornoWS: TcxTabSheet
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           Caption = 'tabretornoWS'
           ImageIndex = 2
           ExplicitLeft = 0
@@ -1418,22 +1059,14 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           object memoRespWS: TMemo
             Left = 0
             Top = 0
-            Width = 910
-            Height = 467
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Width = 728
+            Height = 374
             Align = alClient
             ScrollBars = ssVertical
             TabOrder = 0
           end
         end
         object cxTabSheet4: TcxTabSheet
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           Caption = 'cxTabSheet4'
           ImageIndex = 3
           ExplicitLeft = 0
@@ -1443,22 +1076,14 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           object MemoResp: TMemo
             Left = 0
             Top = 0
-            Width = 910
-            Height = 467
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Width = 728
+            Height = 374
             Align = alClient
             ScrollBars = ssVertical
             TabOrder = 0
           end
         end
         object cxTabSheet1: TcxTabSheet
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           Caption = 'cxTabSheet1'
           ImageIndex = 4
           ExplicitLeft = 0
@@ -1468,16 +1093,10 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
           object WBResposta: TWebBrowser
             Left = 0
             Top = 0
-            Width = 910
-            Height = 467
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Width = 728
+            Height = 374
             Align = alClient
             TabOrder = 0
-            ExplicitWidth = 906
-            ExplicitHeight = 463
             ControlData = {
               4C0000003E4B00009D2600000000000000000000000000000000000000000000
               000000004C000000000000000000000001000000E0D057007335CF11AE690800
@@ -1502,7 +1121,7 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
     StyleHot.LookAndFeel.NativeStyle = True
     Left = 378
     Top = 94
-    PixelsPerInch = 120
+    PixelsPerInch = 96
   end
   object OpenDialog2: TOpenDialog
     Left = 406
@@ -1522,13 +1141,13 @@ object FRM_CONFIGURA: TFRM_CONFIGURA
   object styRepoItem: TcxStyleRepository
     Left = 499
     Top = 94
-    PixelsPerInch = 120
+    PixelsPerInch = 96
     object styEditavel: TcxStyle
       AssignedValues = [svColor, svFont]
       Color = clYellow
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'Verdana'
       Font.Style = [fsBold]
     end

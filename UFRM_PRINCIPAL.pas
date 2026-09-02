@@ -866,7 +866,9 @@ end;
 
 procedure TFRM_PRINCIPAL.CancelarCupom1Click(Sender: TObject);
 begin
-  FRM_CONFIGURA.CancelarNota(cxGrid2DBTableView1NFE_IDNOTA.EditValue,cxGrid2DBTableView1NFE_PROTOCOLO.EditValue);
+  FRM_CONFIGURA.CancelarNota(cxGrid2DBTableView1NFE_IDNOTA.EditValue,
+          cxGrid2DBTableView1NFE_PROTOCOLO.EditValue,cxGrid2DBTableView1NF_NUMERO.EditValue,
+          cxGrid2DBTableView1NF_ID.EditValue);
 end;
 
 procedure TFRM_PRINCIPAL.cbxModeloChange(Sender: TObject);

@@ -8856,4 +8856,58 @@ object DMD_PRO00315: TDMD_PRO00315
       Origin = 'VLR_VTOT'
     end
   end
+  object QryProtCancel: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      'UPDATE NOTA_FISCAL'
+      'SET NFE_NROCANCELAMENTO = :NROPROT, NFE_CODSTATUS = :CSTATUS, '
+      'NFE_STATUS = :STATUS, SITUACAO = :FLAG'
+      'WHERE NF_ID = :NF_ID'
+      '')
+    Left = 124
+    Top = 432
+    ParamData = <
+      item
+        Name = 'NROPROT'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'CSTATUS'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'STATUS'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'FLAG'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'NF_ID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object QryStatusNFE: TFDQuery
+    Connection = DmdPrincipal.FDConexao
+    SQL.Strings = (
+      'SELECT *'
+      'FROM STATUS_NFE'
+      'ORDER BY COD_STATUS')
+    Left = 128
+    Top = 360
+    object QryStatusNFECOD_STATUS: TIntegerField
+      FieldName = 'COD_STATUS'
+    end
+    object QryStatusNFEMOTIVO: TStringField
+      FieldName = 'MOTIVO'
+      FixedChar = True
+      Size = 100
+    end
+  end
 end

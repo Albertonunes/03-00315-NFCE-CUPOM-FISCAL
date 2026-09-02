@@ -1467,6 +1467,10 @@ type
     QryImprimeNFVLR_CBS: TFloatField;
     QryImprimeNFVLR_IS: TFloatField;
     QryImprimeNFVLR_VTOT: TFloatField;
+    QryProtCancel: TFDQuery;
+    QryStatusNFE: TFDQuery;
+    QryStatusNFECOD_STATUS: TIntegerField;
+    QryStatusNFEMOTIVO: TStringField;
     procedure MemItensBeforePost(DataSet: TDataSet);
     procedure MemItensAfterDelete(DataSet: TDataSet);
     procedure QryFiltroDuplicataAfterInsert(DataSet: TDataSet);

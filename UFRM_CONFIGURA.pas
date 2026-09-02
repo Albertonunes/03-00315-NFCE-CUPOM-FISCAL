@@ -160,6 +160,8 @@ type
     Label53: TLabel;
     rgReformaTributaria: TRadioGroup;
     btnInutilizar: TcxButton;
+    btnCancelarXML: TButton;
+    btn_cancelarxml: TcxButton;
     procedure btc_alteracaminhoClick(Sender: TObject);
     procedure btc_atualizaCertClick(Sender: TObject);
     procedure btc_salvarClick(Sender: TObject);
@@ -193,12 +195,14 @@ type
     procedure btSerialClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure btnInutilizarClick(Sender: TObject);
+    procedure btnCancelarXMLClick(Sender: TObject);
+    procedure btn_cancelarxmlClick(Sender: TObject);
   private
     { Private declarations }
     procedure AbrirNota(nIDNF:integer);
   public
     { Public declarations }
-    procedure CancelarNota(aChaveNf,aProtocolo:String);
+    procedure CancelarNota(aChaveNf,aProtocolo:String;acupom,aid:integer);
     procedure ImprimirNota(nIDNF:integer);
   end;
 
@@ -1297,7 +1301,7 @@ begin
 
                 ISel.vBCIS    := QryFiltroIBSvBCIS.Value;
                 ISel.pIS      := QryFiltroIBSpIS.Value;
-                ISel.pISEspec := QryFiltroIBSpISEspec.Value;
+                //ISel.pISEspec := QryFiltroIBSpISEspec.Value;
                 ISel.uTrib    := QryFiltroIBSuTrib.Value;
                 ISel.qTrib    := QryFiltroIBSqTrib.Value;
                 ISel.vIS      := QryFiltroIBSvIS.Value;
@@ -2123,6 +2127,7 @@ procedure TFRM_CONFIGURA.btnAtualizarClick(Sender: TObject);
 var
   Situacao: string;
 begin
+  ActLerConfIni.Execute;
   OpenDialog1.Title := 'Selecione o NFe';
   OpenDialog1.DefaultExt := '*-nfe.XML';
   OpenDialog1.Filter :=
@@ -2232,6 +2237,67 @@ begin
 
 end;
 
+procedure TFRM_CONFIGURA.btnCancelarXMLClick(Sender: TObject);
+var
+  idLote, vAux: String;
+begin
+  OpenDialog1.Title := 'Selecione a NFe';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFe (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+
+    idLote := '1';
+    if not(InputQuery('WebServices Eventos: Cancelamento', 'Identificador de controle do Lote de envio do Evento', idLote)) then
+       exit;
+
+    vAux := '';
+    if not(InputQuery('WebServices Eventos: Cancelamento', 'Justificativa', vAux)) then
+       exit;
+
+    ACBrNFe1.EventoNFe.Evento.Clear;
+    ACBrNFe1.EventoNFe.idLote := StrToInt(idLote);
+
+    with ACBrNFe1.EventoNFe.Evento.New do
+    begin
+      infEvento.dhEvento := now;
+      infEvento.tpEvento := teCancelamento;
+      infEvento.detEvento.xJust := vAux;
+    end;
+
+    ACBrNFe1.EnviarEvento(StrToInt(idLote));
+
+    MemoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetWS;
+    memoRespWS.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetornoWS;
+
+    LoadXML(ACBrNFe1.WebServices.EnvEvento.RetornoWS, WBResposta);
+
+    MemoDados.Lines.Add('');
+    MemoDados.Lines.Add('Retorno do Evento');
+    MemoDados.Lines.Add('');
+    MemoDados.Lines.Add('Id.........: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.Id);
+    MemoDados.Lines.Add('tpAmb......: ' + TpAmbToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.TpAmb));
+    MemoDados.Lines.Add('verAplic...: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.verAplic);
+    MemoDados.Lines.Add('cOrgao.....: ' + IntToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.cOrgao));
+    MemoDados.Lines.Add('cStat......: ' + IntToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.cStat));
+    MemoDados.Lines.Add('xMotivo....: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.xMotivo);
+    MemoDados.Lines.Add('chNFe......: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.chNFe);
+    MemoDados.Lines.Add('tpEvento...: ' + TpEventoToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.tpEvento));
+    MemoDados.Lines.Add('xEvento....: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.xEvento);
+    MemoDados.Lines.Add('nSeqEvento.: ' + IntToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.nSeqEvento));
+    MemoDados.Lines.Add('CNPJDest...: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.CNPJDest);
+    MemoDados.Lines.Add('emailDest..: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.emailDest);
+    MemoDados.Lines.Add('dhRegEvento: ' + DateTimeToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.dhRegEvento));
+    MemoDados.Lines.Add('Protocolo..: '+ ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.nProt);
+  end;
+
+end;
+
 procedure TFRM_CONFIGURA.btnconsultaieClick(Sender: TObject);
 var
  IE, teste : string;
@@ -2248,23 +2314,24 @@ procedure TFRM_CONFIGURA.btnInutilizarClick(Sender: TObject);
 var
   Modelo, Serie, Ano, NumeroInicial, NumeroFinal, Justificativa: String;
 begin
- Ano := IntToStr(YearOf(date));
- if not(InputQuery('WebServices Inutilização ', 'Ano',    Ano)) then
+  ActLerConfIni.Execute;
+  Ano := IntToStr(YearOf(date));
+  if not(InputQuery('WebServices Inutilização ', 'Ano',    Ano)) then
     exit;
- Modelo := '65';
- if not(InputQuery('WebServices Inutilização ', 'Modelo', Modelo)) then
+  Modelo := '65';
+  if not(InputQuery('WebServices Inutilização ', 'Modelo', Modelo)) then
     exit;
- Serie := '2';
- if not(InputQuery('WebServices Inutilização ', 'Serie',  Serie)) then
+  Serie := '2';
+  if not(InputQuery('WebServices Inutilização ', 'Serie',  Serie)) then
     exit;
- NumeroInicial := '';
- if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroInicial)) then
+  NumeroInicial := '';
+  if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroInicial)) then
     exit;
- NumeroFinal := '';
- if not(InputQuery('WebServices Inutilização ', 'Número Final', NumeroFinal)) then
+  NumeroFinal := '';
+  if not(InputQuery('WebServices Inutilização ', 'Número Final', NumeroFinal)) then
     exit;
- Justificativa := 'Não utilizado por erro';
- if not(InputQuery('WebServices Inutilização ', 'Justificativa', Justificativa)) then
+  Justificativa := 'Não utilizado por erro';
+  if not(InputQuery('WebServices Inutilização ', 'Justificativa', Justificativa)) then
     exit;
 
   ACBrNFe1.WebServices.Inutiliza(RemoveChar(DmdPrincipal.qryEMPRESASEMPRESA_CNPJ.Value), Justificativa, StrToInt(Ano), StrToInt(Modelo), StrToInt(Serie), StrToInt(NumeroInicial), StrToInt(NumeroFinal));
@@ -2382,6 +2449,66 @@ begin
 
 end;
 
+procedure TFRM_CONFIGURA.btn_cancelarxmlClick(Sender: TObject);
+var
+  idLote, vAux: String;
+begin
+  OpenDialog1.Title := 'Selecione a NFe';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFe (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Arquivos.PathSalvar;
+
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+
+    idLote := '1';
+    if not(InputQuery('WebServices Eventos: Cancelamento', 'Identificador de controle do Lote de envio do Evento', idLote)) then
+       exit;
+
+    vAux := 'Cliente desistiu da compra';
+    //if not(InputQuery('WebServices Eventos: Cancelamento', 'Justificativa', vAux)) then
+    //   exit;
+
+    ACBrNFe1.EventoNFe.Evento.Clear;
+    ACBrNFe1.EventoNFe.idLote := StrToInt(idLote);
+
+    with ACBrNFe1.EventoNFe.Evento.New do
+    begin
+      infEvento.dhEvento := now;
+      infEvento.tpEvento := teCancelamento;
+      infEvento.detEvento.xJust := vAux;
+    end;
+
+    ACBrNFe1.EnviarEvento(StrToInt(idLote));
+
+    MemoResp.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetWS;
+    memoRespWS.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetornoWS;
+
+    LoadXML(ACBrNFe1.WebServices.EnvEvento.RetornoWS, WBResposta);
+
+    MemoDados.Lines.Add('');
+    MemoDados.Lines.Add('Retorno do Evento');
+    MemoDados.Lines.Add('');
+    MemoDados.Lines.Add('Id.........: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.Id);
+    MemoDados.Lines.Add('tpAmb......: ' + TpAmbToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.TpAmb));
+    MemoDados.Lines.Add('verAplic...: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.verAplic);
+    MemoDados.Lines.Add('cOrgao.....: ' + IntToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.cOrgao));
+    MemoDados.Lines.Add('cStat......: ' + IntToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.cStat));
+    MemoDados.Lines.Add('xMotivo....: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.xMotivo);
+    MemoDados.Lines.Add('chNFe......: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.chNFe);
+    MemoDados.Lines.Add('tpEvento...: ' + TpEventoToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.tpEvento));
+    MemoDados.Lines.Add('xEvento....: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.xEvento);
+    MemoDados.Lines.Add('nSeqEvento.: ' + IntToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.nSeqEvento));
+    MemoDados.Lines.Add('CNPJDest...: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.CNPJDest);
+    MemoDados.Lines.Add('emailDest..: ' + ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.emailDest);
+    MemoDados.Lines.Add('dhRegEvento: ' + DateTimeToStr(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.dhRegEvento));
+    MemoDados.Lines.Add('Protocolo..: '+ ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.nProt);
+  end;
+end;
+
 procedure TFRM_CONFIGURA.btn_consultachaveClick(Sender: TObject);
 var
   vChave: String;
@@ -2449,6 +2576,7 @@ begin
   //  exit;
   //NFID := FRM_PRINCIPAL.cxGrid2DBTableView1NF_ID.EditValue;
   nIDNF := FRM_PRINCIPAL.cxGrid2DBTableView1NF_ID.EditValue;
+  ActLerConfIni.Execute;
 
   //nIDNF := StrToInt(NFID);
   ACBrNFe1.Configuracoes.Arquivos.Salvar := false;
@@ -2526,11 +2654,13 @@ begin
 
 end;
 
-procedure TFRM_CONFIGURA.CancelarNota(aChaveNf,aProtocolo: String);
+procedure TFRM_CONFIGURA.CancelarNota(aChaveNf,aProtocolo: String; acupom,aid:integer);
 var
-  Chave, idLote, CNPJ, Protocolo, Justificativa: string;
+  notaxml, Chave, idLote, CNPJ, Protocolo, Justificativa: string;
 begin
+  ActLerConfIni.Execute;
   Chave  := Trim(OnlyNumber(aChaveNf));
+  notaxml := Chave+'-nfe.xml';
   idLote := '1';
   //if not(InputQuery('WebServices Eventos: Cancelamento', 'Identificador de controle do Lote de envio do Evento', idLote)) then
   //   exit;
@@ -2540,6 +2670,22 @@ begin
   if not(InputQuery('WebServices Eventos: Cancelamento', 'Justificativa do Cancelamento', Justificativa)) then
      exit;
 
+  ACBrNFe1.NotasFiscais.Clear;
+  ACBrNFe1.EventoNFe.Evento.Clear;
+  ACBrNFe1.EventoNFe.idLote := acupom;
+  with ACBrNFe1.EventoNFe.Evento.Add do
+  begin
+    infEvento.chNFe    := Chave;
+    infEvento.CNPJ     := CNPJ;
+    infEvento.dhEvento := now;
+    infEvento.tpEvento := teCancelamento;
+    infEvento.detEvento.xJust := Justificativa;
+    infEvento.detEvento.nProt := Protocolo;
+  end;
+  ACBrNFe1.EnviarEvento(StrToInt(idLote));
+
+
+(*
   ACBrNFe1.EventoNFe.Evento.Clear;
 
   with ACBrNFe1.EventoNFe.Evento.New do
@@ -2553,12 +2699,68 @@ begin
   end;
 
   ACBrNFe1.EnviarEvento(StrToInt(idLote));
-
+  *)
   MemoResp.Lines.Text   := ACBrNFe1.WebServices.EnvEvento.RetWS;
   memoRespWS.Lines.Text := ACBrNFe1.WebServices.EnvEvento.RetornoWS;
 
   LoadXML(ACBrNFe1.WebServices.EnvEvento.RetornoWS, WBResposta);
-
+  vcstatus := ACBrNFe1.WebServices.EnvEvento.cStat;
+  nProt    := ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt;
+  Motivo   := ACBrNFe1.WebServices.EnvEvento.xMotivo;
+  if nProt <> '' then
+  begin
+    //  ArqXML := ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.XML;
+    MsgInformacao('Nota Fiscal Cancelada com Sucesso !');
+    with DMD_PRO00315 do
+    begin
+      QryStatusNFE.Close;
+      QryStatusNFE.Open;
+      if QryStatusNFE.Locate('COD_STATUS', vcstatus, []) then
+      begin
+        QryProtCancel.ParamByName('NROPROT').AsString  := nProt;
+        QryProtCancel.ParamByName('CSTATUS').AsInteger := vcstatus;
+        QryProtCancel.ParamByName('NF_ID').AsInteger   := aid;
+        QryProtCancel.ParamByName('STATUS').AsString   := Copy(QryStatusNFEMOTIVO.Value, 1, 20);
+        QryProtCancel.ParamByName('FLAG').AsString := 'E';
+        IF vcstatus = 100 then
+          QryProtCancel.ParamByName('FLAG').AsString := 'A'; // aceita com sucesso
+        IF (vcstatus = 101) or (vcstatus = 128) then
+          QryProtCancel.ParamByName('FLAG').AsString := 'C';
+        // cancelada com sucesso
+        IF vcstatus = 102 then
+          QryProtCancel.ParamByName('FLAG').AsString := 'I';
+        // Inutilizada com sucesso
+        IF vcstatus = 218 then
+          QryProtCancel.ParamByName('FLAG').AsString := 'C'; // ja cancelada
+        QryProtCancel.ExecSQL;
+      end
+      else
+      begin
+        QryProtCancel.ParamByName('NROPROT').AsString  := nProt;
+        QryProtCancel.ParamByName('CSTATUS').AsInteger := vcstatus;
+        QryProtCancel.ParamByName('NF_ID').AsInteger   := aid;
+        QryProtCancel.ParamByName('STATUS').AsString   := Copy(Motivo, 1, 20);
+        QryProtCancel.ParamByName('FLAG').AsString     := 'E';
+        IF vcstatus = 100 then
+          QryProtCancel.ParamByName('FLAG').AsString := 'A'; // aceita com sucesso
+        IF (vcstatus = 101) or (vcstatus = 128) then
+          QryProtCancel.ParamByName('FLAG').AsString := 'C';
+        // cancelada com sucesso
+        IF vcstatus = 102 then
+          QryProtCancel.ParamByName('FLAG').AsString := 'I';
+        // Inutilizada com sucesso
+        IF vcstatus = 218 then
+          QryProtCancel.ParamByName('FLAG').AsString := 'C'; // ja cancelada
+        QryProtCancel.ExecSQL;
+        QryStatusNFE.Insert;
+        QryStatusNFECOD_STATUS.Value := vcstatus;
+        QryStatusNFEMOTIVO.Value := Motivo;
+        QryStatusNFE.Post;
+        QryStatusNFE.Close;
+        QryStatusNFE.Open;
+      end;
+    end;
+  end;
 //  ArqXML := ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento[0].RetInfEvento.XML;
 
   MemoDados.Lines.Add('');
@@ -2720,6 +2922,7 @@ end;
 
 procedure TFRM_CONFIGURA.ImprimirNota(nIDNF: integer);
 begin
+  ActLerConfIni.Execute;
   OpenDialog1.Title := 'Selecione a NFe';
   OpenDialog1.DefaultExt := '*-nfe.XML';
   OpenDialog1.Filter := 'Arquivos NFe (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
